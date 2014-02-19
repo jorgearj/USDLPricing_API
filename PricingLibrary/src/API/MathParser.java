@@ -2,6 +2,8 @@ package API;
 
 
 
+import java.util.Iterator;
+
 import org.matheclipse.core.convert.ConversionException;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
@@ -39,7 +41,7 @@ public class MathParser {
                         Parser p = new Parser(true);
                         
                         //System.out.println(p.getFactory().getOperator2ListMap());
-                        ASTNode obj = p.parse("((a/0.01) + (c*0.016) + (disksize+0.29)) - Usage_time");
+                        ASTNode obj = p.parse("((a/0.01) + (c*0.016) + (disksize+0.29)) - UsageTime");
                         System.out.println(obj);
                         IExpr exp = convert(obj);
                 } catch (Exception e) {
@@ -63,28 +65,34 @@ public class MathParser {
             if (head.equals(F.PatternHead)) {
               final IExpr expr = Pattern.CONST.evaluate(ast);
               if (expr != null) {
+            	 // System.out.println("PatternHead" + expr);
                 return expr;
               }
             } else if (head.equals(F.BlankHead)) {
               final IExpr expr = Blank.CONST.evaluate(ast);
               if (expr != null) {
+            	 // System.out.println("BlankHead" + expr);
                 return expr;
               }
             } else if (head.equals(F.ComplexHead)) {
               final IExpr expr = Complex.CONST.evaluate(ast);
               if (expr != null) {
+            	 // System.out.println("ComplexHead" + expr);
                 return expr;
               }
             } else if (head.equals(F.RationalHead)) {
               final IExpr expr = Rational.CONST.evaluate(ast);
               if (expr != null) {
+            	//  System.out.println("RationalHead" + expr);
                 return expr;
               }
             }
             return ast;
           }
           if (node instanceof SymbolNode) {
+        	  //System.out.println("SymbolNode - " + node.getString());
             return F.symbol(node.getString());
+            
           }
           if (node instanceof PatternNode) {
             final PatternNode pn = (PatternNode) node;
@@ -95,6 +103,7 @@ public class MathParser {
             final IntegerNode integerNode = (IntegerNode) node;
             final String iStr = integerNode.getString();
             if (iStr != null) {
+            	//System.out.println("IntegerNode - " + integerNode.getNumberFormat());
               return F.integer(iStr, integerNode.getNumberFormat());
             }
             return F.integer(integerNode.getIntValue());
@@ -110,9 +119,11 @@ public class MathParser {
                 (IInteger) convert(((FractionNode) node).getDenominator()));
           }
           if (node instanceof StringNode) {
+        	  //System.out.println("StringNode - " + node.getString());
             return F.stringx(node.getString());
           }
           if (node instanceof FloatNode) {
+        	  //System.out.println("FloatNode - " + node.getString());
             return F.num(node.getString());
           }
 
