@@ -2,6 +2,7 @@ package FunctionParser;
 
 
 
+
 import java.util.Iterator;
 
 import org.matheclipse.core.convert.ConversionException;
@@ -37,6 +38,7 @@ public class MathParser {
         public MathParser() {
         }
         public void testParser0() {
+        	System.out.println("Testing");
                 try { 
                         Parser p = new Parser(true);
                         
