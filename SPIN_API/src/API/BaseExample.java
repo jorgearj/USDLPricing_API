@@ -21,9 +21,7 @@ import org.topbraid.spin.model.Query;
 import org.topbraid.spin.model.Function;
 import org.topbraid.spin.system.SPINModuleRegistry;
 import org.topbraid.spin.util.JenaUtil;
-import org.topbraid.spin.vocabulary.ARG;
 import org.topbraid.spin.vocabulary.SPIN;
-import org.topbraid.spin.vocabulary.SPL;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -174,6 +172,7 @@ public class BaseExample {
 				usagevars.add(usageVar);//add the variable to an arraylist since we can't alter the size of the resourceset while iterating over its content
 			}
 		}
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		System.out.println("There's "+usagevars.size()+" variable(s) that need to be defined!");
 		int i=3;
@@ -181,10 +180,11 @@ public class BaseExample {
 		{
 			System.out.println("Please, intert the value for the variable:   "+r.getLocalName());
 			
-			int num = in.nextInt();
+			float num = Float.parseFloat(in.nextLine());                // read digits as characters
+			System.out.println(num);
 			r.addProperty(model.createProperty(PRICE+"hasValue"),
 			model.createResource(GR+"QuantitativeValue"+i).addProperty(model.createProperty(GR+"hasUnitOfMeasurement"),model.createTypedLiteral("MON",XSDDatatype.XSDstring)).
-			addProperty(model.createProperty(GR+"hasValue"),model.createTypedLiteral(num,XSDDatatype.XSDint)));
+			addProperty(model.createProperty(GR+"hasValue"),model.createTypedLiteral(num,XSDDatatype.XSDfloat)));
 			i++;
 		}
 
