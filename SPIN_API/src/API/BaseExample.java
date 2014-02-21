@@ -181,7 +181,6 @@ public class BaseExample {
 			System.out.println("Please, intert the value for the variable:   "+r.getLocalName());
 			
 			float num = Float.parseFloat(in.nextLine());                // read digits as characters
-			System.out.println(num);
 			r.addProperty(model.createProperty(PRICE+"hasValue"),
 			model.createResource(GR+"QuantitativeValue"+i).addProperty(model.createProperty(GR+"hasUnitOfMeasurement"),model.createTypedLiteral("MON",XSDDatatype.XSDstring)).
 			addProperty(model.createProperty(GR+"hasValue"),model.createTypedLiteral(num,XSDDatatype.XSDfloat)));
