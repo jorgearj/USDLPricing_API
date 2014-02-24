@@ -13,6 +13,7 @@ package FunctionParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
@@ -39,8 +40,7 @@ public class MathParser {
 	private Stack<String> stack = new Stack<String>();
 	private Stack<String> infixstack = new Stack<String>();
 	private ArrayList<String> usageVariables = new ArrayList<>();
-	private Map<String, Operator>opmap;
-	private String ops;
+	private Map<String, String> opmap = new HashMap<String, String>();
 	public static final String[] SYMBOLS = { "True", "False", "List",
 			"Modulus", "Flat", "HoldAll", "HoldFirst", "HoldRest", "Listable",
 			"NumericFunction", "OneIdentity", "Orderless", "Slot",
@@ -127,21 +127,28 @@ public class MathParser {
 		String SPARQLQuery = "";
 		try {
 			Parser p = new Parser(true);
-			
-			//Heroku example
-			//(?web_hours + ?worker_hours) * ?cost)
+			Map<String,Operator> temp =p.getFactory().getIdentifier2OperatorMap();
+
+			Iterator<String> it = temp.keySet().iterator();
+			while(it.hasNext())
+			{
+				String key = it.next().toString();
+				String val = temp.get(key).getOperatorString();
+				//System.out.println(key + "  " +val); //print the key-value entry
+				opmap.put(key, val);
+			}
+
 			//some special characters cant be used because they're reserved by the parser class. Ex: "_" is a reserved character
 			@SuppressWarnings("resource")
 			Scanner in = new Scanner(System.in);
-			System.out.println("Insert your mathematical formula (type default for Heroku use case):\n");
+			System.out.println("Insert your mathematical formula (type default for Heroku use case):");
 			
 			String form = in.nextLine();
 			if(form.equals("default"))
 				form = "(webhours + workerhours)*cost";
+			
 			ASTNode obj = p.parse(form);//insert the mathematical formula here
-			opmap = p.getFactory().getIdentifier2OperatorMap();
 			convert(obj);
-			ops = p.getFactory().getOperatorCharacters();
 			
 			SPARQLQuery = "SELECT ?result\n" +
 					"WHERE {\n";
@@ -196,12 +203,12 @@ public class MathParser {
 		if (node instanceof SymbolNode) {//symbol node
 			if (SYMBOLS_MAP.containsKey(node.getString().toLowerCase()))
 			{
-				//System.out.println("Operator - " + node.getString());
-				stack.add(opmap.get(node.getString()).getOperatorString());
+				System.out.println("Operator - " + node.getString());
+				stack.add(opmap.get(node.toString()));
 			}
 			else
 			{
-				//System.out.println("Variable - " + node.getString());
+				System.out.println("Variable - " + node.getString());
 				stack.add("?"+node.getString().concat("_value"));
 				usageVariables.add(node.getString());
 			}
@@ -239,8 +246,8 @@ public class MathParser {
 		String s;
 		while (!stack.isEmpty()) {
 			s = stack.pop();
-			if (ops.contains(s)) {
-				String nelem = "(" +infixstack.pop()  + s + infixstack.pop() + ")";
+			if (opmap.containsValue(s)) {
+				String nelem = "( " +infixstack.pop()  +" "+ s +" "+ infixstack.pop() + " )";
 				infixstack.push(nelem);
 			} else {
 				infixstack.add(s);
