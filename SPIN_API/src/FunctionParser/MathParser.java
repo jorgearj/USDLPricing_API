@@ -14,7 +14,9 @@ package FunctionParser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Stack;
+
 import org.matheclipse.core.convert.ConversionException;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
@@ -129,7 +131,14 @@ public class MathParser {
 			//Heroku example
 			//(?web_hours + ?worker_hours) * ?cost)
 			//some special characters cant be used because they're reserved by the parser class. Ex: "_" is a reserved character
-			ASTNode obj = p.parse("(webhours + workerhours)*cost");//insert the mathematical formula here
+			@SuppressWarnings("resource")
+			Scanner in = new Scanner(System.in);
+			System.out.println("Insert your mathematical formula (type default for Heroku use case):\n");
+			
+			String form = in.nextLine();
+			if(form.equals("default"))
+				form = "(webhours + workerhours)*cost";
+			ASTNode obj = p.parse(form);//insert the mathematical formula here
 			opmap = p.getFactory().getIdentifier2OperatorMap();
 			convert(obj);
 			ops = p.getFactory().getOperatorCharacters();
@@ -148,7 +157,7 @@ public class MathParser {
 			SPARQLQuery = SPARQLQuery + "\nBIND("+ f + ") AS ?result  ) .\n" +
 					"}";
 		
-		System.out.println(SPARQLQuery);
+		System.out.println("\nCorresponding SPARQL Query for: " +form +"\n"+SPARQLQuery);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
