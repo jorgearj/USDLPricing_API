@@ -1,12 +1,14 @@
 package usdl.servicemodel;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Offering {
 	private String name;
-	private List<Service> includes;
+	private ArrayList<Service> includes;
 	private PricePlan pricePlan;
 	private String comment;
+	private ArrayList<QuantitativeFeature> quantfeatures;
+	private ArrayList<QualitativeFeature> qualfeatures;
 	
 	public Offering() {
 		super();
@@ -20,11 +22,11 @@ public class Offering {
 		this.name = name;
 	}
 
-	public List<Service> getIncludes() {
+	public ArrayList<Service> getIncludes() {
 		return includes;
 	}
 
-	public void setIncludes(List<Service> includes) {
+	public void setIncludes(ArrayList<Service> includes) {
 		this.includes = includes;
 	}
 
@@ -49,6 +51,22 @@ public class Offering {
 		return "Offering [name=" + name + ", includes=" + includes
 				+ ", pricePlan=" + pricePlan + ", comment=" + comment + "]";
 	}
-	
+
+	public ArrayList<QuantitativeFeature> getQuantfeatures() {
+		return quantfeatures;
+	}
+
+	public void setQuantfeatures(ArrayList<QuantitativeFeature> quantfeatures) {
+		this.quantfeatures = quantfeatures;
+	}
+
+	public ArrayList<QualitativeFeature> getQualfeatures() {
+		return qualfeatures;
+	}
+
+	public void setQualfeatures(ArrayList<QualitativeFeature> qualfeatures) {
+		this.qualfeatures = qualfeatures;
+	}
+
 	
 }

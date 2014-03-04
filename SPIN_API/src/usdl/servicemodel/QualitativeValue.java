@@ -1,24 +1,24 @@
 package usdl.servicemodel;
-
+//http://www.heppnetz.de/ontologies/goodrelations/v1.html#QualitativeValue
 public class QualitativeValue extends Value {
-	public QualitativeFeature hasValue;
+	public String hasLabel;
 
 	public QualitativeValue() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public QualitativeFeature getHasValue() {
-		return hasValue;
+	public String getHasValue() {
+		return hasLabel;
 	}
 
-	public void setHasValue(QualitativeFeature hasValue) {
-		this.hasValue = hasValue;
+	public void setHasLabel(String label) {
+		this.hasLabel = label;
 	}
 
 	@Override
 	public String toString() {
-		return "QualitativeValue [hasValue=" + hasValue + "]";
+		return "QualitativeValue [hasLabel=" + hasLabel + "]";
 	}
 	
 	

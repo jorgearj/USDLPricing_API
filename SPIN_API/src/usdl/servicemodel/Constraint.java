@@ -1,12 +1,11 @@
 package usdl.servicemodel;
 
+import java.util.ArrayList;
+
 public class Constraint {
 	private String name;
-	private PriceFunction ifFunction;
-	private PriceFunction thenFunction;
-	private PriceFunction elseFunction;
 	private String comment;
-	
+	private ArrayList<PriceFunction> constraints;
 	
 	public Constraint() {
 		super();
@@ -18,24 +17,7 @@ public class Constraint {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public PriceFunction getIfFunction() {
-		return ifFunction;
-	}
-	public void setIfFunction(PriceFunction ifFunction) {
-		this.ifFunction = ifFunction;
-	}
-	public PriceFunction getThenFunction() {
-		return thenFunction;
-	}
-	public void setThenFunction(PriceFunction thenFunction) {
-		this.thenFunction = thenFunction;
-	}
-	public PriceFunction getElseFunction() {
-		return elseFunction;
-	}
-	public void setElseFunction(PriceFunction elseFunction) {
-		this.elseFunction = elseFunction;
-	}
+	
 	public String getComment() {
 		return comment;
 	}
@@ -44,9 +26,16 @@ public class Constraint {
 	}
 	@Override
 	public String toString() {
-		return "Constraint [name=" + name + ", ifFunction=" + ifFunction
-				+ ", thenFunction=" + thenFunction + ", elseFunction="
-				+ elseFunction + ", comment=" + comment + "]";
+		return "Constraint [name=" + name + ", Constraints=" + constraints
+				+ ", thenFunction=" + ", comment=" + comment + "]";
+	}
+
+	public ArrayList<PriceFunction> getConstraints() {
+		return constraints;
+	}
+
+	public void setConstraints(ArrayList<PriceFunction> constraints) {
+		this.constraints = constraints;
 	}
 	
 	

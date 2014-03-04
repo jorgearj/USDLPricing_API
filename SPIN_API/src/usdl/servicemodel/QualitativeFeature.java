@@ -1,26 +1,28 @@
 package usdl.servicemodel;
 
 public class QualitativeFeature extends Feature {
-	private QualitativeValue value;
-
-	
+	private QuantitativeValue value;
 	public QualitativeFeature() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public QualitativeValue getValue() {
-		return value;
-	}
-
-	public void setValue(QualitativeValue value) {
-		this.value = value;
-	}
 
 	@Override
 	public String toString() {
-		return "QualitativeFeature [value=" + value + "]";
+		return super.toString() +", value= "+ value + "]";
 	}
+
+
+	public QuantitativeValue getValue() {
+		return value;
+	}
+
+
+	public void setValue(QuantitativeValue value) {
+		this.value = value;
+	}
+
 	
 	
 }

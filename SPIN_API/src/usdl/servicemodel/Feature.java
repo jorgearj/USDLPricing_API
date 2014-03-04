@@ -1,15 +1,13 @@
 package usdl.servicemodel;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import usdl.servicemodel.Service;
+import java.util.List;
 
 public class Feature {
 	private String name;
 	private String comment;
-	private Value value;
 	private List<String> types;
+
 	
 	public Feature() {
 		super();
@@ -31,14 +29,6 @@ public class Feature {
 		this.comment = comment;
 	}
 
-	public Value getValue() {
-		return value;
-	}
-
-	public void setValue(Value value) {
-		this.value = value;
-	}
-
 	public List<String> getTypes() {
 		return types;
 	}
@@ -50,9 +40,8 @@ public class Feature {
 	@Override
 	public String toString() {
 		return "Feature [name=" + name + ", comment=" + comment + ", value="
-				+ value + ", types=" + types + "]";
+				+ ", types=" + types ;
 	}
-	
-	
+
 }
 

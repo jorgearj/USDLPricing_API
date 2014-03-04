@@ -1,13 +1,11 @@
 package usdl.servicemodel;
 
-import java.util.ArrayList;
-
-import usdl.servicemodel.PriceFunction;
 
 public class PriceVariable {
 	private String name;
 	private Value value;
 	private String comment;
+	private String type;
 	
 	public PriceVariable() {
 		super();
@@ -41,6 +39,14 @@ public class PriceVariable {
 	public String toString() {
 		return "PriceVariable [name=" + name + ", value=" + value
 				+ ", comment=" + comment + "]";
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	

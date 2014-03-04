@@ -12,7 +12,7 @@ public class PricePlan {
 	private PriceSpec priceFloor;
 	private List<PriceComponent> priceComponents;
 	private String comment;
-	
+
 	public PricePlan() {
 		super();
 	}

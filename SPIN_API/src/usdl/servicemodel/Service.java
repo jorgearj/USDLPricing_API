@@ -7,28 +7,30 @@ import usdl.servicemodel.Offering;
 
 public class Service {
 	private String name;
-	private List<Service> includes;
+	private ArrayList<Offering> offerings;
 	private String comment;
-	
+	private ArrayList<QuantitativeFeature> quantfeatures;
+	private ArrayList<QualitativeFeature> qualfeatures;
 	public Service() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public String getName() {
 		return name;
+		
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public List<Service> getIncludes() {
-		return includes;
+	public List<Offering> getIncludes() {
+		return offerings;
 	}
 
-	public void setIncludes(List<Service> includes) {
-		this.includes = includes;
+	public void setIncludes(ArrayList<Offering> offs) {
+		this.offerings = offs;
 	}
 
 	public String getComment() {
@@ -41,9 +43,24 @@ public class Service {
 
 	@Override
 	public String toString() {
-		return "Service [name=" + name + ", includes=" + includes
+		return "Service [name=" + name + ", includes=" + offerings
 				+ ", comment=" + comment + "]";
 	}
-	
+
+	public ArrayList<QuantitativeFeature> getQuantfeatures() {
+		return quantfeatures;
+	}
+
+	public void setQuantfeatures(ArrayList<QuantitativeFeature> quantfeatures) {
+		this.quantfeatures = quantfeatures;
+	}
+
+	public ArrayList<QualitativeFeature> getQualfeatures() {
+		return qualfeatures;
+	}
+
+	public void setQualfeatures(ArrayList<QualitativeFeature> qualfeatures) {
+		this.qualfeatures = qualfeatures;
+	}
 	
 }

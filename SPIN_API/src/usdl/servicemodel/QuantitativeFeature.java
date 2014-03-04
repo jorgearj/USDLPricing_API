@@ -8,6 +8,11 @@ public class QuantitativeFeature extends Feature {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() +", value= "+ value + "]";
+	}
+
 	public QuantitativeValue getValue() {
 		return value;
 	}
@@ -16,10 +21,4 @@ public class QuantitativeFeature extends Feature {
 		this.value = value;
 	}
 
-	@Override
-	public String toString() {
-		return "QuantitativeFeature [value=" + value + "]";
-	}
-	
-	
 }
