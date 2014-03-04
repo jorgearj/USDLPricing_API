@@ -1,9 +1,7 @@
 package usdl.servicemodel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import usdl.servicemodel.Offering;
 import usdl.servicemodel.PriceSpec;
 
 public class PricePlan {
@@ -12,7 +10,7 @@ public class PricePlan {
 	private PriceSpec priceFloor;
 	private List<PriceComponent> priceComponents;
 	private String comment;
-
+	//private List<Offering> offerings;//needed?
 	public PricePlan() {
 		super();
 	}

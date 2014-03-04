@@ -1,7 +1,7 @@
 package usdl.servicemodel;
 
 public class QualitativeFeature extends Feature {
-	private QuantitativeValue value;
+	private QualitativeValue value;
 	public QualitativeFeature() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -14,12 +14,12 @@ public class QualitativeFeature extends Feature {
 	}
 
 
-	public QuantitativeValue getValue() {
+	public QualitativeValue getValue() {
 		return value;
 	}
 
 
-	public void setValue(QuantitativeValue value) {
+	public void setValue(QualitativeValue value) {
 		this.value = value;
 	}
 

@@ -1,9 +1,8 @@
 package usdl.servicemodel;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
-import usdl.servicemodel.PricePlan;
 import usdl.servicemodel.PriceSpec;
 
 public class PriceComponent {

@@ -1,18 +1,10 @@
 package usdl.servicemodel;
 
-import java.util.ArrayList;
+public class Provider extends PriceVariable {
 
-public class Provider {
-	private ArrayList<Service> services;
-	public Provider(){
-		
+	public Provider() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	public ArrayList<Service> getServices() {
-		return services;
-	}
-	public void setServices(ArrayList<Service> services) {
-		this.services = services;
-	}
-	
 	
 }

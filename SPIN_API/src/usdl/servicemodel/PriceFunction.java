@@ -1,14 +1,15 @@
 package usdl.servicemodel;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
-import usdl.servicemodel.PriceComponent;
+
 
 public class PriceFunction {
 	private String name;
 	private String stringFunction;
-	private List<PriceVariable> variables;
+	private List<Usage> UsageVariables;
+	private List<Provider> ProviderVariables;
 	private List<Constraint> constraints;
 	private String comment;
 	
@@ -27,12 +28,7 @@ public class PriceFunction {
 	public void setStringFunction(String stringFunction) {
 		this.stringFunction = stringFunction;
 	}
-	public List<PriceVariable> getVariables() {
-		return variables;
-	}
-	public void setVariables(List<PriceVariable> variables) {
-		this.variables = variables;
-	}
+
 	public List<Constraint> getConstraints() {
 		return constraints;
 	}
@@ -48,8 +44,21 @@ public class PriceFunction {
 	@Override
 	public String toString() {
 		return "PriceFunction [name=" + name + ", stringFunction="
-				+ stringFunction + ", variables=" + variables
+				+ stringFunction + ", Usage variables=" + UsageVariables
+				+ ", Provider variables=" + ProviderVariables
 				+ ", constraints=" + constraints + ", comment=" + comment + "]";
+	}
+	public List<Usage> getUsageVariables() {
+		return UsageVariables;
+	}
+	public void setUsageVariables(List<Usage> usageVariables) {
+		UsageVariables = usageVariables;
+	}
+	public List<Provider> getProviderVariables() {
+		return ProviderVariables;
+	}
+	public void setProviderVariables(List<Provider> providerVariables) {
+		ProviderVariables = providerVariables;
 	}
 	
 	
