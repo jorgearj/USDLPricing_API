@@ -8,8 +8,8 @@ import java.util.List;
 public class PriceFunction {
 	private String name;
 	private String stringFunction;
-	private List<Usage> UsageVariables;
-	private List<Provider> ProviderVariables;
+	private List<Usage> usageVariables;
+	private List<Provider> providerVariables;
 	private List<Constraint> constraints;
 	private String comment;
 	
@@ -44,21 +44,21 @@ public class PriceFunction {
 	@Override
 	public String toString() {
 		return "PriceFunction [name=" + name + ", stringFunction="
-				+ stringFunction + ", Usage variables=" + UsageVariables
-				+ ", Provider variables=" + ProviderVariables
+				+ stringFunction + ", Usage variables=" + usageVariables
+				+ ", Provider variables=" + providerVariables
 				+ ", constraints=" + constraints + ", comment=" + comment + "]";
 	}
 	public List<Usage> getUsageVariables() {
-		return UsageVariables;
+		return usageVariables;
 	}
-	public void setUsageVariables(List<Usage> usageVariables) {
-		UsageVariables = usageVariables;
+	public void setUsageVariables(List<Usage> variables) {
+		usageVariables = variables;
 	}
 	public List<Provider> getProviderVariables() {
-		return ProviderVariables;
+		return providerVariables;
 	}
-	public void setProviderVariables(List<Provider> providerVariables) {
-		ProviderVariables = providerVariables;
+	public void setProviderVariables(List<Provider> variables) {
+		providerVariables = variables;
 	}
 	
 	

@@ -3,7 +3,9 @@ package usdl.servicemodel;
 
 public class PriceVariable {
 	private String name;
+	//Variable value, either Qualitative or Quantitative
 	private Value value;
+	
 	private String comment;
 	private String type;
 	

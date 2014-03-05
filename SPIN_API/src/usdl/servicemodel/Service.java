@@ -7,7 +7,8 @@ import usdl.servicemodel.Offering;
 
 public class Service {
 	private String name;
-	private ArrayList<Offering> offerings;
+	//a service can include several other services
+	private ArrayList<Service> includes;
 	private String comment;
 	private ArrayList<QuantitativeFeature> quantfeatures;
 	private ArrayList<QualitativeFeature> qualfeatures;
@@ -25,12 +26,12 @@ public class Service {
 		this.name = name;
 	}
 
-	public List<Offering> getIncludes() {
-		return offerings;
+	public List<Service> getIncludes() {
+		return includes;
 	}
 
-	public void setIncludes(ArrayList<Offering> offs) {
-		this.offerings = offs;
+	public void setIncludes(ArrayList<Service> services) {
+		this.includes = services;
 	}
 
 	public String getComment() {
@@ -43,7 +44,7 @@ public class Service {
 
 	@Override
 	public String toString() {
-		return "Service [name=" + name + ", includes=" + offerings
+		return "Service [name=" + name + ", includes=" + includes
 				+ ", comment=" + comment + "]";
 	}
 

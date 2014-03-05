@@ -10,7 +10,7 @@ public class PricePlan {
 	private PriceSpec priceFloor;
 	private List<PriceComponent> priceComponents;
 	private String comment;
-	//private List<Offering> offerings;//needed?
+	//private List<Offering> offerings;//needed? NO
 	public PricePlan() {
 		super();
 	}

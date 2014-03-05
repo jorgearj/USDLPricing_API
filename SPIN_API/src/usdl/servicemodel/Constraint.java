@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Constraint {
 	private String name;
 	private String comment;
+	
+	//este array vai ter sempre 3 elementos, é preferivel ter o sistema anterior como está no diagrama de classes
 	private ArrayList<PriceFunction> constraints;
 	
 	public Constraint() {
