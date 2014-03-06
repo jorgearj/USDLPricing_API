@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import usdl.servicemodel.LinkedUSDLModel;
+import usdl.servicemodel.LinkedUSDLModelFactory;
+
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -280,7 +283,7 @@ public class APIUsageExample{
 	}
 
 	public Model getServiceSet() {
-		return serviceSet;
+		return this.serviceSet;
 	}
 
 	public void setServiceSet(Model serviceSet) {
@@ -320,20 +323,6 @@ public class APIUsageExample{
 		        " SELECT REDUCED ?offering " +
 				" WHERE { " +
 					" ?offering rdf:type core:ServiceOffering . " +
-					" ?offering core:includes ?a . " +
-					" { " +
-						" ?a gr:qualitativeProductOrServiceProperty CloudTaxonomy:Backup_Recovery . " +
-					" }UNION{ " +
-						" ?a gr:qualitativeProductOrServiceProperty ?f . " +
-						" ?f rdf:type CloudTaxonomy:Backup_Recovery " +
-					" }UNION{ " +
-						" ?a core:hasServiceModel ?model . " +
-						" ?model gr:qualitativeProductOrServiceProperty CloudTaxonomy:Backup_Recovery . " +
-					" }UNION{ " +
-						" ?a core:hasServiceModel ?model . " +
-						" ?model gr:qualitativeProductOrServiceProperty ?f. " +
-						" ?f rdf:type CloudTaxonomy:Backup_Recovery " +
-					" } "+
 				" } " ;
 				
 		Query query = QueryFactory.create(queryString);
@@ -355,8 +344,11 @@ public class APIUsageExample{
 	public static void main(String[] args) {
 		APIUsageExample test = new APIUsageExample();
 		test.load();
-		test.writeUSDLModeltoFile();
+		//test.writeUSDLModeltoFile();
 		test.test();
+		
+		LinkedUSDLModel model = LinkedUSDLModelFactory.createFromModel(test.getServiceSet());
+		System.out.println(model.toString());
 		
 	}
 	

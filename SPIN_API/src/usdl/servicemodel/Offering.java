@@ -2,6 +2,9 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
+
 public class Offering {
 	private String name;
 	private ArrayList<Service> includes;
@@ -46,12 +49,6 @@ public class Offering {
 		this.comment = comment;
 	}
 
-	@Override
-	public String toString() {
-		return "Offering [name=" + name + ", includes=" + includes
-				+ ", pricePlan=" + pricePlan + ", comment=" + comment + "]";
-	}
-
 	public ArrayList<QuantitativeFeature> getQuantfeatures() {
 		return quantfeatures;
 	}
@@ -66,6 +63,20 @@ public class Offering {
 
 	public void setQualfeatures(ArrayList<QualitativeFeature> qualfeatures) {
 		this.qualfeatures = qualfeatures;
+	}
+	
+	public static Offering readFromModel(Resource resource, Model model){
+		Offering offering = new Offering();
+		
+		offering.setName(resource.getLocalName());
+		System.out.println(offering.toString());
+		return offering;
+	}
+	
+	@Override
+	public String toString() {
+		return "Offering [name=" + name + ", includes=" + includes
+				+ ", pricePlan=" + pricePlan + ", comment=" + comment + "]";
 	}
 
 	
