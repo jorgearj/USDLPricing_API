@@ -6,7 +6,7 @@ public class QueryUtils {
 	
 	public static String startQueryWithBasicPrefixes(){
 		String query = 
-				" PREFIX "+Prefixes.USDL_CORE.getName()+": <"+ Prefixes.USDL_PRICE.getPrefix()+"> " +
+				" PREFIX "+Prefixes.USDL_CORE.getName()+": <"+ Prefixes.USDL_CORE.getPrefix()+"> " +
 		        " PREFIX "+Prefixes.USDL_PRICE.getName()+": <"+ Prefixes.USDL_PRICE.getPrefix()+"> " +		
 				" PREFIX "+Prefixes.PF.getName()+": <"+Prefixes.PF.getPrefix()+"> " +
 		        " PREFIX "+Prefixes.RDF.getName()+": <"+Prefixes.RDF.getPrefix()+"> " +

@@ -56,19 +56,7 @@ public class LinkedUSDLModel {
 	private List<Offering> readAllOfferings(Model model){
 		List<Offering> offeringsList = new ArrayList<>();
 		String variableName = "offering";
-		/*String queryString =
-		        " PREFIX core: <"+ Prefixes.USDL_CORE.getPrefix()+">" +
-				" PREFIX pf: <http://jena.hpl.hp.com/ARQ/property#> " +
-		        " PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-				" PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
-				" PREFIX gr: <http://purl.org/goodrelations/v1#> " +
-				" PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#> "+
-				" PREFIX CloudTaxonomy: <"+ Prefixes.CLOUD.getPrefix()+">"+
-		        " SELECT REDUCED ?offering " +
-				" WHERE { " +
-					" ?offering rdf:type core:ServiceOffering . " +
-				" } " ;
-		*/
+		
 		String queryString = ReaderQueries.readAllOfferings(variableName);
 		System.out.println("QUERY:\n"+queryString);		
 		Query query = QueryFactory.create(queryString);
