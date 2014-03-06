@@ -1,15 +1,20 @@
 package usdl.servicemodel;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.hp.hpl.jena.rdf.model.Model;
 
 public class LinkedUSDLModel {
 	private List<Service> services;
 	private List<Offering> offerings;
+	private Model model;
 
 	
 	public LinkedUSDLModel() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.services = new ArrayList<Service>();
+		this.offerings = new ArrayList<Offering>();
 	}
 
 
@@ -32,6 +37,9 @@ public class LinkedUSDLModel {
 		this.offerings = offerings;
 	}
 
+	public void readModel(Model model){
+		
+	}
 
 	@Override
 	public String toString() {
