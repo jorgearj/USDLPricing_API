@@ -1,4 +1,6 @@
-package usdl.servicemodel;
+package Factories;
+
+import usdl.servicemodel.LinkedUSDLModel;
 
 import com.hp.hpl.jena.rdf.model.Model;
 

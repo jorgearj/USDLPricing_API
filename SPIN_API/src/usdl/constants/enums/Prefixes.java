@@ -2,6 +2,7 @@ package usdl.constants.enums;
 
 public enum Prefixes {
 	
+
 	USDL_PRICE	("http://www.linked-usdl.org/ns/usdl-price#", 	"price"),
 	USDL_CORE 	("http://www.linked-usdl.org/ns/usdl-core#", 	"core"),
 	USDL_LEGAL	("http://www.linked-usdl.org/ns/usdl-legal#",	"legal"),
@@ -20,6 +21,7 @@ public enum Prefixes {
 	SP	 		("http://spinrdf.org/sp#",						"sp"),
 	SPIN 		("http://spinrdf.org/spin#",					"spin"),
 	SPL  		("http://spinrdf.org/spl#>",					"spl"),
+	BASE		("project.link",       "base"),//add a link
 	PF			("http://jena.hpl.hp.com/ARQ/property#",		"pf");
 	 
 	private String preffix;

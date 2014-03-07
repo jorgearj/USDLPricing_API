@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import usdl.servicemodel.LinkedUSDLModel;
-import usdl.servicemodel.LinkedUSDLModelFactory;
+import Factories.LinkedUSDLModelFactory;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
