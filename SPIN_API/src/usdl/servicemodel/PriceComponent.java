@@ -1,6 +1,7 @@
 package usdl.servicemodel;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Factories.RDFPropertiesFactory;
@@ -33,6 +34,7 @@ public class PriceComponent {
 	
 	public PriceComponent() {
 		super();
+		metrics = new ArrayList<QuantitativeValue>();
 	}
 
 	public String getName() {
@@ -225,7 +227,8 @@ public class PriceComponent {
 			pc.setName(resource.getProperty(rdfsprop.label()).getString());
 		
 		if(resource.hasProperty(rdfsprop.subClassOf()))
-			pc.setDeduction(true);
+			if(resource.getProperty(rdfsprop.subClassOf()).getResource().getLocalName().equals("Deduction"))
+				pc.setDeduction(true);
 		
 		if(resource.hasProperty(priceprop.hasMetrics()))
 		{
@@ -233,7 +236,7 @@ public class PriceComponent {
 			StmtIterator iter = resource.listProperties(priceprop.hasMetrics());
 			while (iter.hasNext()) {//while there's price metrics  left
 				Resource metric = iter.next().getObject().asResource();
-				pc.addMetric(QuantitativeValue.readFromModel(metric,model));
+				//pc.addMetric(QuantitativeValue.readFromModel(metric,model));
 			}
 		}
 		

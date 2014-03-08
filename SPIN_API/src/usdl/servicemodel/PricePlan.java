@@ -1,5 +1,6 @@
 package usdl.servicemodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Factories.RDFPropertiesFactory;
@@ -34,6 +35,7 @@ public class PricePlan {
 	
 	public PricePlan() {
 		super();
+		priceComponents = new ArrayList<PriceComponent>();
 	}
 	public String getName() {
 		return name;

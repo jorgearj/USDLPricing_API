@@ -14,10 +14,11 @@ package FunctionParser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.matheclipse.core.convert.ConversionException;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IAST;
@@ -35,8 +36,10 @@ import org.matheclipse.parser.client.ast.StringNode;
 import org.matheclipse.parser.client.ast.SymbolNode;
 import org.matheclipse.parser.client.operator.Operator;
 
+import usdl.servicemodel.*;
 
-public class MathParser {
+public class MathExp2SPARQL {
+	private String SPARQLQuery = "";
 	private Stack<String> stack = new Stack<String>();
 	private Stack<String> infixstack = new Stack<String>();
 	private ArrayList<String> usageVariables = new ArrayList<>();
@@ -115,61 +118,51 @@ public class MathParser {
 		}
 	}
 	
-	public static void main(String[] args) {
-		MathParser s = new MathParser();
-		s.run();
-	}
-
-	public MathParser() {
-	}
-
-	public void run() {
-		String SPARQLQuery = "";
-		try {
-			Parser p = new Parser(true);
-			Map<String,Operator> temp =p.getFactory().getIdentifier2OperatorMap();
-
-			Iterator<String> it = temp.keySet().iterator();
-			while(it.hasNext())
-			{
-				String key = it.next().toString();
-				String val = temp.get(key).getOperatorString();
-				//System.out.println(key + "  " +val); //print the key-value entry
-				opmap.put(key, val);
-			}
-
-			//some special characters cant be used because they're reserved by the parser class. Ex: "_" is a reserved character
-			@SuppressWarnings("resource")
-			Scanner in = new Scanner(System.in);
-			System.out.println("Insert your mathematical formula (type default for Heroku use case):");
-			
-			String form = in.nextLine();
-			if(form.equals("default"))
-				form = "(webhours + workerhours)*cost";
-			
-			ASTNode obj = p.parse(form);//insert the mathematical formula here
-			convert(obj);
-			
-			SPARQLQuery = "SELECT ?result\n" +
-					"WHERE {\n";
-			for(String s : usageVariables)
-			{
-				SPARQLQuery = SPARQLQuery+ "\n:"+s + " price:hasValue ?"+s +"_instance .\n" +
-											  "?" + s + "_instance gr:hasValue ?"+ s +"_value .\n";
-			}
-			
-			String f = prefixToInfix(stack,infixstack);
-			f=f.replace("[", "");
-			f=f.replace("]", "");
-			SPARQLQuery = SPARQLQuery + "\nBIND("+ f + ") AS ?result  ) .\n" +
-					"}";
+	public MathExp2SPARQL(String StringFunction,List<Provider> prov,List<Usage> usage) {
+		Parser p = new Parser(true);
+		Map<String,Operator> temp =p.getFactory().getIdentifier2OperatorMap();
 		
-		System.out.println("\nCorresponding SPARQL Query for: " +form +"\n"+SPARQLQuery);
-		} catch (Exception e) {
-			e.printStackTrace();
+		Iterator<String> it = temp.keySet().iterator();
+		while(it.hasNext())
+		{
+			String key = it.next().toString();
+			String val = temp.get(key).getOperatorString();
+			//System.out.println(key + "  " +val); //print the key-value entry
+			opmap.put(key, val);
 		}
+		ASTNode obj = p.parse(StringFunction);//insert the mathematical formula here
+		convert(obj);
+		
+		SPARQLQuery = "SELECT ?result\n" +
+				"WHERE {\n";
+		for(String s : usageVariables)//here we can detect the type of the variable by matching the variables name with the JAVA Object. Through the JAVA object we can see if its a Qualitative or Quantitative Value and treat it as such
+		{
+			if (!StringUtils.isAllUpperCase(s))
+				SPARQLQuery = SPARQLQuery + "\n:" + s + " price:hasValue ?"
+						+ s + "_instance .\n" + "?" + s
+						+ "_instance gr:hasValue ?" + s + "_value .\n";
+			else
+			{
+				
+			}
+				//add syntax to deal with constant qualitative attributes like, WINDOWS will probably be 'windows' in the SPARQL Query
+		}
+		
+		String f = prefixToInfix(stack,infixstack);
+		f=f.replace("[", "");
+		f=f.replace("]", "");
+		SPARQLQuery = SPARQLQuery + "\nBIND("+ f + ") AS ?result  ) .\n" +
+				"}";
 	}
-
+	
+	public ArrayList<String> getParsedVariables()
+	{
+		return this.usageVariables;
+	}
+	public String getSPARQLQuery()
+	{
+		return this.SPARQLQuery;
+	}
 	public IExpr convert(ASTNode node) throws ConversionException {
 		
 		if (node == null) {
@@ -209,7 +202,11 @@ public class MathParser {
 			else
 			{
 				System.out.println("Variable - " + node.getString());
-				stack.add("?"+node.getString().concat("_value"));
+				if(StringUtils.isAllUpperCase(node.getString()))
+					stack.add(node.getString());
+				else
+					stack.add("?"+node.getString().concat("_value"));
+				
 				usageVariables.add(node.getString());
 			}
 			return F.symbol(node.getString());
