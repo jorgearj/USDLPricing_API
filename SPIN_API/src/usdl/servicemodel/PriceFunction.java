@@ -61,5 +61,5 @@ public class PriceFunction {
 		providerVariables = variables;
 	}
 	
-	
+	// New Functions
 }

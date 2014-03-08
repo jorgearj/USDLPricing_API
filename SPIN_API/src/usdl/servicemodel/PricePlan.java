@@ -17,7 +17,7 @@ import usdl.servicemodel.PriceSpec;
 
 
 /**
- * The PricePlan class represents an instance of an RDF PricePlan resource of the LinkedUSDL Pricing model. 
+ * The PricePlan class represents an instance of a PricePlan resource of the LinkedUSDL Pricing model. 
  * @author  Daniel Barrigas
  * @author Jorge Araujo
  * @version 1.0, March 06
@@ -124,13 +124,13 @@ public class PricePlan {
 		if(resource.hasProperty(priceprop.hasPriceCap()))//if the resource has a pricecap
 		{
 			Resource pricecap = resource.getProperty(priceprop.hasPriceCap()).getResource();
-			this.setPriceCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price plan
+			pp.setPriceCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price plan
 		}
 		
 		if(resource.hasProperty(priceprop.hasPriceFloor()))//if the resource has a price floor
 		{
 			Resource pricefloor = resource.getProperty(priceprop.hasPriceFloor()).getResource();
-			this.setPriceFloor(PriceSpec.readFromModel(pricefloor,model));//read it and add it to the price plan
+			pp.setPriceFloor(PriceSpec.readFromModel(pricefloor,model));//read it and add it to the price plan
 		}
 		 
 		if(resource.hasProperty(priceprop.hasPriceComponent()))//if the price plan has components

@@ -15,6 +15,12 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import usdl.constants.enums.Prefixes;
 import usdl.servicemodel.PriceSpec;
 
+/**
+ * The PriceComponent class represents an instance of a PriceComponent resource of the LinkedUSDL Pricing model. 
+ * @author  Daniel Barrigas
+ * @author Jorge Araujo
+ * @version 1.0, March 06
+ */
 public class PriceComponent {
 	private String name;
 	private boolean isDeduction = false;
@@ -131,6 +137,11 @@ public class PriceComponent {
 		return price;
 	}
 	
+	/**
+	 * Creates a Resource representation of the PriceComponent instance and writes it into the passed model.
+	 * @param   owner    Resource that is linked to this object.
+	 * @param   model    Model to where the object is to be written on.
+	 */
 	public void writeToModel(Resource owner, Model model)
 	{
 		USDLPricePropertiesFactory PriceProp = new USDLPricePropertiesFactory(model);
@@ -142,7 +153,7 @@ public class PriceComponent {
 		if(name != null)
 		{
 			pc = model.createResource(Prefixes.BASE.getName() + this.name);
-			pc.addProperty(RDFProp.type(), model.createResource(Prefixes.USDL_PRICE.getName() + "PricePlan"));//rdf type
+			pc.addProperty(RDFProp.type(), model.createResource(Prefixes.USDL_PRICE.getName() + "PriceComponent"));//rdf type
 			pc.addProperty(RDFSProp.label(), model.createLiteral(this.name));//label name
 		}
 		
@@ -173,6 +184,13 @@ public class PriceComponent {
 		}
 	}
 	
+	
+	/**
+	 * Reads a PriceComponent object from the Semantic Model. 
+	 * @param   resource   The Resource object of the PriceComponent.
+	 * @param   model   Model where the resource is located.
+	 * @return  A PriceComponent object populated with its information extracted from the Semantic Model.
+	 */
 	public PriceComponent readFromModel(Resource resource,Model model)
 	{
 		PriceComponent pc = new PriceComponent();
