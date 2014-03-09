@@ -25,7 +25,12 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 
-
+/**
+ * The PriceFunction class represents an instance of a PriceFunction resource of the LinkedUSDL Pricing model. 
+ * @author  Daniel Barrigas
+ * @author Jorge Araujo
+ * @version 1.0, March 09
+ */
 public class PriceFunction {
 	private String name = null;
 	private String stringFunction = null;

@@ -2,12 +2,11 @@ package usdl.servicemodel;
 
 
 public class PriceVariable {
-	private String name;
+	private String name = null;
 	//Variable value, either Qualitative or Quantitative
-	private Value value;
+	private Value value = null;
 	
-	private String comment;
-	private String type;
+	private String comment = null;
 	
 	public PriceVariable() {
 		super();
@@ -42,14 +41,5 @@ public class PriceVariable {
 		return "PriceVariable [name=" + name + ", value=" + value
 				+ ", comment=" + comment + "]";
 	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	
 }
