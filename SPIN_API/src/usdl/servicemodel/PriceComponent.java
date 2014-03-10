@@ -165,19 +165,19 @@ public class PriceComponent {
 				pc.addProperty(RDFSProp.comment(), model.createLiteral(this.comment)); // a comment
 			
 			if(this.componentCap != null)
-				this.componentCap.writeToModel(pc,model);
+				//this.componentCap.writeToModel(pc,model);
 			
 			if(this.componentFloor != null)
-				this.componentFloor.writeToModel(pc,model);
+				//this.componentFloor.writeToModel(pc,model);
 			
 			if(this.price != null)
-				this.price.writeToModel(pc,model);
+				//this.price.writeToModel(pc,model);
 			
 			if(this.priceFunction != null)
 				this.priceFunction.writeToModel(pc,model);
 			
 			for(QuantitativeValue metric : this.metrics)
-				metric.writeToModel(pc,model);
+				//metric.writeToModel(pc,model);
 			
 			if(this.isDeduction)
 				pc.addProperty(RDFSProp.subClassOf(), model.createResource(Prefixes.USDL_PRICE.getName() + "Deduction"));
@@ -193,11 +193,12 @@ public class PriceComponent {
 	 * @param   model   Model where the resource is located.
 	 * @return  A PriceComponent object populated with its information extracted from the Semantic Model.
 	 */
-	public PriceComponent readFromModel(Resource resource,Model model)
+	public static PriceComponent readFromModel(Resource resource,Model model)
 	{
 		PriceComponent pc = new PriceComponent();
 		
 		RDFSPropertiesFactory rdfsprop= new RDFSPropertiesFactory(model);
+		RDFPropertiesFactory rdfprop= new RDFPropertiesFactory(model);
 		USDLPricePropertiesFactory priceprop = new USDLPricePropertiesFactory(model);
 
 		//populate the PricePlan
@@ -208,28 +209,36 @@ public class PriceComponent {
 		if(resource.hasProperty(priceprop.hasPriceCap()))//if the resource has a pricecap
 		{
 			Resource pricecap = resource.getProperty(priceprop.hasPriceCap()).getResource();
-			pc.setPriceCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price comp
+			//pc.setPriceCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price comp
 		}
 		
 		if(resource.hasProperty(priceprop.hasPriceFloor()))//if the resource has a pricefloor
 		{
 			Resource pricefloor = resource.getProperty(priceprop.hasPriceFloor()).getResource();
-			pc.setPriceFloor(PriceSpec.readFromModel(pricefloor,model));//read it and add it to the price comp
+			//pc.setPriceFloor(PriceSpec.readFromModel(pricefloor,model));//read it and add it to the price comp
 		}
 		
 		if(resource.hasProperty(priceprop.hasPrice()))//if the resource has a price
 		{
 			Resource price = resource.getProperty(priceprop.hasPrice()).getResource();
-			pc.setPrice(PriceSpec.readFromModel(price,model));//read it and add it to the price plan
+			//pc.setPrice(PriceSpec.readFromModel(price,model));//read it and add it to the price plan
 		}
 		
 		if(resource.hasProperty(rdfsprop.label()))
 			pc.setName(resource.getProperty(rdfsprop.label()).getString());
 		
-		if(resource.hasProperty(rdfsprop.subClassOf()))
-			if(resource.getProperty(rdfsprop.subClassOf()).getResource().getLocalName().equals("Deduction"))
-				pc.setDeduction(true);
-		
+		if(resource.hasProperty(rdfprop.type()) || resource.hasProperty(rdfsprop.subClassOf()))
+			if(resource.hasProperty(rdfprop.type()))
+			{
+				if(resource.getProperty(rdfprop.type()).getResource().getLocalName().equals("Deduction"))
+					pc.setDeduction(true);
+			}
+			else if(resource.hasProperty(rdfsprop.subClassOf()))
+			{
+				if(resource.getProperty(rdfsprop.subClassOf()).getResource().getLocalName().equals("Deduction"))
+					pc.setDeduction(true);
+			}
+			
 		if(resource.hasProperty(priceprop.hasMetrics()))
 		{
 			//get metrics

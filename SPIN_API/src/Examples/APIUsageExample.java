@@ -345,10 +345,10 @@ public class APIUsageExample{
 		APIUsageExample test = new APIUsageExample();
 		test.load();
 		//test.writeUSDLModeltoFile();
-		test.test();
+		//test.test();
 		
 		LinkedUSDLModel model = LinkedUSDLModelFactory.createFromModel(test.getServiceSet());
-		System.out.println(model.toString());
+		//System.out.println(model.toString());
 		
 	}
 	

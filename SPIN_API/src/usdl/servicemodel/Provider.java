@@ -55,12 +55,12 @@ public class Provider extends PriceVariable {
 			if(this.getValue() instanceof QualitativeValue)
 			{
 				QualitativeValue val = (QualitativeValue) this.getValue();
-				val.writeToModel(var,model);
+				//val.writeToModel(var,model);
 			}
 			else
 			{
 				QuantitativeValue val = (QuantitativeValue) this.getValue();
-				val.writeToModel(var,model);
+				//val.writeToModel(var,model);
 			}
 		}
 		
@@ -95,11 +95,11 @@ public class Provider extends PriceVariable {
 			{
 				if(val.getProperty(rdfprop.type()).getResource().getLocalName().equals("QualitativeValue"))//check if the attribute is of the qualitative type
 				{
-					var.setValue(QuantitativeValue.readFromModel(val,model));
+					//var.setValue(QuantitativeValue.readFromModel(val,model));
 				}
 				else//it's of the quantitative type
 				{
-					var.setValue(QuantitativeValue.readFromModel(val,model));
+					//var.setValue(QuantitativeValue.readFromModel(val,model));
 				}
 			}
 		}

@@ -12,9 +12,9 @@ public class RDFSPropertiesFactory {
 	private Property subClassOf;
 	public RDFSPropertiesFactory(Model model)
 	{
-		comment = model.createProperty(Prefixes.RDFS.getName()+"comment");
-		label = model.createProperty(Prefixes.RDFS.getName()+"label");
-		subClassOf = model.createProperty(Prefixes.RDFS.getName() + "subClassOf");
+		comment = model.createProperty(Prefixes.RDFS.getPrefix()+"comment");
+		label = model.createProperty(Prefixes.RDFS.getPrefix()+"label");
+		subClassOf = model.createProperty(Prefixes.RDFS.getPrefix() + "subClassOf");
 	}
 	
 	public Property comment() {return comment;} 

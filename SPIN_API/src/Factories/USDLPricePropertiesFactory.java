@@ -21,17 +21,17 @@ public class USDLPricePropertiesFactory {
 
 	public USDLPricePropertiesFactory(Model model) {
 
-		hasPricePlan = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasPricePlan");
-		hasPriceCap = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasPriceCap");
-		hasPriceFloor = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasPriceFloor");
-		hasPrice = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasPrice");
-		hasComponentCap = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasComponentCap");
-		hasComponentFloor = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasComponentFloor");
-		hasMetrics = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasMetrics");
-		hasPriceComponent = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasPriceComponent");
-		hasPriceFunction = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasPriceFunction");
-		hasVariable = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasVariable");
-		hasValue = model.createProperty(Prefixes.USDL_PRICE.getName()+"hasValue");
+		hasPricePlan = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasPricePlan");
+		hasPriceCap = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasPriceCap");
+		hasPriceFloor = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasPriceFloor");
+		hasPrice = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasPrice");
+		hasComponentCap = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasComponentCap");
+		hasComponentFloor = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasComponentFloor");
+		hasMetrics = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasMetrics");
+		hasPriceComponent = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasPriceComponent");
+		hasPriceFunction = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasPriceFunction");
+		hasVariable = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasVariable");
+		hasValue = model.createProperty(Prefixes.USDL_PRICE.getPrefix()+"hasValue");
 	}
 	
 	public Property hasPricePlan(){return this.hasPricePlan;}

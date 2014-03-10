@@ -210,6 +210,7 @@ public class PriceFunction {
 		PriceFunction pf = new PriceFunction();
 		
 		RDFSPropertiesFactory rdfsprop= new RDFSPropertiesFactory(model);
+		RDFPropertiesFactory rdfprop= new RDFPropertiesFactory(model);
 		USDLPricePropertiesFactory priceprop = new USDLPricePropertiesFactory(model);
 
 		//populate the PriceFunction
@@ -224,20 +225,31 @@ public class PriceFunction {
 		//QueryExecution qexecc = ARQFactory.get().createQueryExecution(narq, model);//function execution
 		//ResultSet rsc = qexecc.execSelect();//function execution
 		if(narq != null)
+		{
 			pf.setSPARQLFunction(narq.toString());//we might need a reverse parser to extract the original formula from the SPARQL query
-		
+			pf.setStringFunction(narq.toString());
+		}
 		if(resource.hasProperty(priceprop.hasVariable()))
 		{
-			//get metrics
 			StmtIterator iter = resource.listProperties(priceprop.hasVariable());
 			while (iter.hasNext()) {//while there's price metrics  left
 				Resource variable = iter.next().getObject().asResource();
-				if(variable.hasProperty(rdfsprop.subClassOf()))//if variable has subClassOf property
+				if(variable.hasProperty(rdfsprop.subClassOf()) || variable.hasProperty(rdfprop.type()))//if variable has subClassOf property
 				{
-					if(variable.getProperty(rdfsprop.subClassOf()).getResource().getLocalName().equals("Usage"))
-						pf.addUsageVariable(Usage.readFromModel(variable,model));
-					else
-						pf.addProviderVariable(Provider.readFromModel(variable,model));
+					if(variable.hasProperty(rdfsprop.subClassOf()))
+					{
+						if(variable.getProperty(rdfsprop.subClassOf()).getResource().getLocalName().equals("Usage"))
+							pf.addUsageVariable(Usage.readFromModel(variable,model));
+						else
+							pf.addProviderVariable(Provider.readFromModel(variable,model));
+					}
+					else if(variable.hasProperty(rdfprop.type()))
+					{
+						if(variable.getProperty(rdfprop.type()).getResource().getLocalName().equals("Usage"))
+							pf.addUsageVariable(Usage.readFromModel(variable,model));
+						else
+							pf.addProviderVariable(Provider.readFromModel(variable,model));
+					}
 				}
 			}
 		}

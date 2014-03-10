@@ -2,8 +2,13 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 
+import Factories.RDFPropertiesFactory;
+import Factories.RDFSPropertiesFactory;
+import Factories.USDLPricePropertiesFactory;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 public class Offering {
 	private String name;
@@ -66,10 +71,21 @@ public class Offering {
 	}
 	
 	public static Offering readFromModel(Resource resource, Model model){
+		USDLPricePropertiesFactory PriceProp = new USDLPricePropertiesFactory(model);
+		RDFSPropertiesFactory RDFSProp = new RDFSPropertiesFactory(model);
+		RDFPropertiesFactory RDFProp = new RDFPropertiesFactory(model);
+		
+		
+		
 		Offering offering = new Offering();
 		
 		offering.setName(resource.getLocalName());
-		System.out.println(offering.toString());
+		
+		if(resource.hasProperty(PriceProp.hasPricePlan()))
+		{
+			Resource pp = resource.getProperty(PriceProp.hasPricePlan()).getResource();
+			offering.setPricePlan(PricePlan.readFromModel(pp, model ));
+		}
 		return offering;
 	}
 	

@@ -10,7 +10,7 @@ public class RDFPropertiesFactory {
 	private Property type;
 	public RDFPropertiesFactory(Model model)
 	{
-		type = model.createProperty(Prefixes.RDF.getName()+"type");
+		type = model.createProperty(Prefixes.RDF.getPrefix()+"type");
 	}
 	
 	public Property type(){return type;}

@@ -111,7 +111,7 @@ public class PricePlan {
 	 * @param   model   Model where the resource is located.
 	 * @return  A PricePlan object populated with its information extracted from the Semantic Model.
 	 */
-	public PricePlan readFromModel(Resource resource, Model model)
+	public static PricePlan readFromModel(Resource resource, Model model)
 	{
 		PricePlan pp = new PricePlan();
 		
@@ -119,20 +119,22 @@ public class PricePlan {
 		USDLPricePropertiesFactory priceprop = new USDLPricePropertiesFactory(model);
 
 		//populate the PricePlan
-
+		if(resource.hasProperty(rdfsprop.label()))
+			pp.setName(resource.getProperty(rdfsprop.label()).getString());
+		
 		if(resource.hasProperty(rdfsprop.comment()))
 			pp.setComment(resource.getProperty(rdfsprop.comment()).getString());
 		
 		if(resource.hasProperty(priceprop.hasPriceCap()))//if the resource has a pricecap
 		{
 			Resource pricecap = resource.getProperty(priceprop.hasPriceCap()).getResource();
-			pp.setPriceCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price plan
+			//pp.setPriceCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price plan
 		}
 		
 		if(resource.hasProperty(priceprop.hasPriceFloor()))//if the resource has a price floor
 		{
 			Resource pricefloor = resource.getProperty(priceprop.hasPriceFloor()).getResource();
-			pp.setPriceFloor(PriceSpec.readFromModel(pricefloor,model));//read it and add it to the price plan
+			//pp.setPriceFloor(PriceSpec.readFromModel(pricefloor,model));//read it and add it to the price plan
 		}
 		 
 		if(resource.hasProperty(priceprop.hasPriceComponent()))//if the price plan has components
@@ -167,12 +169,12 @@ public class PricePlan {
 				
 				if(priceCap != null)
 				{
-					priceCap.writeToModel(pp,model);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
+					//priceCap.writeToModel(pp,model);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
 				}
 				
 				if(priceFloor != null)
 				{
-					priceFloor.writeToModel(pp,model);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
+					//priceFloor.writeToModel(pp,model);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
 				}
 				
 				if(!priceComponents.isEmpty())
