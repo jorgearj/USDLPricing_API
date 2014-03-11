@@ -58,6 +58,7 @@ public class LinkedUSDLModel {
 		String variableName = "offering";
 		
 		String queryString = ReaderQueries.readAllOfferings(variableName);
+		System.out.println(queryString);
 		Query query = QueryFactory.create(queryString);
         QueryExecution exec = QueryExecutionFactory.create(query, model);
 		
@@ -67,7 +68,6 @@ public class LinkedUSDLModel {
 			QuerySolution row = results.next();
 			Offering offering = Offering.readFromModel(row.getResource(variableName), model);
 			offeringsList.add(offering);
-			System.out.println(offering.toString());
 		}		
 		
 		exec.close();

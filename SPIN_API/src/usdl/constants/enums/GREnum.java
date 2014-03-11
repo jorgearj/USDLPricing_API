@@ -5,28 +5,26 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 /**
- * The USDL Core model Enumeration of properties and classes necessary constants.
+ * The GR model Enumeration of properties and classes necessary constants.
  * @author  Daniel Barrigas
  * @author Jorge Araujo
  * @version 1.0, March 10
  */
-public enum USDLCoreEnum {
+public enum GREnum {
 	
-	OFFERING			("ServiceOffering",	"C"),
-	SERVICE				("Service",			"C"),
-	INCLUDES			("includes",		"P"),
-	HAS_SERVICE_MODEL 	("hasServiceModel", "P"),
-	HAS_PROVIDER		("hasProvider",		"P");
+	QUAL_PROD_OR_SERV	("qualitativeProductOrServiceProperty",		"P"),
+	QUANT_PROD_OR_SERV	("quantitativeProductOrServiceProperty",	"P"),
+	BUSINESS_ENTITY		("BusinessEntity",							"C");
 	 
 	private String property;
 	private String type; // C = Class || P = Property
  
 	/**
-	 * USDLCoreEnum Enumerator constructor. 
+	 * GR Enumerator constructor. 
 	 * @param   p   String of the property.
 	 * @param   t   type of the concept. Either "C" for classes or "P" for properties.
 	 */
-	private USDLCoreEnum(String p, String t) {
+	private GREnum(String p, String t) {
 		property = p;
 		type = t;
 	}
@@ -36,7 +34,7 @@ public enum USDLCoreEnum {
 	 * @return   A String of the property with its prefix.
 	 */
 	public String getPropertyString(){
-		return Prefixes.USDL_CORE.getName() + property;
+		return Prefixes.GR.getName() + property;
 	}
 	
 	/**
@@ -46,7 +44,7 @@ public enum USDLCoreEnum {
 	 */
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P")){
-			return model.createProperty(Prefixes.USDL_CORE.getPrefix() + property);
+			return model.createProperty(Prefixes.GR.getPrefix() + property);
 		}else{
 			return null;
 		}
@@ -59,9 +57,10 @@ public enum USDLCoreEnum {
 	 */
 	public Resource getResource(Model model) {
 		if(type.equalsIgnoreCase("C")){
-			return model.createResource(Prefixes.USDL_CORE.getPrefix() + property);
+			return model.createResource(Prefixes.GR.getPrefix() + property);
 		}else{
 			return null;
 		}
 	}
+
 }

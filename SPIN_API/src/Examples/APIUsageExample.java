@@ -24,6 +24,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import usdl.servicemodel.LinkedUSDLModel;
+import usdl.servicemodel.Offering;
+import usdl.servicemodel.QualitativeFeature;
+import usdl.servicemodel.QuantitativeFeature;
+import usdl.servicemodel.Service;
 import Factories.LinkedUSDLModelFactory;
 
 import com.hp.hpl.jena.query.Query;
@@ -348,7 +352,33 @@ public class APIUsageExample{
 		//test.test();
 		
 		LinkedUSDLModel model = LinkedUSDLModelFactory.createFromModel(test.getServiceSet());
-		//System.out.println(model.toString());
+		Offering offeringtest = model.getOfferings().get(5);
+		System.out.println("OFFERING: " + offeringtest.getName());
+		for(Service serv : offeringtest.getIncludes()){
+			System.out.println("  - SERVICE: "+serv.getName());
+			System.out.println("     - PROVIDER: " + serv.getProvider().toString());
+			System.out.println("     - QUALITATIVE: ");
+			for(QualitativeFeature qual : serv.getQualfeatures()){
+				System.out.println("        - : "+qual.toString());
+			}
+			System.out.println("     - QUANTITATIVE: ");
+			for(QuantitativeFeature quant : serv.getQuantfeatures()){
+				System.out.println("        - : "+quant.toString());
+			}
+			System.out.println("     - SERVICE MODEL: ");
+			for(Service servModel : serv.getIncludes()){
+				System.out.println("        - : "+servModel.getName());
+				System.out.println("        - QUALITATIVE: ");
+				for(QualitativeFeature qual : servModel.getQualfeatures()){
+					System.out.println("           - : "+qual.toString());
+				}
+				System.out.println("        - QUANTITATIVE: ");
+				for(QuantitativeFeature quant : servModel.getQuantfeatures()){
+					System.out.println("           - : "+quant.toString());
+				}
+			}
+		}
+//		System.out.println(model.toString());
 		
 	}
 	

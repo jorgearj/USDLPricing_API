@@ -294,6 +294,7 @@
 :Offering_Heroku_Zilla_Database
       rdf:type core:ServiceOffering ;
       rdfs:label "Offering Heroku Zilla Databases"^^xsd:string ;
+      rdfs:comment "An offering of Heroku Zilla Databases" ;
       dcterms:description "Offering for Heroku Database"@en ;
       dcterms:title "Heroku database"@en ;
       core:includes :Service_Heroku_Zilla_Databases ;

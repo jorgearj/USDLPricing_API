@@ -1,6 +1,13 @@
 package usdl.servicemodel;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import usdl.constants.enums.Prefixes;
+import usdl.constants.enums.RDFEnum;
+import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.USDLCoreEnum;
+import usdl.constants.enums.USDLPriceEnum;
 
 import Factories.RDFPropertiesFactory;
 import Factories.RDFSPropertiesFactory;
@@ -15,11 +22,10 @@ public class Offering {
 	private ArrayList<Service> includes;
 	private PricePlan pricePlan;
 	private String comment;
-	private ArrayList<QuantitativeFeature> quantfeatures;
-	private ArrayList<QualitativeFeature> qualfeatures;
 	
 	public Offering() {
 		super();
+		this.includes = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -53,40 +59,80 @@ public class Offering {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-
-	public ArrayList<QuantitativeFeature> getQuantfeatures() {
-		return quantfeatures;
-	}
-
-	public void setQuantfeatures(ArrayList<QuantitativeFeature> quantfeatures) {
-		this.quantfeatures = quantfeatures;
-	}
-
-	public ArrayList<QualitativeFeature> getQualfeatures() {
-		return qualfeatures;
-	}
-
-	public void setQualfeatures(ArrayList<QualitativeFeature> qualfeatures) {
-		this.qualfeatures = qualfeatures;
-	}
 	
+	/**
+	 * Reads an Offering object from the Semantic Model. 
+	 * @param   resource   The Resource object of the Linked USDL ServiceOffering.
+	 * @param   model   Model where the resource is located.
+	 * @return  An Offering object populated with its information extracted from the Semantic Model.
+	 */
 	public static Offering readFromModel(Resource resource, Model model){
-		USDLPricePropertiesFactory PriceProp = new USDLPricePropertiesFactory(model);
-		RDFSPropertiesFactory RDFSProp = new RDFSPropertiesFactory(model);
-		RDFPropertiesFactory RDFProp = new RDFPropertiesFactory(model);
-		
-		
 		
 		Offering offering = new Offering();
+		ArrayList<Service> services = new ArrayList<Service>();
 		
-		offering.setName(resource.getLocalName());
+		//populate the Offering
+		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+			offering.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+		else
+			offering.setName(resource.getLocalName());
 		
-		if(resource.hasProperty(PriceProp.hasPricePlan()))
-		{
-			Resource pp = resource.getProperty(PriceProp.hasPricePlan()).getResource();
-			offering.setPricePlan(PricePlan.readFromModel(pp, model ));
+		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+			offering.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
+		
+		//get included services
+		StmtIterator iter = resource.listProperties(USDLCoreEnum.INCLUDES.getProperty(model));
+		while (iter.hasNext()) {
+			Resource service = iter.next().getResource();			
+			services.add(Service.readFromModel(service, model));
 		}
+		offering.setIncludes(services);
+		
+//		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model)))
+//		{
+//			Resource pp = resource.getProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model)).getResource();
+//			offering.setPricePlan(PricePlan.readFromModel(pp, model));
+//		}
 		return offering;
+	}
+	
+	/**
+	 * Creates a Resource representation of the Offering instance and writes it into the passed model.
+	 * @param   owner    Resource that is linked to this object.
+	 * @param   model    Model to where the object is to be written on.
+	 */
+	public void writeToModel(Resource owner,Model model)
+	{
+		Resource offering = USDLCoreEnum.OFFERING.getResource(model);
+		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.OFFERING.getResource(model));//rdf type
+		offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+		offering.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
+		
+		if(!includes.isEmpty()){
+			for(Service service : includes)
+			{
+				service.writeToModel(offering, model);
+			}
+		}
+	}
+	
+	
+	/**
+	 * Adds a Service to the list of included Services of the ServiceOffering.
+	 * @param service service to be added.
+	 */
+	public void addService(Service service)
+	{
+		this.includes.add(service);
+	}
+	
+	/**
+	 * Removes a Service from the list of ServiceOffering included services.
+	 * @param index Position of the Service that is to be eliminated.
+	 */
+	public void removeService(int index)
+	{
+		this.includes.remove(index);
 	}
 	
 	@Override
