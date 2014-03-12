@@ -64,7 +64,7 @@ public class QuantitativeValue extends Value {
 	public String toString() {
 		return "QuantitativeValue [value=" + value + ", minValue=" + minValue
 				+ ", maxValue=" + maxValue + ", unitOfMeasurement="
-				+ unitOfMeasurement + "]";
+				+ unitOfMeasurement + ",Name="+this.getName() +"  ,comment=  "+this.getComment() + ",types="+this.getTypes().toString() +"]";
 	}
 	
 //	new functions
@@ -74,7 +74,7 @@ public class QuantitativeValue extends Value {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model)
+	public void writeToModel(Resource owner,Model model,int mode)
 	{
 		Resource qv = null;
 		if(this.getName() != null)
@@ -83,10 +83,19 @@ public class QuantitativeValue extends Value {
 			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "QuantitativeValue"));//rdf type
 			for(String s : this.getTypes())
 			{
-				//escrita dos types do value
+				qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(s));//rdf type
 			}
-				
 		}
+		else
+		{
+			qv = model.createResource(Prefixes.BASE.getName() + "QuantitativeValue" + "_" + System.currentTimeMillis());
+			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "QuantitativeValue"));//rdf type
+			for(String s : this.getTypes())
+			{
+				qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(s));//rdf type
+			}
+		}
+			
 
 		if(this.getComment() != null)
 			qv.addProperty(RDFSEnum.COMMENT.getProperty(model), this.getComment());
@@ -103,10 +112,12 @@ public class QuantitativeValue extends Value {
 		if(this.value >= 0)
 			qv.addLiteral(GREnum.HAS_VALUE.getProperty(model), this.value);
 		
-		
-		
-		owner.addProperty(GREnum.QUANT_PROD_OR_SERV.getProperty(model), qv);
-		
+		if(mode == 0)
+			owner.addProperty(GREnum.QUANT_PROD_OR_SERV.getProperty(model),qv);
+		else if(mode == 1)
+			owner.addProperty(USDLPriceEnum.HAS_VALUE.getProperty(model),qv);
+		else
+			owner.addProperty(USDLPriceEnum.HAS_METRICS.getProperty(model),qv);
 	}
 	
 	/**
@@ -129,10 +140,9 @@ public class QuantitativeValue extends Value {
 		
 		if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)))
 		{
-			//get PriceComponents
 			StmtIterator iter = resource.listProperties(RDFEnum.RDF_TYPE.getProperty(model));
-			while (iter.hasNext()) {//while there's price components left
-				val.addType( iter.next().getObject().asResource().getLocalName());
+			while (iter.hasNext()) {
+				val.addType( iter.next().getObject().asResource().getURI());
 			}
 		}
 		
@@ -147,7 +157,7 @@ public class QuantitativeValue extends Value {
 		
 		if(resource.hasProperty(GREnum.HAS_VALUE.getProperty(model)))
 			val.setValue(resource.getProperty(GREnum.HAS_VALUE.getProperty(model)).getDouble());
-
+		
 		return val;
 	}
 }

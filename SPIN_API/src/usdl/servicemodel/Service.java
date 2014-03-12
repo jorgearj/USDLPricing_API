@@ -2,27 +2,32 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
+
 import usdl.constants.enums.GREnum;
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLCoreEnum;
 
 
 public class Service {
-	private String name;
-	//a service can include several other services
-	private ArrayList<Service> includes;
-	private String comment;
-	private ArrayList<QuantitativeFeature> quantfeatures;
-	private ArrayList<QualitativeFeature> qualfeatures;
-	private CloudProvider provider;
+	private String name=null;
+	//a service can include several other services - current approach may lead to an infinite loop. 
+	private ArrayList<Service> includes=null;
+	private String comment=null;
+	private ArrayList<QuantitativeValue> quantfeatures=null;
+	private ArrayList<QualitativeValue> qualfeatures=null;
+	private CloudProvider provider=null;
 	
 	public Service() {
 		super();
-		
+		 quantfeatures = new ArrayList<QuantitativeValue>();
+		 qualfeatures = new ArrayList<QualitativeValue>();
+		 includes = new ArrayList<Service>();
 	}
 	
 	public String getName() {
@@ -67,19 +72,19 @@ public class Service {
 				+ "]";
 	}
 
-	public ArrayList<QuantitativeFeature> getQuantfeatures() {
+	public ArrayList<QuantitativeValue> getQuantfeatures() {
 		return quantfeatures;
 	}
 
-	public void setQuantfeatures(ArrayList<QuantitativeFeature> quantfeatures) {
+	public void setQuantfeatures(ArrayList<QuantitativeValue> quantfeatures) {
 		this.quantfeatures = quantfeatures;
 	}
 
-	public ArrayList<QualitativeFeature> getQualfeatures() {
+	public ArrayList<QualitativeValue> getQualfeatures() {
 		return qualfeatures;
 	}
 
-	public void setQualfeatures(ArrayList<QualitativeFeature> qualfeatures) {
+	public void setQualfeatures(ArrayList<QualitativeValue> qualfeatures) {
 		this.qualfeatures = qualfeatures;
 	}
 	
@@ -90,11 +95,10 @@ public class Service {
 	 * @return  A Service object populated with its information extracted from the Semantic Model.
 	 */
 	public static Service readFromModel(Resource resource, Model model){
-		
 		Service service = new Service();
 		ArrayList<Service> services = new ArrayList<Service>();
-		ArrayList<QuantitativeFeature> quantitativeFeatures = new ArrayList<QuantitativeFeature>();
-		ArrayList<QualitativeFeature> qualitativeFeatures = new ArrayList<QualitativeFeature>();
+		ArrayList<QuantitativeValue> quantitativeFeatures = new ArrayList<QuantitativeValue>();
+		ArrayList<QualitativeValue> qualitativeFeatures = new ArrayList<QualitativeValue>();
 		
 		
 		//populate the Offering
@@ -123,7 +127,7 @@ public class Service {
 		StmtIterator iterQual = resource.listProperties(GREnum.QUAL_PROD_OR_SERV.getProperty(model));
 		while (iterQual.hasNext()) {
 			Resource qual = iterQual.next().getResource(); 
-			qualitativeFeatures.add(QualitativeFeature.readFromModel(qual, model)); 
+			qualitativeFeatures.add(QualitativeValue.readFromModel(qual, model)); 
 		}
 		service.setQualfeatures(qualitativeFeatures);
 		
@@ -131,7 +135,7 @@ public class Service {
 		StmtIterator iterQuant = resource.listProperties(GREnum.QUANT_PROD_OR_SERV.getProperty(model));
 		while (iterQuant.hasNext()) {
 			Resource quant = iterQuant.next().getResource(); 
-			quantitativeFeatures.add(QuantitativeFeature.readFromModel(quant, model)); 
+			quantitativeFeatures.add(QuantitativeValue.readFromModel(quant, model)); 
 		}
 		service.setQuantfeatures(quantitativeFeatures);
 		
@@ -145,18 +149,44 @@ public class Service {
 	 */
 	public void writeToModel(Resource owner,Model model)
 	{
-		Resource offering = USDLCoreEnum.OFFERING.getResource(model);
-		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.OFFERING.getResource(model));//rdf type
-		offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
-		offering.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
+		Resource service = null;
+		if(this.name != null)
+			service = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+		else
+			service = model.createResource(Prefixes.BASE.getName() +"Service" + "_" + System.currentTimeMillis());
 		
-		if(!includes.isEmpty())
+		service.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.SERVICE.getResource(model));//rdf type
+		
+		if(this.name != null)
+			service.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+		if(this.comment != null)
+			service.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
+		
+		if(!this.includes.isEmpty())
 		{
-			for(Service service : includes)
+			for(Service sv : includes)
 			{
-				service.writeToModel(offering,model);
+				sv.writeToModel(service,model);
 			}
 		}
+		
+		if(!this.quantfeatures.isEmpty())
+		{
+			for(QuantitativeValue qv : this.quantfeatures)
+			{
+				qv.writeToModel(service,model,0);
+			}
+		}
+		
+		if(!this.qualfeatures.isEmpty())
+		{
+			for(QualitativeValue qv : this.qualfeatures)
+			{
+				qv.writeToModel(service,model,0);
+			}
+		}
+		
+		owner.addProperty(USDLCoreEnum.INCLUDES.getProperty(model),service);
 	}
 	
 }

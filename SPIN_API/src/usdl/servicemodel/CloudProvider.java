@@ -3,9 +3,11 @@ package usdl.servicemodel;
 import java.util.List;
 
 import usdl.constants.enums.FOAFEnum;
-import usdl.constants.enums.GREnum;
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.USDLCoreEnum;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 
@@ -107,9 +109,19 @@ public class CloudProvider {
 	 */
 	public void writeToModel(Resource owner,Model model)
 	{
-		Resource provider = GREnum.BUSINESS_ENTITY.getResource(model);
-		provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), GREnum.BUSINESS_ENTITY.getResource(model));//rdf type
-		//TODO: terminar a escrita do provider
+		
+		Resource provider = null;
+		
+		if(this.name != null)
+			provider =model.createResource(Prefixes.GR.getName() + this.name + "_" + System.currentTimeMillis());
+		else
+			provider =model.createResource(Prefixes.GR.getName() + "BusinessEntity"+ "_" + System.currentTimeMillis());
+		
+		
+		provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "BusinessEntity"));//rdf type
+		
+		
+		owner.addProperty(USDLCoreEnum.HAS_PROVIDER.getProperty(model), provider);
 	}
 
 	

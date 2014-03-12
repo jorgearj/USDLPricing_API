@@ -2,7 +2,13 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.topbraid.spin.system.SPINModuleRegistry;
+import org.topbraid.spin.util.JenaUtil;
+
+import usdl.constants.enums.Prefixes;
 import usdl.queries.ReaderQueries;
+
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -14,7 +20,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 public class LinkedUSDLModel {
 	private List<Service> services;
 	private List<Offering> offerings;
-	
+	private Model model;
 	
 	public LinkedUSDLModel() {
 		super();
@@ -55,7 +61,7 @@ public class LinkedUSDLModel {
 		String variableName = "offering";
 		
 		String queryString = ReaderQueries.readAllOfferings(variableName);
-		System.out.println(queryString);
+		//System.out.println(queryString);
 		Query query = QueryFactory.create(queryString);
         QueryExecution exec = QueryExecutionFactory.create(query, model);
 		
@@ -64,8 +70,11 @@ public class LinkedUSDLModel {
 		while(results.hasNext()){
 			QuerySolution row = results.next();
 			Offering offering = Offering.readFromModel(row.getResource(variableName), model);
+			//System.out.println(offering.toString());
 			offeringsList.add(offering);
-		}		
+		}
+		
+		
 		
 		exec.close();
 		
@@ -76,6 +85,43 @@ public class LinkedUSDLModel {
 		List<Service> servicesList = new ArrayList<>();
 		
 		return servicesList;
+	}
+	
+	public Model createModelFromOfferings()
+	{
+		// Initialize system functions and templates
+		SPINModuleRegistry.get().init();
+
+		// Create main model
+		Model model = JenaUtil.createDefaultModel();
+		JenaUtil.initNamespaces(model.getGraph());
+		setPrefixes(model);
+		
+		for(Offering of : this.offerings)
+			of.writeToModel(model);
+		
+		return model;
+	}
+	
+	private void setPrefixes(Model model){
+		model.setNsPrefix("usdl",  Prefixes.USDL_CORE.getPrefix());
+		model.setNsPrefix("rdf",   Prefixes.RDF.getPrefix());
+		model.setNsPrefix("owl",   Prefixes.OWL.getPrefix());
+		model.setNsPrefix("dc",    Prefixes.DC.getPrefix() );
+		model.setNsPrefix("xsd",   Prefixes.XSD.getPrefix());
+		model.setNsPrefix("vann",  Prefixes.VANN.getPrefix());
+		model.setNsPrefix("foaf",  Prefixes.FOAF.getPrefix());
+		model.setNsPrefix("rdfs",  Prefixes.RDFS.getPrefix());
+		model.setNsPrefix("gr",    Prefixes.GR.getPrefix()  );
+		model.setNsPrefix("skos",  Prefixes.SKOS.getPrefix());
+		model.setNsPrefix("org",   Prefixes.ORG.getPrefix() );
+		model.setNsPrefix("price", Prefixes.USDL_PRICE.getPrefix() );
+		model.setNsPrefix("legal", Prefixes.USDL_LEGAL.getPrefix() );
+		model.setNsPrefix("cloud", Prefixes.CLOUD.getPrefix());
+		model.setNsPrefix("sp", Prefixes.SP.getPrefix());
+		model.setNsPrefix("spl", Prefixes.SPL.getPrefix());
+		model.setNsPrefix("spin", Prefixes.SPIN.getPrefix());
+		model.setNsPrefix("",   Prefixes.BASE.getPrefix() );
 	}
 	
 	@Override

@@ -1,8 +1,5 @@
 package usdl.servicemodel;
 
-import org.topbraid.spin.model.Function;
-import org.topbraid.spin.system.SPINModuleRegistry;
-import org.topbraid.spin.vocabulary.SPIN;
 
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
@@ -12,15 +9,15 @@ import usdl.constants.enums.USDLPriceEnum;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+
+/**
+ * The Usage class represents an instance of an Usage resource of the LinkedUSDL Pricing model. 
+ * @author  Daniel Barrigas
+ * @author Jorge Araujo
+ * @version 1.0, March 06
+ */
 public class Usage extends PriceVariable {
 
-	
-	/**
-	 * The Usage class represents an instance of an Usage resource of the LinkedUSDL Pricing model. 
-	 * @author  Daniel Barrigas
-	 * @author Jorge Araujo
-	 * @version 1.0, March 06
-	 */
 	public Usage() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -74,8 +71,13 @@ public class Usage extends PriceVariable {
 
 		Resource var = null;
 		if (this.getName() != null) {
-			var = model.createResource(Prefixes.BASE.getName() + this.getName());
+			var = model.createResource(Prefixes.BASE.getName() + this.getName() + "_" + System.currentTimeMillis());
 			var.addProperty(RDFSEnum.LABEL.getProperty(model), this.getName());
+			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Usage"));
+		}
+		else
+		{
+			var = model.createResource(Prefixes.BASE.getName() + "UsageVariable" + "_" + System.currentTimeMillis());
 			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Usage"));
 		}
 		
@@ -89,12 +91,12 @@ public class Usage extends PriceVariable {
 			if(this.getValue() instanceof QualitativeValue)
 			{
 				QualitativeValue val = (QualitativeValue) this.getValue();
-				val.writeToModel(var,model);
+				val.writeToModel(var,model,1);
 			}
 			else
 			{
 				QuantitativeValue val = (QuantitativeValue) this.getValue();
-				val.writeToModel(var,model);
+				val.writeToModel(var,model,1);
 			}
 		}
 		

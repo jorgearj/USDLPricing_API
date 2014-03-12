@@ -1,13 +1,15 @@
 package usdl.servicemodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Value {
-	private String name;
-	private String comment;
-	private List<String> types;
+	private String name=null;
+	private String comment=null;
+	private List<String> types=null;
 	public Value() {
 		super();
+		types = new ArrayList<String>();
 		// TODO Auto-generated constructor stub
 	}
 

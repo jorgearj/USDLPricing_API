@@ -6,6 +6,7 @@ import usdl.constants.enums.GREnum;
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
+
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -130,6 +131,11 @@ public class PriceSpec {
 			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "PriceSpecification"));//rdf type
 			ps.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
 		}
+		else
+		{
+			ps = model.createResource(Prefixes.BASE.getName() + "PriceSpecification"+"_"+ System.currentTimeMillis());
+			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "PriceSpecification"));//rdf type
+		}
 		
 		if(this.comment != null)
 			ps.addProperty(RDFSEnum.COMMENT.getProperty(model), this.comment);
@@ -137,16 +143,15 @@ public class PriceSpec {
 		ps.addLiteral(GREnum.VALUE_ADDED_TAX_INCLUDED.getProperty(model), this.addedTaxIncluded);
 		
 		if(this.currency != null)
-		{
-			Resource temp = ps.addProperty(GREnum.HAS_CURRENCY.getProperty(model), this.currency);
-			if(this.value  != -1)
-				temp.addLiteral(GREnum.HAS_CURRENCY_VALUE.getProperty(model), this.value);
-		}
+			 ps.addProperty(GREnum.HAS_CURRENCY.getProperty(model), this.currency);
 		
-		if(this.maxValue != -1)
+		if(this.value >=0)
+			ps.addLiteral(GREnum.HAS_CURRENCY_VALUE.getProperty(model), this.value);
+		
+		if(this.maxValue >=0)
 			ps.addLiteral(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model), this.maxValue);
 		
-		if(this.minValue != -1)
+		if(this.minValue >=0)
 			ps.addLiteral(GREnum.HAS_MIN_CURRENCY_VALUE.getProperty(model), this.minValue);
 		
 		if(this.validFrom != null)
@@ -181,12 +186,10 @@ public class PriceSpec {
 			ps.setAddedTaxIncluded( resource.getProperty(GREnum.VALUE_ADDED_TAX_INCLUDED.getProperty(model)).getBoolean() );
 		
 		if(resource.hasProperty(GREnum.HAS_CURRENCY.getProperty(model)))
-		{
-			Resource temp = resource.getProperty(GREnum.HAS_CURRENCY.getProperty(model)).getResource();
 			ps.setCurrency(resource.getProperty(GREnum.HAS_CURRENCY.getProperty(model)).getString());
-			if(temp.hasProperty(GREnum.HAS_VALUE.getProperty(model)))
-				ps.setValue(temp.getProperty(GREnum.HAS_VALUE.getProperty(model)).getDouble());
-		}
+		
+		if(resource.hasProperty(GREnum.HAS_CURRENCY_VALUE.getProperty(model)))
+				ps.setValue(resource.getProperty(GREnum.HAS_CURRENCY_VALUE.getProperty(model)).getDouble());
 		
 		if(resource.hasProperty(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model)))
 			ps.setMaxValue(resource.getProperty(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model)).getDouble());

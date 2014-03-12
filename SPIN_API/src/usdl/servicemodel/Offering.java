@@ -2,6 +2,7 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLCoreEnum;
@@ -12,10 +13,10 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 public class Offering {
-	private String name;
-	private ArrayList<Service> includes;
-	private PricePlan pricePlan;
-	private String comment;
+	private String name = null;
+	private ArrayList<Service> includes = null;
+	private PricePlan pricePlan = null;
+	private String comment = null;
 	
 	public Offering() {
 		super();
@@ -61,7 +62,6 @@ public class Offering {
 	 * @return  An Offering object populated with its information extracted from the Semantic Model.
 	 */
 	public static Offering readFromModel(Resource resource, Model model){
-		
 		Offering offering = new Offering();
 		ArrayList<Service> services = new ArrayList<Service>();
 		
@@ -94,12 +94,21 @@ public class Offering {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model)
+	public void writeToModel(Model model)
 	{
-		Resource offering = USDLCoreEnum.OFFERING.getResource(model);
-		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.OFFERING.getResource(model));//rdf type
-		offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
-		offering.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
+		Resource offering = null;
+		if(this.name != null)
+			offering = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+		else
+			offering = model.createResource(Prefixes.BASE.getName() +"ServiceOffering" + "_" + System.currentTimeMillis());
+		
+		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.BASE.getName() +"ServiceOffering" ));//rdf type
+		
+		if(this.name != null)
+			offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+		
+		if(this.comment != null)
+			offering.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
 		
 		if(!includes.isEmpty()){
 			for(Service service : includes)

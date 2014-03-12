@@ -7,7 +7,6 @@ import java.util.List;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.vocabulary.RDFS;
 
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
@@ -171,7 +170,7 @@ public class PriceComponent {
 				this.priceFunction.writeToModel(pc,model);
 			
 			for(QuantitativeValue metric : this.metrics)
-				metric.writeToModel(pc,model);
+				metric.writeToModel(pc,model,2);
 			
 			if(this.isDeduction)
 				pc.addProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Deduction"));

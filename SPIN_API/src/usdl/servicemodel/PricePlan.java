@@ -2,9 +2,11 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
+
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
@@ -151,11 +153,19 @@ public class PricePlan {
 	 */
 	public void writeToModel(Resource owner,Model model)
 	{
-
-				Resource pp = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+				Resource pp = null;
+				if(this.name != null)
+				{
+					pp = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+					pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+				}
+				else 
+					pp = model.createResource(Prefixes.BASE.getName() + "PricePlan" + "_" + System.currentTimeMillis());
+				
 				pp.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "PricePlan"));//rdf type
-				pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
-				pp.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
+				
+				if(this.comment != null)
+					pp.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
 				
 				if(priceCap != null)
 				{

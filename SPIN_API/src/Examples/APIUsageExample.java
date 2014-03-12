@@ -25,8 +25,6 @@ import java.util.Map;
 
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.Offering;
-import usdl.servicemodel.QualitativeFeature;
-import usdl.servicemodel.QuantitativeFeature;
 import usdl.servicemodel.Service;
 import Factories.LinkedUSDLModelFactory;
 
@@ -352,9 +350,12 @@ public class APIUsageExample{
 		//test.test();
 		
 		LinkedUSDLModel model = LinkedUSDLModelFactory.createFromModel(test.getServiceSet());
-		Offering offeringtest = model.getOfferings().get(5);
-		System.out.println("OFFERING: " + offeringtest.getName());
-		for(Service serv : offeringtest.getIncludes()){
+		System.out.println(model.toString());
+		test.setServiceSet(model.createModelFromOfferings());
+		test.writeUSDLModeltoFile();
+		//Offering offeringtest = model.getOfferings().get(5);
+		//System.out.println("OFFERING: " + offeringtest.getName());
+		/*for(Service serv : offeringtest.getIncludes()){
 			System.out.println("  - SERVICE: "+serv.getName());
 			System.out.println("     - PROVIDER: " + serv.getProvider().toString());
 			System.out.println("     - QUALITATIVE: ");
@@ -377,7 +378,7 @@ public class APIUsageExample{
 					System.out.println("           - : "+quant.toString());
 				}
 			}
-		}
+		}*/
 //		System.out.println(model.toString());
 		
 	}

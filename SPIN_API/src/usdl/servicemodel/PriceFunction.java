@@ -17,6 +17,7 @@ import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLPriceEnum;
 import FunctionParser.MathExp2SPARQL;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -177,6 +178,12 @@ public class PriceFunction {
 			Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
 			func.addProperty(SPIN.body, spinQuery);
 		}
+		else if(this.SPARQLFunction != null && stringFunction == null)
+		{
+			com.hp.hpl.jena.query.Query arqQuery = ARQFactory.get().createQuery(model,this.getSPARQLFunction());
+			Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
+			func.addProperty(SPIN.body, spinQuery);
+		}
 		
 		if(this.comment != null)
 			func.addProperty(RDFSEnum.COMMENT.getProperty(model), this.comment);
@@ -199,7 +206,6 @@ public class PriceFunction {
 	 */
 	public static PriceFunction readFromModel(Resource resource,Model model)
 	{
-		
 		SPINModuleRegistry.get().init();
 		PriceFunction pf = new PriceFunction();
 
@@ -222,7 +228,7 @@ public class PriceFunction {
 		if(resource.hasProperty(USDLPriceEnum.HAS_VARIABLE.getProperty(model)))
 		{
 			StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_VARIABLE.getProperty(model));
-			while (iter.hasNext()) {//while there's price metrics  left
+			while (iter.hasNext()) {//while there's price variables  left
 				Resource variable = iter.next().getObject().asResource();
 				if(variable.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)) || variable.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)))//if variable has subClassOf property
 				{
@@ -230,14 +236,14 @@ public class PriceFunction {
 					{
 						if(variable.getProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)).getResource().getLocalName().equals("Usage"))
 							pf.addUsageVariable(Usage.readFromModel(variable,model));
-						else
+						else if(variable.getProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)).getResource().getLocalName().equals("Constant"))
 							pf.addProviderVariable(Provider.readFromModel(variable,model));
 					}
 					else if(variable.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)))
 					{
 						if(variable.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals("Usage"))
 							pf.addUsageVariable(Usage.readFromModel(variable,model));
-						else
+						else if(variable.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals("Constant"))
 							pf.addProviderVariable(Provider.readFromModel(variable,model));
 					}
 				}

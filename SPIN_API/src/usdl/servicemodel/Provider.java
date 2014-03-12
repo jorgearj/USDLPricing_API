@@ -1,6 +1,5 @@
 package usdl.servicemodel;
 
-import org.topbraid.spin.system.SPINModuleRegistry;
 
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
@@ -36,8 +35,13 @@ public class Provider extends PriceVariable {
 		Resource var = null;
 		
 		if (this.getName() != null) {
-			var = model.createResource(Prefixes.BASE.getName() + this.getName());
+			var = model.createResource(Prefixes.BASE.getName() + this.getName() + "_" + System.currentTimeMillis());
 			var.addProperty(RDFSEnum.LABEL.getProperty(model), this.getName());
+			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Constant"));
+		}
+		else
+		{
+			var = model.createResource(Prefixes.BASE.getName() +"ConstantVariable" + "_" + System.currentTimeMillis());
 			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Constant"));
 		}
 		
@@ -51,12 +55,12 @@ public class Provider extends PriceVariable {
 			if(this.getValue() instanceof QualitativeValue)
 			{
 				QualitativeValue val = (QualitativeValue) this.getValue();
-				val.writeToModel(var,model);
+				val.writeToModel(var,model,1);
 			}
 			else
 			{
 				QuantitativeValue val = (QuantitativeValue) this.getValue();
-				val.writeToModel(var,model);
+				val.writeToModel(var,model,1);
 			}
 		}
 		
