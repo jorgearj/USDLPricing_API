@@ -14,8 +14,19 @@ public enum GREnum {
 	
 	QUAL_PROD_OR_SERV	("qualitativeProductOrServiceProperty",		"P"),
 	QUANT_PROD_OR_SERV	("quantitativeProductOrServiceProperty",	"P"),
-	BUSINESS_ENTITY		("BusinessEntity",							"C");
-	 
+	BUSINESS_ENTITY		("BusinessEntity",							"C"),
+	VALUE_ADDED_TAX_INCLUDED ("valueAddedTaxIncluded","P"),
+	HAS_CURRENCY ("hasCurrency","P"),
+	HAS_CURRENCY_VALUE ("hasCurrencyValue","P"),
+	HAS_MIN_CURRENCY_VALUE ("hasMinCurrencyValue", "P") ,
+	HAS_MAX_CURRENCY_VALUE ("hasMaxCurrencyValue","P"),
+	VALID_FROM ("validFrom","P"),
+	VALID_THROUGH ("validThrough","P"),
+	HAS_UNIT_OF_MEASUREMENT ("hasUnitOfMeasurement","P"),
+	HAS_MIN_VALUE ("hasMinValue","P"),
+	HAS_MAX_VALUE ("hasMaxValue","P"),
+	HAS_VALUE ("hasValue","P"),
+	HAS_PRICE_SPECIFICATION ("hasPriceSpecification","P");
 	private String property;
 	private String type; // C = Class || P = Property
  

@@ -3,9 +3,9 @@ package usdl.servicemodel;
 import org.topbraid.spin.system.SPINModuleRegistry;
 
 import usdl.constants.enums.Prefixes;
-import Factories.RDFPropertiesFactory;
-import Factories.RDFSPropertiesFactory;
-import Factories.USDLPricePropertiesFactory;
+import usdl.constants.enums.RDFEnum;
+import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.USDLPriceEnum;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -33,21 +33,17 @@ public class Provider extends PriceVariable {
 	{
 		
 		// Initialize system functions and templates
-		SPINModuleRegistry.get().init();
-		RDFSPropertiesFactory RDFSProp = new RDFSPropertiesFactory(model);
-		RDFPropertiesFactory RDFProp = new RDFPropertiesFactory(model);
-		USDLPricePropertiesFactory PriceProp = new USDLPricePropertiesFactory(model);
 		Resource var = null;
 		
 		if (this.getName() != null) {
 			var = model.createResource(Prefixes.BASE.getName() + this.getName());
-			var.addProperty(RDFSProp.label(), this.getName());
-			var.addProperty(RDFProp.type(), model.createResource(Prefixes.USDL_PRICE.getName() + "Constant"));
+			var.addProperty(RDFSEnum.LABEL.getProperty(model), this.getName());
+			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Constant"));
 		}
 		
 		if(this.getComment() != null)
 		{
-			var.addProperty(RDFSProp.comment(), this.getComment());
+			var.addProperty(RDFSEnum.COMMENT.getProperty(model), this.getComment());
 		}
 		
 		if(this.getValue()!= null)
@@ -55,16 +51,16 @@ public class Provider extends PriceVariable {
 			if(this.getValue() instanceof QualitativeValue)
 			{
 				QualitativeValue val = (QualitativeValue) this.getValue();
-				//val.writeToModel(var,model);
+				val.writeToModel(var,model);
 			}
 			else
 			{
 				QuantitativeValue val = (QuantitativeValue) this.getValue();
-				//val.writeToModel(var,model);
+				val.writeToModel(var,model);
 			}
 		}
 		
-		owner.addProperty(PriceProp.hasVariable(), var);
+		owner.addProperty(USDLPriceEnum.HAS_VARIABLE.getProperty(model), var);
 	}
 	
 	
@@ -77,29 +73,28 @@ public class Provider extends PriceVariable {
 	public static Provider readFromModel(Resource resource,Model model)
 	{
 		Provider var = new Provider();
+
+		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+			var.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+		else
+			var.setName(resource.getLocalName());
+			
 		
-		RDFSPropertiesFactory rdfsprop= new RDFSPropertiesFactory(model);
-		RDFPropertiesFactory rdfprop= new RDFPropertiesFactory(model);
-		USDLPricePropertiesFactory priceprop = new USDLPricePropertiesFactory(model);
+		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+			var.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
 		
-		if(resource.hasProperty(rdfsprop.label()))
-			var.setName(resource.getProperty(rdfsprop.label()).getString());
-		
-		if(resource.hasProperty(rdfsprop.comment()))
-			var.setComment(resource.getProperty(rdfsprop.comment()).getString());
-		
-		if(resource.hasProperty(priceprop.hasValue()))//if the resource has a value
+		if(resource.hasProperty(USDLPriceEnum.HAS_VALUE.getProperty(model)))//if the resource has a value
 		{
-			Resource val = resource.getProperty(priceprop.hasValue()).getResource();//fetch the resource
-			if(val.hasProperty(rdfprop.type()))//if the value has a type
+			Resource val = resource.getProperty(USDLPriceEnum.HAS_VALUE.getProperty(model)).getResource();//fetch the resource
+			if(val.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)))//if the value has a type
 			{
-				if(val.getProperty(rdfprop.type()).getResource().getLocalName().equals("QualitativeValue"))//check if the attribute is of the qualitative type
+				if(val.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals("QualitativeValue"))//check if the attribute is of the qualitative type
 				{
-					//var.setValue(QuantitativeValue.readFromModel(val,model));
+					var.setValue(QuantitativeValue.readFromModel(val,model));
 				}
 				else//it's of the quantitative type
 				{
-					//var.setValue(QuantitativeValue.readFromModel(val,model));
+					var.setValue(QuantitativeValue.readFromModel(val,model));
 				}
 			}
 		}

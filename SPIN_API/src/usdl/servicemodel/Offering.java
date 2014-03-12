@@ -1,17 +1,11 @@
 package usdl.servicemodel;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLCoreEnum;
 import usdl.constants.enums.USDLPriceEnum;
-
-import Factories.RDFPropertiesFactory;
-import Factories.RDFSPropertiesFactory;
-import Factories.USDLPricePropertiesFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -87,12 +81,11 @@ public class Offering {
 			services.add(Service.readFromModel(service, model));
 		}
 		offering.setIncludes(services);
-		
-//		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model)))
-//		{
-//			Resource pp = resource.getProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model)).getResource();
-//			offering.setPricePlan(PricePlan.readFromModel(pp, model));
-//		}
+
+		if (resource.hasProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model))) {
+			Resource pp = resource.getProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model)).getResource();
+			offering.setPricePlan(PricePlan.readFromModel(pp, model));
+		}
 		return offering;
 	}
 	

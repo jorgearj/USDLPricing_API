@@ -4,16 +4,15 @@ package usdl.servicemodel;
 import java.util.ArrayList;
 import java.util.List;
 
-import Factories.RDFPropertiesFactory;
-import Factories.RDFSPropertiesFactory;
-import Factories.USDLPricePropertiesFactory;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 import usdl.constants.enums.Prefixes;
+import usdl.constants.enums.RDFEnum;
+import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.USDLPriceEnum;
 import usdl.servicemodel.PriceSpec;
 
 /**
@@ -146,43 +145,38 @@ public class PriceComponent {
 	 */
 	public void writeToModel(Resource owner, Model model)
 	{
-		USDLPricePropertiesFactory PriceProp = new USDLPricePropertiesFactory(model);
-		RDFSPropertiesFactory RDFSProp = new RDFSPropertiesFactory(model);
-		RDFPropertiesFactory RDFProp = new RDFPropertiesFactory(model);
-		
-		
 		Resource pc = null;
 		if(name != null)
 		{
-			pc = model.createResource(Prefixes.BASE.getName() + this.name);
-			pc.addProperty(RDFProp.type(), model.createResource(Prefixes.USDL_PRICE.getName() + "PriceComponent"));//rdf type
-			pc.addProperty(RDFSProp.label(), model.createLiteral(this.name));//label name
+			pc = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "PriceComponent"));//rdf type
+			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
 		}
 		
 		if(pc != null)
 		{
 			if(comment != null)
-				pc.addProperty(RDFSProp.comment(), model.createLiteral(this.comment)); // a comment
+				pc.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
 			
 			if(this.componentCap != null)
-				//this.componentCap.writeToModel(pc,model);
+				this.componentCap.writeToModel(pc,model);
 			
 			if(this.componentFloor != null)
-				//this.componentFloor.writeToModel(pc,model);
+				this.componentFloor.writeToModel(pc,model);
 			
 			if(this.price != null)
-				//this.price.writeToModel(pc,model);
+				this.price.writeToModel(pc,model);
 			
 			if(this.priceFunction != null)
 				this.priceFunction.writeToModel(pc,model);
 			
 			for(QuantitativeValue metric : this.metrics)
-				//metric.writeToModel(pc,model);
+				metric.writeToModel(pc,model);
 			
 			if(this.isDeduction)
-				pc.addProperty(RDFSProp.subClassOf(), model.createResource(Prefixes.USDL_PRICE.getName() + "Deduction"));
+				pc.addProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Deduction"));
 			
-			owner.addProperty(PriceProp.hasPriceComponent(), pc);//link the Price Component with the Price Plan
+			owner.addProperty(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model), pc);//link the Price Component with the Price Plan
 		}
 	}
 	
@@ -196,62 +190,59 @@ public class PriceComponent {
 	public static PriceComponent readFromModel(Resource resource,Model model)
 	{
 		PriceComponent pc = new PriceComponent();
-		
-		RDFSPropertiesFactory rdfsprop= new RDFSPropertiesFactory(model);
-		RDFPropertiesFactory rdfprop= new RDFPropertiesFactory(model);
-		USDLPricePropertiesFactory priceprop = new USDLPricePropertiesFactory(model);
-
 		//populate the PricePlan
 
-		if(resource.hasProperty(rdfsprop.comment()))
-			pc.setComment(resource.getProperty(rdfsprop.comment()).getString());
+		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+			pc.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
 		
-		if(resource.hasProperty(priceprop.hasPriceCap()))//if the resource has a pricecap
+		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)))//if the resource has a pricecap
 		{
-			Resource pricecap = resource.getProperty(priceprop.hasPriceCap()).getResource();
-			//pc.setPriceCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price comp
+			Resource pricecap = resource.getProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)).getResource();
+			pc.setComponentCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price comp
 		}
 		
-		if(resource.hasProperty(priceprop.hasPriceFloor()))//if the resource has a pricefloor
+		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)))//if the resource has a pricefloor
 		{
-			Resource pricefloor = resource.getProperty(priceprop.hasPriceFloor()).getResource();
-			//pc.setPriceFloor(PriceSpec.readFromModel(pricefloor,model));//read it and add it to the price comp
+			Resource pricefloor = resource.getProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)).getResource();
+			pc.setComponentFloor((PriceSpec.readFromModel(pricefloor,model)));//read it and add it to the price comp
 		}
 		
-		if(resource.hasProperty(priceprop.hasPrice()))//if the resource has a price
+		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE.getProperty(model)))//if the resource has a price
 		{
-			Resource price = resource.getProperty(priceprop.hasPrice()).getResource();
-			//pc.setPrice(PriceSpec.readFromModel(price,model));//read it and add it to the price plan
+			Resource price = resource.getProperty(USDLPriceEnum.HAS_PRICE.getProperty(model)).getResource();
+			pc.setPrice(PriceSpec.readFromModel(price,model));//read it and add it to the price plan
 		}
 		
-		if(resource.hasProperty(rdfsprop.label()))
-			pc.setName(resource.getProperty(rdfsprop.label()).getString());
+		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+			pc.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		
-		if(resource.hasProperty(rdfprop.type()) || resource.hasProperty(rdfsprop.subClassOf()))
-			if(resource.hasProperty(rdfprop.type()))
+		if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)) || resource.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)))
+		{
+			if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)))
 			{
-				if(resource.getProperty(rdfprop.type()).getResource().getLocalName().equals("Deduction"))
+				if(resource.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals("Deduction"))
 					pc.setDeduction(true);
 			}
-			else if(resource.hasProperty(rdfsprop.subClassOf()))
+			else if(resource.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)))
 			{
-				if(resource.getProperty(rdfsprop.subClassOf()).getResource().getLocalName().equals("Deduction"))
+				if(resource.getProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)).getResource().getLocalName().equals("Deduction"))
 					pc.setDeduction(true);
 			}
+		}
 			
-		if(resource.hasProperty(priceprop.hasMetrics()))
+		if(resource.hasProperty(USDLPriceEnum.HAS_METRICS.getProperty(model)))
 		{
 			//get metrics
-			StmtIterator iter = resource.listProperties(priceprop.hasMetrics());
+			StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_METRICS.getProperty(model));
 			while (iter.hasNext()) {//while there's price metrics  left
 				Resource metric = iter.next().getObject().asResource();
-				//pc.addMetric(QuantitativeValue.readFromModel(metric,model));
+				pc.addMetric(QuantitativeValue.readFromModel(metric,model));
 			}
 		}
 		
-		if(resource.hasProperty(priceprop.hasPriceFunction()))//if it has a function
+		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model)))//if it has a function
 		{
-			Resource function = resource.getProperty(priceprop.hasPriceFunction()).getResource();//fetch the resource
+			Resource function = resource.getProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model)).getResource();//fetch the resource
 			pc.setPriceFunction(PriceFunction.readFromModel(function,model));//and read it
 		}
 			

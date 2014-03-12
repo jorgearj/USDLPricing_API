@@ -1,9 +1,11 @@
 package usdl.servicemodel;
 
+import java.util.List;
+
 public class Value {
 	private String name;
 	private String comment;
-	
+	private List<String> types;
 	public Value() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -29,6 +31,18 @@ public class Value {
 	public String toString() {
 		return "Value [name=" + name + ", comment=" + comment + "]";
 	}
+
+	public List<String> getTypes() {
+		return types;
+	}
+
+	public void setTypes(List<String> types) {
+		this.types = types;
+	}
 	
+	public void addType(String type)
+	{
+		this.types.add(type);
+	}
 	
 }

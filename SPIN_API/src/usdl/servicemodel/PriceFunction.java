@@ -13,13 +13,10 @@ import org.topbraid.spin.system.SPINModuleRegistry;
 import org.topbraid.spin.vocabulary.SPIN;
 
 import usdl.constants.enums.Prefixes;
-import Factories.RDFPropertiesFactory;
-import Factories.RDFSPropertiesFactory;
-import Factories.USDLPricePropertiesFactory;
+import usdl.constants.enums.RDFEnum;
+import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.USDLPriceEnum;
 import FunctionParser.MathExp2SPARQL;
-
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -164,15 +161,12 @@ public class PriceFunction {
 		
 		// Initialize system functions and templates
 		SPINModuleRegistry.get().init();
-		USDLPricePropertiesFactory PriceProp = new USDLPricePropertiesFactory(model);
-		RDFSPropertiesFactory RDFSProp = new RDFSPropertiesFactory(model);
 
-		
 		Function func = null;
 		if(this.name != null)
 		{
 			func = model.createResource(Prefixes.BASE.getName() + this.name, SPIN.Function).as(Function.class);
-			func.addProperty(RDFSProp.label(), this.name);
+			func.addProperty(RDFSEnum.LABEL.getProperty(model), this.name);
 		}
 		
 		if(this.stringFunction != null)// Create a function from the string stringFunction
@@ -185,7 +179,7 @@ public class PriceFunction {
 		}
 		
 		if(this.comment != null)
-			func.addProperty(RDFSProp.comment(), this.comment);
+			func.addProperty(RDFSEnum.COMMENT.getProperty(model), this.comment);
 		
 		for(Usage var : this.usageVariables)
 			var.writeToModel(func,model);
@@ -193,7 +187,7 @@ public class PriceFunction {
 		for(Provider var2 : this.providerVariables)
 			var2.writeToModel(func,model);
 		
-		owner.addProperty(PriceProp.hasPriceFunction(), func);//link the Price Component with the Price Plan
+		owner.addProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model), func);//link the Price Component with the Price Plan
 	}
 	
 	
@@ -208,17 +202,13 @@ public class PriceFunction {
 		
 		SPINModuleRegistry.get().init();
 		PriceFunction pf = new PriceFunction();
-		
-		RDFSPropertiesFactory rdfsprop= new RDFSPropertiesFactory(model);
-		RDFPropertiesFactory rdfprop= new RDFPropertiesFactory(model);
-		USDLPricePropertiesFactory priceprop = new USDLPricePropertiesFactory(model);
 
 		//populate the PriceFunction
-		if(resource.hasProperty(rdfsprop.comment()))
-			pf.setComment(resource.getProperty(rdfsprop.comment()).getString());
+		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+			pf.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
 		
-		if(resource.hasProperty(rdfsprop.label()))
-			pf.setName(resource.getProperty(rdfsprop.label()).getString());
+		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+			pf.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		
 		Function ff = SPINModuleRegistry.get().getFunction(resource.getURI(), model);//get the function from the model
 		com.hp.hpl.jena.query.Query narq = ARQFactory.get().createQuery((Select)ff.getBody());//transform the spin objects that define the function into a SPARQL query
@@ -229,23 +219,23 @@ public class PriceFunction {
 			pf.setSPARQLFunction(narq.toString());//we might need a reverse parser to extract the original formula from the SPARQL query
 			pf.setStringFunction(narq.toString());
 		}
-		if(resource.hasProperty(priceprop.hasVariable()))
+		if(resource.hasProperty(USDLPriceEnum.HAS_VARIABLE.getProperty(model)))
 		{
-			StmtIterator iter = resource.listProperties(priceprop.hasVariable());
+			StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_VARIABLE.getProperty(model));
 			while (iter.hasNext()) {//while there's price metrics  left
 				Resource variable = iter.next().getObject().asResource();
-				if(variable.hasProperty(rdfsprop.subClassOf()) || variable.hasProperty(rdfprop.type()))//if variable has subClassOf property
+				if(variable.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)) || variable.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)))//if variable has subClassOf property
 				{
-					if(variable.hasProperty(rdfsprop.subClassOf()))
+					if(variable.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)))
 					{
-						if(variable.getProperty(rdfsprop.subClassOf()).getResource().getLocalName().equals("Usage"))
+						if(variable.getProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)).getResource().getLocalName().equals("Usage"))
 							pf.addUsageVariable(Usage.readFromModel(variable,model));
 						else
 							pf.addProviderVariable(Provider.readFromModel(variable,model));
 					}
-					else if(variable.hasProperty(rdfprop.type()))
+					else if(variable.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)))
 					{
-						if(variable.getProperty(rdfprop.type()).getResource().getLocalName().equals("Usage"))
+						if(variable.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals("Usage"))
 							pf.addUsageVariable(Usage.readFromModel(variable,model));
 						else
 							pf.addProviderVariable(Provider.readFromModel(variable,model));

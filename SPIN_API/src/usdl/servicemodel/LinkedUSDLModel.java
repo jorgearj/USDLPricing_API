@@ -2,10 +2,7 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import usdl.constants.enums.Prefixes;
 import usdl.queries.ReaderQueries;
-
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;

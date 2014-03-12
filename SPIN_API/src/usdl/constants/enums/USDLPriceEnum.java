@@ -12,8 +12,18 @@ import com.hp.hpl.jena.rdf.model.Resource;
  */
 public enum USDLPriceEnum {
 	
-	HAS_PRICE_PLAN	("hasPricePlan",	"P");
-	 
+	HAS_PRICE_PLAN	("hasPricePlan",	"P"),
+	HAS_PRICE_COMPONENT	("hasPriceComponent",	"P"),
+	HAS_PRICE_CAP ("hasPriceCap",	"P"),
+	HAS_PRICE_FLOOR ("hasPriceFloor",	"P"),
+	HAS_PRICE ("hasPrice",	"P"),
+	HAS_COMPONENT_FLOOR ("hasComponentFloor","P"),
+	HAS_COMPONENT_CAP ("hasComponentCap","P"),
+	HAS_METRICS ("hasMetrics","P"),
+	HAS_PRICE_FUNCTION ("hasPriceFunction","P"),
+	HAS_VARIABLE ("hasVariable","P"),
+	HAS_VALUE ("hasValue","P");
+
 	private String property;
 	private String type; // C = Class || P = Property
  

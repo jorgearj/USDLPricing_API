@@ -7,7 +7,7 @@ import usdl.constants.enums.USDLCoreEnum;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class QuantitativeFeature extends Feature {
+public class QuantitativeFeature extends Value {
 	private QuantitativeValue value;
 
 	public QuantitativeFeature() {

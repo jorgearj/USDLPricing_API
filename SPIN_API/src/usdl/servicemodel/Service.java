@@ -2,18 +2,14 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import Factories.USDLPricePropertiesFactory;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-
 import usdl.constants.enums.GREnum;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLCoreEnum;
-import usdl.servicemodel.Offering;
+
 
 public class Service {
 	private String name;

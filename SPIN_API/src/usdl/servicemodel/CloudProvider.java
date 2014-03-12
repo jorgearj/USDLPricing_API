@@ -6,8 +6,6 @@ import usdl.constants.enums.FOAFEnum;
 import usdl.constants.enums.GREnum;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
-import usdl.constants.enums.USDLCoreEnum;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 
