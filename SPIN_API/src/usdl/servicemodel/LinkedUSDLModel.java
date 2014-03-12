@@ -20,7 +20,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 public class LinkedUSDLModel {
 	private List<Service> services;
 	private List<Offering> offerings;
-	private Model model;
 	
 	public LinkedUSDLModel() {
 		super();

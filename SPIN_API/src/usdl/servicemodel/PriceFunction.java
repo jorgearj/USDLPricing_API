@@ -221,10 +221,8 @@ public class PriceFunction {
 		//QueryExecution qexecc = ARQFactory.get().createQueryExecution(narq, model);//function execution
 		//ResultSet rsc = qexecc.execSelect();//function execution
 		if(narq != null)
-		{
 			pf.setSPARQLFunction(narq.toString());//we might need a reverse parser to extract the original formula from the SPARQL query
-			pf.setStringFunction(narq.toString());
-		}
+		
 		if(resource.hasProperty(USDLPriceEnum.HAS_VARIABLE.getProperty(model)))
 		{
 			StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_VARIABLE.getProperty(model));

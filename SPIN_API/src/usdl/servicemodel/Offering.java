@@ -116,6 +116,9 @@ public class Offering {
 				service.writeToModel(offering, model);
 			}
 		}
+		
+		if(this.pricePlan != null)
+			pricePlan.writeToModel(offering, model);
 	}
 	
 	
