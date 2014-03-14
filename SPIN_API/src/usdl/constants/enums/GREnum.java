@@ -15,7 +15,7 @@ public enum GREnum {
 	QUAL_PROD_OR_SERV	("qualitativeProductOrServiceProperty",		"P"),
 	QUANT_PROD_OR_SERV	("quantitativeProductOrServiceProperty",	"P"),
 	BUSINESS_ENTITY		("BusinessEntity",							"C"),
-	VALUE_ADDED_TAX_INCLUDED ("valueAddedTaxIncluded","P"),
+	VALUE_ADDED_TAX_INCLUDED ("valueAddedTaxIncluded",				"P"),
 	HAS_CURRENCY ("hasCurrency","P"),
 	HAS_CURRENCY_VALUE ("hasCurrencyValue","P"),
 	HAS_MIN_CURRENCY_VALUE ("hasMinCurrencyValue", "P") ,

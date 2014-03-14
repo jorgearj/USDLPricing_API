@@ -1,5 +1,8 @@
 package usdl.servicemodel;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +11,7 @@ import org.topbraid.spin.util.JenaUtil;
 
 import usdl.constants.enums.Prefixes;
 import usdl.queries.ReaderQueries;
+import usdl.servicemodel.validations.LinkedUSDLValidator;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -17,14 +21,21 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 
+import exceptions.InvalidLinkedUSDLModelException;
+import exceptions.ReadModelException;
+
 public class LinkedUSDLModel {
 	private List<Service> services;
 	private List<Offering> offerings;
 	
-	public LinkedUSDLModel() {
+	protected LinkedUSDLModel() {
 		super();
 		this.services = new ArrayList<Service>();
 		this.offerings = new ArrayList<Offering>();
+		
+		// Initialize system functions and templates
+		SPINModuleRegistry.get().init();
+		
 	}
 
 
@@ -47,11 +58,15 @@ public class LinkedUSDLModel {
 		this.offerings = offerings;
 	}
 
+	/**
+	 * Imports an RDF model and maps it to java objects populating the LinkedUSDLModel structure  
+	 * @param   model   The model to read from
+	 */
 	public void readModel(Model model){
 		System.out.println("READING FROM MODEL");
 		
 		this.offerings = this.readAllOfferings(model);
-		this.services = this.readAllServices(model);
+//		this.services = this.readAllServices(model);
 	}
 	
 	
@@ -73,8 +88,6 @@ public class LinkedUSDLModel {
 			offeringsList.add(offering);
 		}
 		
-		
-		
 		exec.close();
 		
 		return offeringsList;
@@ -86,14 +99,15 @@ public class LinkedUSDLModel {
 		return servicesList;
 	}
 	
-	public Model createModelFromOfferings()
+	/**
+	 * Creates a Jena Model representation of the LinkedUSDLModel.  
+	 * @param   baseURI   The string representing the baseURI to use in the resulting file. defaults to null.
+	 */
+	public Model WriteToModel(String baseURI)
 	{
-		// Initialize system functions and templates
-		SPINModuleRegistry.get().init();
-
 		// Create main model
 		Model model = JenaUtil.createDefaultModel();
-		JenaUtil.initNamespaces(model.getGraph());
+		//JenaUtil.initNamespaces(model.getGraph());
 		setPrefixes(model);
 		
 		for(Offering of : this.offerings)
@@ -120,7 +134,34 @@ public class LinkedUSDLModel {
 		model.setNsPrefix("sp", Prefixes.SP.getPrefix());
 		model.setNsPrefix("spl", Prefixes.SPL.getPrefix());
 		model.setNsPrefix("spin", Prefixes.SPIN.getPrefix());
-		model.setNsPrefix("",   Prefixes.BASE.getPrefix() );
+//		model.setNsPrefix("",   Prefixes.BASE.getPrefix() );
+	}
+	
+	
+	/**
+	 * Exports the LinkedUSDLModel to an RDF file.  
+	 * @param   path   The path where the final file will be stored
+	 * @param   baseURI   The string representing the baseURI to use in the resulting file. defaults to null.
+	 * @param   format	the RDFFormat to use 
+	 * @throws InvalidLinkedUSDLModelException 
+	 * @throws IOException 
+	 */
+	public void writeModelToFile(String path, String baseURI, String format) throws InvalidLinkedUSDLModelException, IOException
+	{
+		Model model = this.WriteToModel(baseURI);
+		LinkedUSDLValidator.validateModel(model);
+		this.write(model, path, format);
+	}
+	
+	private void write(Model model, String path, String format) throws IOException {
+		File outputFile = new File(path);
+		if (!outputFile.exists()) {
+        	outputFile.createNewFile();        	 
+        }
+
+		FileOutputStream out = new FileOutputStream(outputFile);
+		model.write(out, format);
+		out.close();
 	}
 	
 	@Override
