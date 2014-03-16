@@ -113,12 +113,12 @@ public class CloudProvider {
 		Resource provider = null;
 		
 		if(this.name != null)
-			provider =model.createResource(Prefixes.GR.getName() + this.name + "_" + System.currentTimeMillis());
+			provider =model.createResource(Prefixes.GR.getName() + this.name.replaceAll(" ", "_") + "_" +System.nanoTime());
 		else
-			provider =model.createResource(Prefixes.GR.getName() + "BusinessEntity"+ "_" + System.currentTimeMillis());
+			provider =model.createResource(Prefixes.GR.getName() + "BusinessEntity"+ "_" +System.nanoTime());
 		
 		
-		provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "BusinessEntity"));//rdf type
+		provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "BusinessEntity"));//rdf type
 		
 		
 		owner.addProperty(USDLCoreEnum.HAS_PROVIDER.getProperty(model), provider);

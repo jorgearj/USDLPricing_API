@@ -147,8 +147,14 @@ public class PriceComponent {
 		Resource pc = null;
 		if(name != null)
 		{
-			pc = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
-			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "PriceComponent"));//rdf type
+			pc = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_" + System.nanoTime());
+			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
+			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
+		}
+		else
+		{
+			pc = model.createResource(Prefixes.BASE.getPrefix() + "PriceComponent" + "_" + System.nanoTime());
+			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
 			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
 		}
 		
@@ -170,10 +176,13 @@ public class PriceComponent {
 				this.priceFunction.writeToModel(pc,model);
 			
 			for(QuantitativeValue metric : this.metrics)
+			{
 				metric.writeToModel(pc,model,2);
+			}
+				
 			
 			if(this.isDeduction)
-				pc.addProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Deduction"));
+				pc.addProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "Deduction"));
 			
 			owner.addProperty(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model), pc);//link the Price Component with the Price Plan
 		}

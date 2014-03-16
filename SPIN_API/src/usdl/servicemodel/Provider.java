@@ -35,14 +35,13 @@ public class Provider extends PriceVariable {
 		Resource var = null;
 		
 		if (this.getName() != null) {
-			var = model.createResource(Prefixes.BASE.getName() + this.getName() + "_" + System.currentTimeMillis());
-			var.addProperty(RDFSEnum.LABEL.getProperty(model), this.getName());
-			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Constant"));
+			var = model.createResource(Prefixes.BASE.getPrefix() + this.getName().replaceAll(" ", "_"));
+			var.addProperty(RDFSEnum.LABEL.getProperty(model), this.getName().replaceAll(" ", "_"));
+			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "Constant"));
 		}
 		else
 		{
-			var = model.createResource(Prefixes.BASE.getName() +"ConstantVariable" + "_" + System.currentTimeMillis());
-			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Constant"));
+			System.out.println("[Provider]Unnamed variable. Every created variable needs to have a name"); //throw exception
 		}
 		
 		if(this.getComment() != null)

@@ -151,14 +151,14 @@ public class Service {
 	{
 		Resource service = null;
 		if(this.name != null)
-			service = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+			service = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_" + System.nanoTime());
 		else
-			service = model.createResource(Prefixes.BASE.getName() +"Service" + "_" + System.currentTimeMillis());
+			service = model.createResource(Prefixes.BASE.getPrefix() +"Service" + "_" + System.nanoTime());
 		
 		service.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.SERVICE.getResource(model));//rdf type
 		
 		if(this.name != null)
-			service.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+			service.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 		if(this.comment != null)
 			service.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
 		

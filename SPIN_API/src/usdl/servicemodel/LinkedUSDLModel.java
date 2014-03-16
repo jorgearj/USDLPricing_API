@@ -28,6 +28,8 @@ public class LinkedUSDLModel {
 	private List<Service> services;
 	private List<Offering> offerings;
 	
+
+
 	protected LinkedUSDLModel() {
 		super();
 		this.services = new ArrayList<Service>();
@@ -75,7 +77,7 @@ public class LinkedUSDLModel {
 		String variableName = "offering";
 		
 		String queryString = ReaderQueries.readAllOfferings(variableName);
-		//System.out.println(queryString);
+		System.out.println(queryString);
 		Query query = QueryFactory.create(queryString);
         QueryExecution exec = QueryExecutionFactory.create(query, model);
 		
@@ -108,7 +110,7 @@ public class LinkedUSDLModel {
 		// Create main model
 		Model model = JenaUtil.createDefaultModel();
 		//JenaUtil.initNamespaces(model.getGraph());
-		setPrefixes(model);
+		setPrefixes(model,baseURI);
 		
 		for(Offering of : this.offerings)
 			of.writeToModel(model);
@@ -116,7 +118,7 @@ public class LinkedUSDLModel {
 		return model;
 	}
 	
-	private void setPrefixes(Model model){
+	private void setPrefixes(Model model,String baseURI){
 		model.setNsPrefix("usdl",  Prefixes.USDL_CORE.getPrefix());
 		model.setNsPrefix("rdf",   Prefixes.RDF.getPrefix());
 		model.setNsPrefix("owl",   Prefixes.OWL.getPrefix());
@@ -134,7 +136,7 @@ public class LinkedUSDLModel {
 		model.setNsPrefix("sp", Prefixes.SP.getPrefix());
 		model.setNsPrefix("spl", Prefixes.SPL.getPrefix());
 		model.setNsPrefix("spin", Prefixes.SPIN.getPrefix());
-//		model.setNsPrefix("",   Prefixes.BASE.getPrefix() );
+		model.setNsPrefix("",   baseURI + "#" );
 	}
 	
 	

@@ -98,14 +98,14 @@ public class Offering {
 	{
 		Resource offering = null;
 		if(this.name != null)
-			offering = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+			offering = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_" + System.nanoTime());
 		else
-			offering = model.createResource(Prefixes.BASE.getName() +"ServiceOffering" + "_" + System.currentTimeMillis());
+			offering = model.createResource(Prefixes.BASE.getPrefix() +"ServiceOffering" + "_" + System.nanoTime());
 		
-		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.BASE.getName() +"ServiceOffering" ));//rdf type
+		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_CORE.getPrefix() +"ServiceOffering" ));//rdf type
 		
 		if(this.name != null)
-			offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+			offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 		
 		if(this.comment != null)
 			offering.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment

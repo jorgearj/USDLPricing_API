@@ -50,8 +50,8 @@ public class QualitativeValue extends Value {
 		Resource qv = null;
 		if(this.getName() != null)
 		{
-			qv = model.createResource(Prefixes.BASE.getName() + this.getName() + "_" + System.currentTimeMillis());
-			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "QualitativeValue"));//rdf type
+			qv = model.createResource(Prefixes.BASE.getPrefix() + this.getName().replaceAll(" ", "_") + "_" + System.nanoTime());
+			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "QualitativeValue"));//rdf type
 			for(String s : this.getTypes())
 			{
 				qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(s));//rdf type
@@ -59,8 +59,8 @@ public class QualitativeValue extends Value {
 		}
 		else
 		{
-			qv = model.createResource(Prefixes.BASE.getName() + "QuantitativeValue" + "_" + System.currentTimeMillis());
-			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "QualitativeValue"));//rdf type
+			qv = model.createResource(Prefixes.BASE.getPrefix() + "QuantitativeValue" + "_" + System.nanoTime());
+			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "QualitativeValue"));//rdf type
 			for(String s : this.getTypes())
 			{
 				qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(s));//rdf type

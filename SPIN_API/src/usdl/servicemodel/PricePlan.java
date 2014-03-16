@@ -3,6 +3,10 @@ package usdl.servicemodel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.topbraid.spin.arq.ARQFactory;
+
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -22,9 +26,9 @@ import usdl.servicemodel.PriceSpec;
  */
 public class PricePlan {
 	private String name;
-	private PriceSpec priceCap;
-	private PriceSpec priceFloor;
-	private List<PriceComponent> priceComponents;
+	private PriceSpec priceCap = null;
+	private PriceSpec priceFloor = null;
+	private List<PriceComponent> priceComponents = null;
 	private String comment;
 	//private List<Offering> offerings;//needed? NO
 	
@@ -95,11 +99,85 @@ public class PricePlan {
 	 * Calculates the price value of the Price Plan.  The price value is the sum of each its Price Components.
 	 * @return  A PriceSpec instance that contains the price value of the Price Plan.
 	 */
-	private PriceSpec calculatePrice()
+	public String calculatePrice(Model model)
 	{
-		PriceSpec ps = new PriceSpec();
 		//sum each of the price components price value
-		return ps;
+		String finalprice = "";
+		double pc_price = -1, lower_limit = -1, upper_limit = -1, function_price = -1,finalvalue=0;
+		for(PriceComponent pc : this.priceComponents)
+		{
+			//get the variables and define their value
+			if(pc.getPriceFunction() != null)
+			{
+				if (pc.getPriceFunction().getSPARQLFunction() != null) {
+					com.hp.hpl.jena.query.Query q = ARQFactory.get().createQuery(pc.getPriceFunction().getSPARQLFunction());
+					QueryExecution qexecc = ARQFactory.get().createQueryExecution(q, model);		
+					ResultSet rsc = qexecc.execSelect();
+					function_price = rsc.nextSolution().getLiteral("result").getDouble();// final result is store in the ?result variable of the query
+				}
+			}
+			if (pc.getComponentCap() != null) {
+				upper_limit = pc.getComponentCap().getValue();
+			}
+
+			if (pc.getComponentFloor() != null) {
+				lower_limit =pc.getComponentFloor().getValue();
+			}
+
+			if (pc.getPrice() != null) {
+				pc_price = pc.getPrice().getValue();
+				
+			}
+
+			if(function_price >=0)
+			{
+				if(function_price > upper_limit && upper_limit >= 0)
+					function_price = upper_limit;
+				else if(function_price < lower_limit && lower_limit >=0)
+					function_price = lower_limit;
+			}
+			
+			if(pc_price >= 0)
+			{
+				if(pc_price > upper_limit && upper_limit >=0)
+					pc_price = upper_limit;
+				else if(pc_price < lower_limit && lower_limit >= 0)
+					pc_price = lower_limit;
+			}
+			
+			if(function_price >= 0 && pc_price >= 0)
+				System.out.println("Dynamic and static price? offer->"+this.name+",pc->"+pc.getName() + "price ->"+pc_price);//throw expection?
+			
+			if(pc.isDeduction())
+			{
+				if(function_price >= 0)
+				{
+					finalprice = finalprice+" - " +function_price;
+					finalvalue-=function_price;
+				}
+				else
+				{
+					finalprice = finalprice+" - " +pc_price;
+					finalvalue-=pc_price;
+				}
+			}
+			else
+			{
+				if(function_price >= 0)
+				{
+					finalprice = finalprice+" + " +function_price;
+					finalvalue+=function_price;
+				}
+				else
+				{
+					finalprice = finalprice+" + " +pc_price;
+					finalvalue+=pc_price;
+				}
+			}
+		}
+		//conditions to verify that the final price is inside the interval defined by the lower and upper limit, in case these exist
+		
+		return finalprice;
 	}
 	
 	/**
@@ -156,13 +234,13 @@ public class PricePlan {
 				Resource pp = null;
 				if(this.name != null)
 				{
-					pp = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
-					pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+					pp = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_" +System.nanoTime());
+					pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 				}
 				else 
-					pp = model.createResource(Prefixes.BASE.getName() + "PricePlan" + "_" + System.currentTimeMillis());
+					pp = model.createResource(Prefixes.BASE.getPrefix() + "PricePlan" + "_" +System.nanoTime());
 				
-				pp.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "PricePlan"));//rdf type
+				pp.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PricePlan"));//rdf type
 				
 				if(this.comment != null)
 					pp.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
