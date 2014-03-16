@@ -176,7 +176,17 @@ public class PricePlan {
 			}
 		}
 		//conditions to verify that the final price is inside the interval defined by the lower and upper limit, in case these exist
-		
+		if(this.getPriceCap() != null)
+		{
+			if(this.getPriceCap().getValue() >= 0 && finalvalue > this.getPriceCap().getValue())
+				finalvalue = this.getPriceCap().getValue();
+		}
+		if(this.getPriceFloor() != null)
+		{
+			if(this.getPriceFloor().getValue() >= 0 && finalvalue <this.getPriceFloor().getValue())
+				finalvalue = this.getPriceFloor().getValue();
+		}
+				
 		return finalprice;
 	}
 	
