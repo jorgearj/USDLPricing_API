@@ -204,7 +204,7 @@ public class PricePlan {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			pp.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			pp.setName(resource.getLocalName());
+			pp.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			pp.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
@@ -244,11 +244,11 @@ public class PricePlan {
 				Resource pp = null;
 				if(this.name != null)
 				{
-					pp = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_" +System.nanoTime());
+					pp = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" +System.nanoTime());
 					pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 				}
 				else 
-					pp = model.createResource(Prefixes.BASE.getPrefix() + "PricePlan" + "_" +System.nanoTime());
+					pp = model.createResource(Prefixes.BASE.getPrefix() + "PricePlan" + "_TIME" +System.nanoTime());
 				
 				pp.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PricePlan"));//rdf type
 				

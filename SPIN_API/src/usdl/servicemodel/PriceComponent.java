@@ -147,15 +147,14 @@ public class PriceComponent {
 		Resource pc = null;
 		if(name != null)
 		{
-			pc = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_" + System.nanoTime());
+			pc = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
 			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
 			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 		}
 		else
 		{
-			pc = model.createResource(Prefixes.BASE.getPrefix() + "PriceComponent" + "_" + System.nanoTime());
+			pc = model.createResource(Prefixes.BASE.getPrefix() + "PriceComponent" + "_TIME" + System.nanoTime());
 			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
-			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
 		}
 		
 		if(pc != null)
@@ -223,6 +222,8 @@ public class PriceComponent {
 		
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			pc.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+		else
+			pc.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)) || resource.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)))
 		{

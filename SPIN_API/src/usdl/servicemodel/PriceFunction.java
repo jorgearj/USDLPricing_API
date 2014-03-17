@@ -166,13 +166,16 @@ public class PriceFunction {
 		Function func = null;
 		if(this.name != null)
 		{
-			func = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_" + System.nanoTime(), SPIN.Function).as(Function.class);
+			func = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime(), SPIN.Function).as(Function.class);
 			func.addProperty(RDFSEnum.LABEL.getProperty(model), this.name.replaceAll(" ", "_"));
 		}
+		else
+			func = model.createResource(Prefixes.BASE.getPrefix() + "PriceFunction" + "_TIME"+System.nanoTime(),SPIN.Function).as(Function.class);
 		
 		if(this.stringFunction != null)// Create a function from the string stringFunction
 		{
 			MathExp2SPARQL parser = new MathExp2SPARQL(this.stringFunction,this.providerVariables,this.usageVariables);
+			//System.out.println(parser.getSPARQLQuery());
 			//ArrayList<String> detectedVariables = parser.getParsedVariables();
 			com.hp.hpl.jena.query.Query arqQuery = ARQFactory.get().createQuery(model,parser.getSPARQLQuery());
 			Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
@@ -217,6 +220,8 @@ public class PriceFunction {
 		
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			pf.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+		else
+			pf.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		Function ff = SPINModuleRegistry.get().getFunction(resource.getURI(), model);//get the function from the model
 		com.hp.hpl.jena.query.Query narq = ARQFactory.get().createQuery((Select)ff.getBody());//transform the spin objects that define the function into a SPARQL query

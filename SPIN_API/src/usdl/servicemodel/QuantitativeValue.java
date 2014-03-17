@@ -79,7 +79,7 @@ public class QuantitativeValue extends Value {
 		Resource qv = null;
 		if(this.getName() != null)
 		{
-			qv = model.createResource(Prefixes.BASE.getPrefix() + this.getName().replaceAll(" ", "_") + "_" + System.nanoTime());
+			qv = model.createResource(Prefixes.BASE.getPrefix() + this.getName().replaceAll(" ", "_") + "_TIME" + System.nanoTime());
 			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "QuantitativeValue"));//rdf type
 			for(String s : this.getTypes())
 			{
@@ -88,7 +88,7 @@ public class QuantitativeValue extends Value {
 		}
 		else
 		{
-			qv = model.createResource(Prefixes.BASE.getPrefix() + "QuantitativeValue" + "_" + System.nanoTime());
+			qv = model.createResource(Prefixes.BASE.getPrefix() + "QuantitativeValue" + "_TIME" + System.nanoTime());
 			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "QuantitativeValue"));//rdf type
 			for(String s : this.getTypes())
 			{
@@ -133,7 +133,7 @@ public class QuantitativeValue extends Value {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			val.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			val.setName(resource.getLocalName());
+			val.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			val.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
@@ -142,7 +142,11 @@ public class QuantitativeValue extends Value {
 		{
 			StmtIterator iter = resource.listProperties(RDFEnum.RDF_TYPE.getProperty(model));
 			while (iter.hasNext()) {
-				val.addType( iter.next().getObject().asResource().getURI());
+				String uri = iter.next().getObject().asResource().getURI();
+				if(uri.toLowerCase().contains("quantitativevalue"))
+					continue;
+				else
+					val.addType(uri);
 			}
 		}
 		

@@ -127,13 +127,13 @@ public class PriceSpec {
 		Resource ps = null;
 		if(this.name != null)
 		{
-			ps = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") +"_"+ System.nanoTime());
+			ps = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") +"_TIME"+ System.nanoTime());
 			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "PriceSpecification"));//rdf type
 			ps.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 		}
 		else
 		{
-			ps = model.createResource(Prefixes.BASE.getPrefix() + "PriceSpecification"+"_"+ System.nanoTime());
+			ps = model.createResource(Prefixes.BASE.getPrefix() + "PriceSpecification"+"_TIME"+ System.nanoTime());
 			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "PriceSpecification"));//rdf type
 		}
 		
@@ -177,7 +177,7 @@ public class PriceSpec {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			ps.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			ps.setName(resource.getLocalName());
+			ps.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			ps.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());

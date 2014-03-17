@@ -151,7 +151,7 @@ public class MathExp2SPARQL {
 		String f = prefixToInfix(stack,infixstack);
 		f=f.replace("[", "");
 		f=f.replace("]", "");
-		SPARQLQuery = SPARQLQuery + "\nBIND("+ f + ") AS ?result  ) .\n" +
+		SPARQLQuery = SPARQLQuery + "\nBIND(("+ f + ") AS ?result  ) .\n" +
 				"}";
 	}
 	
