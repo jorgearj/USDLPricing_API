@@ -121,7 +121,7 @@ public class CloudProvider {
 		}
 		else
 		{
-			provider =model.createResource(Prefixes.BASE.getPrefix() + "BusinessEntity"+ "_" +System.nanoTime());
+			provider =model.createResource(baseURI+ "#BusinessEntity"+ "_" +System.nanoTime());
 		}
 		
 		provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "BusinessEntity"));//rdf type

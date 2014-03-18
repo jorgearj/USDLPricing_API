@@ -121,7 +121,7 @@ public class LinkedUSDLModel {
 		while(results.hasNext()){
 			QuerySolution row = results.next();
 			Offering offering = Offering.readFromModel(row.getResource(variableName), model);
-			System.out.println(offering.toString());
+//			System.out.println(offering.toString());
 			offeringsList.add(offering);
 		}
 		
@@ -144,8 +144,7 @@ public class LinkedUSDLModel {
 	{
 		// Create main model
 		Model model = JenaUtil.createDefaultModel();
-		//JenaUtil.initNamespaces(model.getGraph());
-		this.setPrefixes(this.processPrefixes(model));
+	    
 		model = this.setModelPrefixes(model);
 		model.setNsPrefix("", this.baseURI + "#");
 		for(Offering of : this.offerings)
@@ -155,8 +154,6 @@ public class LinkedUSDLModel {
 	}
 	
 	private Model setModelPrefixes(Model model){
-		//TODO: usar o Map para setar os prefixos no modelo
-		//mas tenho de iterar pelo map e inverter a key com o value.
 
 		Iterator<Entry<String, String>> it = this.prefixes.entrySet().iterator();
 		while (it.hasNext()) {
@@ -203,6 +200,8 @@ public class LinkedUSDLModel {
 		for(Prefixes p : Prefixes.values()){
 			result.put(p.getPrefix(), p.getName());
 		}
+		
+		
 		Iterator<Entry<String,String>> it = model.getNsPrefixMap().entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry<String,String> pairs = (Map.Entry<String,String>)it.next();

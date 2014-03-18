@@ -86,7 +86,7 @@ public class LinkedUSDLModelFactory {
 		Model model = new LinkedUSDLModelFactory().importModel(path);
 		
 		//TESTS		
-//		LinkedUSDLModelFactory.write(model, "./DebuggingFiles/Output.ttl", "TTL");
+//		System.out.println("Prefixes after importing model");
 //		Iterator it = model.getNsPrefixMap().entrySet().iterator();
 //	    while (it.hasNext()) {
 //	        Map.Entry pairs = (Map.Entry)it.next();
@@ -111,6 +111,7 @@ public class LinkedUSDLModelFactory {
 		System.out.println(fileNames);
 		
 		for(String file : fileNames){
+			System.out.println("FILE: "+file);
 			Model temp;
 			//System.out.println(test.getFileExtension(file));
 			String ext = this.getFileExtension(file);
@@ -225,7 +226,8 @@ public class LinkedUSDLModelFactory {
 	}
 	
 	private Model setPrefixes(Model model, Map<String, String> prefixes){
-		Iterator<Entry<String,String>> it = model.getNsPrefixMap().entrySet().iterator();
+		
+		Iterator<Entry<String,String>> it = prefixes.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry<String,String> pairs = (Map.Entry<String,String>)it.next();
 	        String key = (String)pairs.getKey(); //URI

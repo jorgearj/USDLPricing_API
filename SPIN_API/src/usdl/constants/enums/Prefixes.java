@@ -21,7 +21,6 @@ public enum Prefixes {
 	SP	 		("http://spinrdf.org/sp#",						"sp"),
 	SPIN 		("http://spinrdf.org/spin#",					"spin"),
 	SPL  		("http://spinrdf.org/spl#>",					"spl"),
-	BASE		("http://USDLAPI.org/base#",       ""),//add a link
 	PF			("http://jena.hpl.hp.com/ARQ/property#",		"pf");
 
 	private String preffix;
