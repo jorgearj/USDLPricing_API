@@ -28,14 +28,14 @@ public class Provider extends PriceVariable {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model)
+	public void writeToModel(Resource owner,Model model,String baseURI)
 	{
 		
 		// Initialize system functions and templates
 		Resource var = null;
 		
 		if (this.getName() != null) {
-			var = model.createResource(Prefixes.BASE.getPrefix() + this.getName().replaceAll(" ", "_"));
+			var = model.createResource(baseURI +"#"  + this.getName().replaceAll(" ", "_"));
 			var.addProperty(RDFSEnum.LABEL.getProperty(model), this.getName().replaceAll(" ", "_"));
 			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "Constant"));
 		}
@@ -54,12 +54,12 @@ public class Provider extends PriceVariable {
 			if(this.getValue() instanceof QualitativeValue)
 			{
 				QualitativeValue val = (QualitativeValue) this.getValue();
-				val.writeToModel(var,model,1);
+				val.writeToModel(var,model,1,baseURI);
 			}
 			else
 			{
 				QuantitativeValue val = (QuantitativeValue) this.getValue();
-				val.writeToModel(var,model,1);
+				val.writeToModel(var,model,1,baseURI);
 			}
 		}
 		
@@ -80,7 +80,10 @@ public class Provider extends PriceVariable {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			var.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			var.setName(resource.getLocalName());
+		{
+			if(resource.getLocalName() != null)
+				var.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		}
 			
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))

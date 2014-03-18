@@ -120,7 +120,7 @@ public enum CLOUDEnum {
 	 * @return   A String of the property with its prefix.
 	 */
 	public String getConceptURI(){
-		return Prefixes.CLOUD.getPrefix() + ":" + concept;
+		return Prefixes.CLOUD.getPrefix() + concept;
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public enum CLOUDEnum {
 	 */
 	public Resource getConceptResource(Model model) {
 		if(type.equalsIgnoreCase("C")){
-			return model.createResource(Prefixes.CLOUD.getPrefix() + ":" + concept);
+			return model.createResource(Prefixes.CLOUD.getPrefix() + concept);
 		}else{
 			return null;
 		}

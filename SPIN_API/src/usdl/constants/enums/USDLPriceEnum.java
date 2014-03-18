@@ -52,7 +52,7 @@ public enum USDLPriceEnum {
 	 */
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P")){
-			return model.createProperty(Prefixes.USDL_PRICE.getPrefix() + ":" + property);
+			return model.createProperty(Prefixes.USDL_PRICE.getPrefix()  + property);
 		}else{
 			return null;
 		}
@@ -65,7 +65,7 @@ public enum USDLPriceEnum {
 	 */
 	public Resource getResource(Model model) {
 		if(type.equalsIgnoreCase("C")){
-			return model.createResource(Prefixes.USDL_PRICE.getPrefix() + ":" + property);
+			return model.createResource(Prefixes.USDL_PRICE.getPrefix()  + property);
 		}else{
 			return null;
 		}

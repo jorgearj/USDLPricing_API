@@ -42,7 +42,7 @@ public enum FOAFEnum {
 	 */
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P")){
-			return model.createProperty(Prefixes.FOAF.getPrefix() + ":" + property);
+			return model.createProperty(Prefixes.FOAF.getPrefix() + property);
 		}else{
 			return null;
 		}

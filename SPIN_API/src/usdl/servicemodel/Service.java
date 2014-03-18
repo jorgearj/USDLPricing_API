@@ -8,7 +8,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import usdl.constants.enums.GREnum;
-import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLCoreEnum;
@@ -105,7 +104,11 @@ public class Service {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			service.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			service.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		{
+			if(resource.getLocalName() != null)
+				service.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		}
+			
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			service.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
@@ -147,13 +150,13 @@ public class Service {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model)
+	public void writeToModel(Resource owner,Model model,String baseURI)
 	{
 		Resource service = null;
 		if(this.name != null)
-			service = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
+			service = model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
 		else
-			service = model.createResource(Prefixes.BASE.getPrefix() +"Service" + "_TIME" + System.nanoTime());
+			service = model.createResource(baseURI +"#"  +"Service" + "_TIME" + System.nanoTime());
 		
 		service.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.SERVICE.getResource(model));//rdf type
 		
@@ -166,7 +169,7 @@ public class Service {
 		{
 			for(Service sv : includes)
 			{
-				sv.writeToModel(service,model);
+				sv.writeToModel(service,model,baseURI);
 			}
 		}
 		
@@ -174,7 +177,7 @@ public class Service {
 		{
 			for(QuantitativeValue qv : this.quantfeatures)
 			{
-				qv.writeToModel(service,model,0);
+				qv.writeToModel(service,model,0,baseURI);
 			}
 		}
 		
@@ -182,7 +185,7 @@ public class Service {
 		{
 			for(QualitativeValue qv : this.qualfeatures)
 			{
-				qv.writeToModel(service,model,0);
+				qv.writeToModel(service,model,0,baseURI);
 			}
 		}
 		

@@ -89,8 +89,8 @@ public class APIReadGenericModelExample{
 				else
 					System.out.println("Offering with a null price plan");
 			}
-
-			Model instance = jmodel.WriteToModel("http://rdfs.genssiz.org/heroku");//after we've done our changes in the jmodels, we transform them into a new Semantic model
+			jmodel.setBaseURI("http://PricingAPIGenericExampleInstance.com");
+			Model instance = jmodel.WriteToModel();//after we've done our changes in the jmodels, we transform them into a new Semantic model
 			
 			//write model to file
 			/*File outputFile = new File("C:/Users/daniel/Desktop/model.ttl");

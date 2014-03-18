@@ -103,8 +103,8 @@ public class APIUsageExample{
 				else
 					System.out.println("Offering with a null price plan");
 			}
-
-			Model instance = jmodel.WriteToModel("http://rdfs.genssiz.org/heroku");//after we've done our changes in the jmodels, we transform them into a new Semantic model
+			jmodel.setBaseURI("http://rdfs.genssiz.org/herokuv2");
+			Model instance = jmodel.WriteToModel();//after we've done our changes in the jmodels, we transform them into a new Semantic model
 			
 			//write model to file
 			/*File outputFile = new File("C:/Users/daniel/Desktop/model.ttl");
@@ -114,8 +114,8 @@ public class APIUsageExample{
 
 			FileOutputStream out = new FileOutputStream(outputFile);
 			instance.write(out, "Turtle");
-			out.close();
-			*/
+			out.close();*/
+			
 			//after applying the changes to the jmodels and transforming them to a semantic web representation, we can calculate the prices of every offerings.
 			for(Offering off : myOfferings)
 				System.out.println(""+off.getName()+", Price:"+off.getPricePlan().calculatePrice(instance));

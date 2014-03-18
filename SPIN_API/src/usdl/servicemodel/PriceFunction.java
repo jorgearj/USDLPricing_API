@@ -11,8 +11,6 @@ import org.topbraid.spin.model.Query;
 import org.topbraid.spin.model.Select;
 import org.topbraid.spin.system.SPINModuleRegistry;
 import org.topbraid.spin.vocabulary.SPIN;
-
-import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLPriceEnum;
@@ -37,7 +35,7 @@ public class PriceFunction {
 	private List<Provider> providerVariables = null;
 	private List<Constraint> constraints = null;
 	private String comment = null;
-	
+	private String oldBaseURI = null;
 	public PriceFunction() {
 		super();
 		usageVariables = new ArrayList<Usage>();
@@ -95,7 +93,12 @@ public class PriceFunction {
 	public void setSPARQLFunction(String sPARQLFunction) {
 		SPARQLFunction = sPARQLFunction;
 	}
-	
+	private String getOldBaseURI() {
+		return oldBaseURI;
+	}
+	private void setOldBaseURI(String oldBaseURI) {
+		this.oldBaseURI = oldBaseURI;
+	}
 	// New Functions
 	
 	/**
@@ -157,7 +160,7 @@ public class PriceFunction {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model)
+	public void writeToModel(Resource owner,Model model,String baseURI)
 	{
 		
 		// Initialize system functions and templates
@@ -166,11 +169,11 @@ public class PriceFunction {
 		Function func = null;
 		if(this.name != null)
 		{
-			func = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime(), SPIN.Function).as(Function.class);
+			func = model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime(), SPIN.Function).as(Function.class);
 			func.addProperty(RDFSEnum.LABEL.getProperty(model), this.name.replaceAll(" ", "_"));
 		}
 		else
-			func = model.createResource(Prefixes.BASE.getPrefix() + "PriceFunction" + "_TIME"+System.nanoTime(),SPIN.Function).as(Function.class);
+			func = model.createResource(baseURI +"#"  + "PriceFunction" + "_TIME"+System.nanoTime(),SPIN.Function).as(Function.class);
 		
 		if(this.stringFunction != null)// Create a function from the string stringFunction
 		{
@@ -183,9 +186,19 @@ public class PriceFunction {
 		}
 		else if(this.SPARQLFunction != null && stringFunction == null)
 		{
-			com.hp.hpl.jena.query.Query arqQuery = ARQFactory.get().createQuery(model,this.getSPARQLFunction());
-			Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
-			func.addProperty(SPIN.body, spinQuery);
+			if(this.getOldBaseURI() != null)
+			{
+				this.setSPARQLFunction(this.getSPARQLFunction().replaceAll(this.getOldBaseURI(), baseURI+"#"));
+				com.hp.hpl.jena.query.Query arqQuery = ARQFactory.get().createQuery(model,this.getSPARQLFunction());
+				Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
+				func.addProperty(SPIN.body, spinQuery);
+			}
+			else
+			{
+				com.hp.hpl.jena.query.Query arqQuery = ARQFactory.get().createQuery(model,this.getSPARQLFunction());
+				Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
+				func.addProperty(SPIN.body, spinQuery);
+			}
 		}
 		
 		if(this.comment != null)
@@ -193,11 +206,11 @@ public class PriceFunction {
 		
 		for(Usage var : this.usageVariables)
 		{
-			var.writeToModel(func,model);
+			var.writeToModel(func,model,baseURI);
 		}
 		for(Provider var2 : this.providerVariables)
 		{
-			var2.writeToModel(func,model);
+			var2.writeToModel(func,model,baseURI);
 		}
 		owner.addProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model), func);//link the Price Component with the Price Plan
 	}
@@ -213,7 +226,7 @@ public class PriceFunction {
 	{
 		SPINModuleRegistry.get().init();
 		PriceFunction pf = new PriceFunction();
-
+		pf.setOldBaseURI(resource.getNameSpace());
 		//populate the PriceFunction
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			pf.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
@@ -221,7 +234,10 @@ public class PriceFunction {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			pf.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			pf.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		{
+			if(resource.getLocalName() != null)
+				pf.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		}
 		
 		Function ff = SPINModuleRegistry.get().getFunction(resource.getURI(), model);//get the function from the model
 		com.hp.hpl.jena.query.Query narq = ARQFactory.get().createQuery((Select)ff.getBody());//transform the spin objects that define the function into a SPARQL query
@@ -258,4 +274,5 @@ public class PriceFunction {
 		
 		return pf;
 	}
+
 }

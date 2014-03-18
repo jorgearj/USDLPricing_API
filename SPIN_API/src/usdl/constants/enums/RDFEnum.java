@@ -22,7 +22,7 @@ public enum RDFEnum {
 	
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P"))
-			return model.createProperty(Prefixes.RDF.getPrefix() + ":" + property);
+			return model.createProperty(Prefixes.RDF.getPrefix() + property);
 		else{
 			return null;
 		}
@@ -35,7 +35,7 @@ public enum RDFEnum {
 	 */
 	public Resource getResource(Model model) {
 		if(type.equalsIgnoreCase("C")){
-			return model.createResource(Prefixes.RDF.getPrefix() + ":" + property);
+			return model.createResource(Prefixes.RDF.getPrefix()  + property);
 		}else{
 			return null;
 		}

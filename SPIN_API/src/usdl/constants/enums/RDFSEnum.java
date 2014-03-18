@@ -43,7 +43,7 @@ public enum RDFSEnum {
 	 */
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P")){
-			return model.createProperty(Prefixes.RDFS.getPrefix() + ":" + property);
+			return model.createProperty(Prefixes.RDFS.getPrefix()  + property);
 		}else{
 			return null;
 		}

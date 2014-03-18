@@ -64,12 +64,14 @@ public class Offering {
 	public static Offering readFromModel(Resource resource, Model model){
 		Offering offering = new Offering();
 		ArrayList<Service> services = new ArrayList<Service>();
-		
 		//populate the Offering
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			offering.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			offering.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		{
+			if(resource.getLocalName() != null)
+				offering.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		}
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			offering.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
@@ -94,13 +96,13 @@ public class Offering {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Model model)
+	public void writeToModel(Model model,String baseURI)
 	{
 		Resource offering = null;
 		if(this.name != null)
-			offering = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
+			offering = model.createResource(baseURI +"#" + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
 		else
-			offering = model.createResource(Prefixes.BASE.getPrefix() +"ServiceOffering" + "_TIME" + System.nanoTime());
+			offering = model.createResource(baseURI +"#"+"ServiceOffering" + "_TIME" + System.nanoTime());
 		
 		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_CORE.getPrefix() +"ServiceOffering" ));//rdf type
 		
@@ -113,12 +115,12 @@ public class Offering {
 		if(!includes.isEmpty()){
 			for(Service service : includes)
 			{
-				service.writeToModel(offering, model);
+				service.writeToModel(offering, model,baseURI);
 			}
 		}
 		
 		if(this.pricePlan != null)
-			pricePlan.writeToModel(offering, model);
+			pricePlan.writeToModel(offering, model,baseURI);
 	}
 	
 	

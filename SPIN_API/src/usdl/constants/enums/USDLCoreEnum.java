@@ -46,7 +46,7 @@ public enum USDLCoreEnum {
 	 */
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P")){
-			return model.createProperty(Prefixes.USDL_CORE.getPrefix() + ":" + property);
+			return model.createProperty(Prefixes.USDL_CORE.getPrefix() + property);
 		}else{
 			return null;
 		}
@@ -59,7 +59,7 @@ public enum USDLCoreEnum {
 	 */
 	public Resource getResource(Model model) {
 		if(type.equalsIgnoreCase("C")){
-			return model.createResource(Prefixes.USDL_CORE.getPrefix() + ":" + property);
+			return model.createResource(Prefixes.USDL_CORE.getPrefix() + property);
 		}else{
 			return null;
 		}

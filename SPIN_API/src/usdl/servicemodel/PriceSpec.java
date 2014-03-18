@@ -122,18 +122,18 @@ public class PriceSpec {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model)
+	public void writeToModel(Resource owner,Model model,String baseURI)
 	{
 		Resource ps = null;
 		if(this.name != null)
 		{
-			ps = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") +"_TIME"+ System.nanoTime());
+			ps = model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") +"_TIME"+ System.nanoTime());
 			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "PriceSpecification"));//rdf type
 			ps.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 		}
 		else
 		{
-			ps = model.createResource(Prefixes.BASE.getPrefix() + "PriceSpecification"+"_TIME"+ System.nanoTime());
+			ps = model.createResource(baseURI +"#"  + "PriceSpecification"+"_TIME"+ System.nanoTime());
 			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "PriceSpecification"));//rdf type
 		}
 		
@@ -173,11 +173,15 @@ public class PriceSpec {
 	{
 		PriceSpec ps = new PriceSpec();
 		//populate the PricePlan
-		
+
+
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			ps.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			ps.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		{
+			if(resource.getLocalName() != null)
+				ps.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		}
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			ps.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());

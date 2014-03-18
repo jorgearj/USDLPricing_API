@@ -88,7 +88,10 @@ public class CloudProvider {
 			if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 				provider.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 			else
-				provider.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+			{
+				if(resource.getLocalName() != null)
+					provider.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+			}
 		}
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
@@ -106,14 +109,14 @@ public class CloudProvider {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model)
+	public void writeToModel(Resource owner,Model model,String baseURI)
 	{
 		
 		Resource provider = null;
 		
 		if(this.name != null)
 		{
-			provider =model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" +System.nanoTime());
+			provider =model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") + "_TIME" +System.nanoTime());
 			provider.addProperty(FOAFEnum.NAME.getProperty(model),model.createLiteral(this.name.replaceAll(" ", "_")));
 		}
 		else

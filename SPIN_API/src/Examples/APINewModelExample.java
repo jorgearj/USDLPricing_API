@@ -27,7 +27,6 @@ public class APINewModelExample {
 		LinkedUSDLModel jmodel;
 
 		jmodel = LinkedUSDLModelFactory.createEmptyModel();
-
 		Service serv1 = new Service();// create an empty service
 		serv1.setName("Service1");
 		serv1.setComment("This is the first imaginary service.");
@@ -124,8 +123,8 @@ public class APINewModelExample {
 		offerings.add(off1);
 		
 		jmodel.setOfferings(offerings);//add the created offering to the LinkedUSDLModel instance.
-		
-		Model instance = jmodel.WriteToModel("http://rdfs.genssiz.org/heroku");//transform the java models to a semantic representation
+		jmodel.setBaseURI("http://PricingAPIGenericModelExample.com");
+		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
 
 		File outputFile = new File("./generic_model.ttl");
 		if (!outputFile.exists()) {

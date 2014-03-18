@@ -55,7 +55,7 @@ public enum GREnum {
 	 */
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P")){
-			return model.createProperty(Prefixes.GR.getPrefix() + ":" + property);
+			return model.createProperty(Prefixes.GR.getPrefix()  + property);
 		}else{
 			return null;
 		}
@@ -68,7 +68,7 @@ public enum GREnum {
 	 */
 	public Resource getResource(Model model) {
 		if(type.equalsIgnoreCase("C")){
-			return model.createResource(Prefixes.GR.getPrefix() + ":" + property);
+			return model.createResource(Prefixes.GR.getPrefix() + property);
 		}else{
 			return null;
 		}

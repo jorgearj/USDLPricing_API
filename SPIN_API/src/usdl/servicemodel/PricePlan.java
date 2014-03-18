@@ -111,7 +111,7 @@ public class PricePlan {
 			{
 				if (pc.getPriceFunction().getSPARQLFunction() != null) {
 					com.hp.hpl.jena.query.Query q = ARQFactory.get().createQuery(pc.getPriceFunction().getSPARQLFunction());
-					QueryExecution qexecc = ARQFactory.get().createQueryExecution(q, model);		
+					QueryExecution qexecc = ARQFactory.get().createQueryExecution(q, model);	
 					ResultSet rsc = qexecc.execSelect();
 					function_price = rsc.nextSolution().getLiteral("result").getDouble();// final result is store in the ?result variable of the query
 				}
@@ -204,7 +204,10 @@ public class PricePlan {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			pp.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			pp.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		{
+			if(resource.getLocalName() != null)
+				pp.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		}
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			pp.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
@@ -239,16 +242,16 @@ public class PricePlan {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model)
+	public void writeToModel(Resource owner,Model model,String baseURI)
 	{
 				Resource pp = null;
 				if(this.name != null)
 				{
-					pp = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" +System.nanoTime());
+					pp = model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") + "_TIME" +System.nanoTime());
 					pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 				}
 				else 
-					pp = model.createResource(Prefixes.BASE.getPrefix() + "PricePlan" + "_TIME" +System.nanoTime());
+					pp = model.createResource(baseURI +"#"  + "PricePlan" + "_TIME" +System.nanoTime());
 				
 				pp.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PricePlan"));//rdf type
 				
@@ -257,19 +260,19 @@ public class PricePlan {
 				
 				if(priceCap != null)
 				{
-					priceCap.writeToModel(pp,model);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
+					priceCap.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
 				}
 				
 				if(priceFloor != null)
 				{
-					priceFloor.writeToModel(pp,model);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
+					priceFloor.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
 				}
 				
 				if(!priceComponents.isEmpty())
 				{
 					for(PriceComponent pc : priceComponents)
 					{
-						pc.writeToModel(pp,model);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
+						pc.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
 					}
 				}
 				

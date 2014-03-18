@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import usdl.constants.enums.Prefixes;
+import java.util.Map.Entry;
 import usdl.servicemodel.validations.LinkedUSDLValidator;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -35,7 +34,7 @@ import exceptions.ReadModelException;
 public class LinkedUSDLModelFactory {
 	
 	
-	private static final String defaultBaseURI = "http://rdfs.genssiz.org/PricingAPI#";
+	private static final String defaultBaseURI = "http://rdfs.genssiz.org/PricingAPI";
 	
 	
 	/**
@@ -207,9 +206,9 @@ public class LinkedUSDLModelFactory {
 		
 		try {
 			String name = this.getModelName(model);
-			Iterator it = model.getNsPrefixMap().entrySet().iterator();
+			Iterator<Entry<String,String>> it = model.getNsPrefixMap().entrySet().iterator();
 		    while (it.hasNext()) {
-		        Map.Entry pairs = (Map.Entry)it.next();
+		        Map.Entry<String,String> pairs = (Map.Entry<String,String>)it.next();
 		        String key = (String)pairs.getKey();
 		        if(key.equalsIgnoreCase(""))
 		        	key = name;
@@ -226,9 +225,9 @@ public class LinkedUSDLModelFactory {
 	}
 	
 	private Model setPrefixes(Model model, Map<String, String> prefixes){
-		Iterator it = prefixes.entrySet().iterator();
-		while (it.hasNext()) {
-	        Map.Entry pairs = (Map.Entry)it.next();
+		Iterator<Entry<String,String>> it = model.getNsPrefixMap().entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<String,String> pairs = (Map.Entry<String,String>)it.next();
 	        String key = (String)pairs.getKey(); //URI
 	        String value = (String)pairs.getValue(); //preffix name
 	        model.setNsPrefix(value, key);

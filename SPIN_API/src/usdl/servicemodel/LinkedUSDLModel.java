@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.topbraid.spin.system.SPINModuleRegistry;
 import org.topbraid.spin.util.JenaUtil;
@@ -36,8 +37,8 @@ public class LinkedUSDLModel {
 		super();
 		this.services = new ArrayList<Service>();
 		this.offerings = new ArrayList<Offering>();
-		this.baseURI = baseURI;
 		this.prefixes = new HashMap<String, String>();
+		this.baseURI = baseURI;
 		// Initialize system functions and templates
 		SPINModuleRegistry.get().init();
 		
@@ -139,15 +140,16 @@ public class LinkedUSDLModel {
 	 * Creates a Jena Model representation of the LinkedUSDLModel.  
 	 * @param   baseURI   The string representing the baseURI to use in the resulting file. defaults to null.
 	 */
-	public Model WriteToModel(String baseURI)
+	public Model WriteToModel()
 	{
 		// Create main model
 		Model model = JenaUtil.createDefaultModel();
 		//JenaUtil.initNamespaces(model.getGraph());
+		this.setPrefixes(this.processPrefixes(model));
 		model = this.setModelPrefixes(model);
-		
+		model.setNsPrefix("", this.baseURI + "#");
 		for(Offering of : this.offerings)
-			of.writeToModel(model);
+			of.writeToModel(model,this.baseURI);
 		
 		return model;
 	}
@@ -155,10 +157,10 @@ public class LinkedUSDLModel {
 	private Model setModelPrefixes(Model model){
 		//TODO: usar o Map para setar os prefixos no modelo
 		//mas tenho de iterar pelo map e inverter a key com o value.
-		
-		Iterator it = this.prefixes.entrySet().iterator();
+
+		Iterator<Entry<String, String>> it = this.prefixes.entrySet().iterator();
 		while (it.hasNext()) {
-	        Map.Entry pairs = (Map.Entry)it.next();
+	        Map.Entry<String, String> pairs = (Map.Entry<String, String>)it.next();
 	        String key = (String)pairs.getKey(); //URI
 	        String value = (String)pairs.getValue(); //preffix name
 	        model.setNsPrefix(value, key);
@@ -176,7 +178,7 @@ public class LinkedUSDLModel {
 	 */
 	public void writeModelToFile(String path, String format) throws InvalidLinkedUSDLModelException, IOException
 	{
-		Model model = this.WriteToModel(baseURI);
+		Model model = this.WriteToModel();
 		LinkedUSDLValidator.validateModel(model);
 		this.write(model, path, format);
 	}
@@ -201,9 +203,9 @@ public class LinkedUSDLModel {
 		for(Prefixes p : Prefixes.values()){
 			result.put(p.getPrefix(), p.getName());
 		}
-		Iterator it = model.getNsPrefixMap().entrySet().iterator();
+		Iterator<Entry<String,String>> it = model.getNsPrefixMap().entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry pairs = (Map.Entry)it.next();
+	        Map.Entry<String,String> pairs = (Map.Entry<String,String>)it.next();
 	        String name = (String)pairs.getKey();
 	        String uri = (String)pairs.getValue();
 	        if(!result.containsKey(uri)){

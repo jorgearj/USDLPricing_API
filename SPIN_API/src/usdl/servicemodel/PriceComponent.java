@@ -142,18 +142,18 @@ public class PriceComponent {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner, Model model)
+	public void writeToModel(Resource owner, Model model,String baseURI)
 	{
 		Resource pc = null;
 		if(name != null)
 		{
-			pc = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
+			pc = model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
 			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
 			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 		}
 		else
 		{
-			pc = model.createResource(Prefixes.BASE.getPrefix() + "PriceComponent" + "_TIME" + System.nanoTime());
+			pc = model.createResource(baseURI +"#" + "PriceComponent" + "_TIME" + System.nanoTime());
 			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
 		}
 		
@@ -163,20 +163,20 @@ public class PriceComponent {
 				pc.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
 			
 			if(this.componentCap != null)
-				this.componentCap.writeToModel(pc,model);
+				this.componentCap.writeToModel(pc,model,baseURI);
 			
 			if(this.componentFloor != null)
-				this.componentFloor.writeToModel(pc,model);
+				this.componentFloor.writeToModel(pc,model,baseURI);
 			
 			if(this.price != null)
-				this.price.writeToModel(pc,model);
+				this.price.writeToModel(pc,model,baseURI);
 			
 			if(this.priceFunction != null)
-				this.priceFunction.writeToModel(pc,model);
+				this.priceFunction.writeToModel(pc,model,baseURI);
 			
 			for(QuantitativeValue metric : this.metrics)
 			{
-				metric.writeToModel(pc,model,2);
+				metric.writeToModel(pc,model,2,baseURI);
 			}
 				
 			
@@ -223,7 +223,10 @@ public class PriceComponent {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			pc.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			pc.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		{
+			if(resource.getLocalName() != null)
+				pc.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+		}
 		
 		if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)) || resource.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)))
 		{
