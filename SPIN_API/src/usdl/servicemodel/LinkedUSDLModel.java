@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.topbraid.spin.system.SPINModuleRegistry;
 import org.topbraid.spin.util.JenaUtil;
@@ -22,17 +25,19 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import exceptions.InvalidLinkedUSDLModelException;
-import exceptions.ReadModelException;
 
 public class LinkedUSDLModel {
 	private List<Service> services;
 	private List<Offering> offerings;
+	private String baseURI;
+	private Map<String,String> prefixes; // inverted prefixes map KEY = URI, VALUE = prefix name
 	
-	protected LinkedUSDLModel() {
+	protected LinkedUSDLModel(String baseURI) {
 		super();
 		this.services = new ArrayList<Service>();
 		this.offerings = new ArrayList<Offering>();
-		
+		this.baseURI = baseURI;
+		this.prefixes = new HashMap<String, String>();
 		// Initialize system functions and templates
 		SPINModuleRegistry.get().init();
 		
@@ -58,12 +63,43 @@ public class LinkedUSDLModel {
 		this.offerings = offerings;
 	}
 
+	public String getBaseURI() {
+		return baseURI;
+	}
+
+
+	public void setBaseURI(String baseURI) {
+		this.baseURI = baseURI;
+	}
+
+	protected Map<String, String> getPrefixes() {
+		return prefixes;
+	}
+
+	protected void setPrefixes(Map<String, String> prefixes) {
+		this.prefixes = prefixes;
+	}
+
+	protected void addPrefix(String key, String value){
+		this.prefixes.put(key, value);
+	}
+	
+	/**
+	 * get the name of prefixe based on its URI
+	 * @param   key   the URI String
+	 * @return  a String with the prefix name
+	 */
+	protected String getPrefixName(String key){
+		return this.prefixes.get(key);
+	}
+
 	/**
 	 * Imports an RDF model and maps it to java objects populating the LinkedUSDLModel structure  
 	 * @param   model   The model to read from
 	 */
 	public void readModel(Model model){
 		System.out.println("READING FROM MODEL");
+		this.setPrefixes(this.processPrefixes(model));
 		
 		this.offerings = this.readAllOfferings(model);
 //		this.services = this.readAllServices(model);
@@ -84,7 +120,7 @@ public class LinkedUSDLModel {
 		while(results.hasNext()){
 			QuerySolution row = results.next();
 			Offering offering = Offering.readFromModel(row.getResource(variableName), model);
-			//System.out.println(offering.toString());
+			System.out.println(offering.toString());
 			offeringsList.add(offering);
 		}
 		
@@ -108,7 +144,7 @@ public class LinkedUSDLModel {
 		// Create main model
 		Model model = JenaUtil.createDefaultModel();
 		//JenaUtil.initNamespaces(model.getGraph());
-		setPrefixes(model);
+		model = this.setModelPrefixes(model);
 		
 		for(Offering of : this.offerings)
 			of.writeToModel(model);
@@ -116,37 +152,29 @@ public class LinkedUSDLModel {
 		return model;
 	}
 	
-	private void setPrefixes(Model model){
-		model.setNsPrefix("usdl",  Prefixes.USDL_CORE.getPrefix());
-		model.setNsPrefix("rdf",   Prefixes.RDF.getPrefix());
-		model.setNsPrefix("owl",   Prefixes.OWL.getPrefix());
-		model.setNsPrefix("dc",    Prefixes.DC.getPrefix() );
-		model.setNsPrefix("xsd",   Prefixes.XSD.getPrefix());
-		model.setNsPrefix("vann",  Prefixes.VANN.getPrefix());
-		model.setNsPrefix("foaf",  Prefixes.FOAF.getPrefix());
-		model.setNsPrefix("rdfs",  Prefixes.RDFS.getPrefix());
-		model.setNsPrefix("gr",    Prefixes.GR.getPrefix()  );
-		model.setNsPrefix("skos",  Prefixes.SKOS.getPrefix());
-		model.setNsPrefix("org",   Prefixes.ORG.getPrefix() );
-		model.setNsPrefix("price", Prefixes.USDL_PRICE.getPrefix() );
-		model.setNsPrefix("legal", Prefixes.USDL_LEGAL.getPrefix() );
-		model.setNsPrefix("cloud", Prefixes.CLOUD.getPrefix());
-		model.setNsPrefix("sp", Prefixes.SP.getPrefix());
-		model.setNsPrefix("spl", Prefixes.SPL.getPrefix());
-		model.setNsPrefix("spin", Prefixes.SPIN.getPrefix());
-//		model.setNsPrefix("",   Prefixes.BASE.getPrefix() );
+	private Model setModelPrefixes(Model model){
+		//TODO: usar o Map para setar os prefixos no modelo
+		//mas tenho de iterar pelo map e inverter a key com o value.
+		
+		Iterator it = this.prefixes.entrySet().iterator();
+		while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        String key = (String)pairs.getKey(); //URI
+	        String value = (String)pairs.getValue(); //preffix name
+	        model.setNsPrefix(value, key);
+	    }
+		return model;
 	}
 	
 	
 	/**
 	 * Exports the LinkedUSDLModel to an RDF file.  
 	 * @param   path   The path where the final file will be stored
-	 * @param   baseURI   The string representing the baseURI to use in the resulting file. defaults to null.
 	 * @param   format	the RDFFormat to use 
 	 * @throws InvalidLinkedUSDLModelException 
 	 * @throws IOException 
 	 */
-	public void writeModelToFile(String path, String baseURI, String format) throws InvalidLinkedUSDLModelException, IOException
+	public void writeModelToFile(String path, String format) throws InvalidLinkedUSDLModelException, IOException
 	{
 		Model model = this.WriteToModel(baseURI);
 		LinkedUSDLValidator.validateModel(model);
@@ -162,6 +190,28 @@ public class LinkedUSDLModel {
 		FileOutputStream out = new FileOutputStream(outputFile);
 		model.write(out, format);
 		out.close();
+	}
+	
+	private Map<String, String> processPrefixes(Model model){
+		Map<String, String> result = new HashMap<String, String>();
+		
+		//adicionar o baseURI
+		result.put(this.baseURI, "");
+		
+		for(Prefixes p : Prefixes.values()){
+			result.put(p.getPrefix(), p.getName());
+		}
+		Iterator it = model.getNsPrefixMap().entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        String name = (String)pairs.getKey();
+	        String uri = (String)pairs.getValue();
+	        if(!result.containsKey(uri)){
+	        	result.put(uri, name);
+	        }
+	    }
+		
+		return result;
 	}
 	
 	@Override

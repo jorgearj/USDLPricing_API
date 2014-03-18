@@ -33,7 +33,7 @@ public enum RDFSEnum {
 	 * @return   A String of the property with its prefix.
 	 */
 	public String getPropertyString(){
-		return Prefixes.RDFS.getName() + property;
+		return Prefixes.RDFS.getName() + ":" + property;
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public enum RDFSEnum {
 	 */
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P")){
-			return model.createProperty(Prefixes.RDFS.getPrefix() + property);
+			return model.createProperty(Prefixes.RDFS.getPrefix() + ":" + property);
 		}else{
 			return null;
 		}

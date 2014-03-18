@@ -70,8 +70,8 @@ public class APIUsageExample{
 		LinkedUSDLModel model;
 		try {
 			model = LinkedUSDLModelFactory.createFromModel("./ServiceExamples/");
-			System.out.println(model.toString());
-			model.writeModelToFile("./serviceExamples/test.ttl", "baseURI/de_teste", "TTL");
+//			System.out.println(model.toString());
+			model.writeModelToFile("./DebuggingFiles/test.ttl", "TTL");
 		} catch (InvalidLinkedUSDLModelException | IOException
 				| ReadModelException e) {
 			e.printStackTrace();

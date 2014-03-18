@@ -1,5 +1,7 @@
 package usdl.servicemodel;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileVisitResult;
@@ -9,9 +11,11 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import usdl.constants.enums.Prefixes;
 import usdl.servicemodel.validations.LinkedUSDLValidator;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -30,13 +34,27 @@ import exceptions.ReadModelException;
  */
 public class LinkedUSDLModelFactory {
 	
+	
+	private static final String defaultBaseURI = "http://rdfs.genssiz.org/PricingAPI#";
+	
+	
 	/**
 	 * Creates an empty LinkedUSDLModel instance. 
 	 * @return  An initialized LinkedUSDLModel object.
 	 */
 	public static LinkedUSDLModel createEmptyModel(){
-		return new LinkedUSDLModel();
+		return new LinkedUSDLModel(defaultBaseURI);
 	}
+	
+	/**
+	 * Creates an empty LinkedUSDLModel instance with a user defined baseURI. 
+	 * @param   baseURI   the base URI to use in the model
+	 * @return  An initialized LinkedUSDLModel object.
+	 */
+	public static LinkedUSDLModel createEmptyModel(String baseURI){
+		return new LinkedUSDLModel(baseURI);
+	}
+	
 	
 	/**
 	 * Creates a LinkedUSDLModel instance based on an already existing Linked USDL model. 
@@ -49,8 +67,33 @@ public class LinkedUSDLModelFactory {
 	 * @throws ReadModelException 
 	 */
 	public static LinkedUSDLModel createFromModel(String path) throws InvalidLinkedUSDLModelException, IOException, ReadModelException{
-		LinkedUSDLModel linkedUSDL = new LinkedUSDLModel();
+		return LinkedUSDLModelFactory.createFromModel(path, defaultBaseURI);
+	}
+	
+	/**
+	 * Creates a LinkedUSDLModel instance based on an already existing Linked USDL model. 
+	 * The existing model is read from the file path that can either be to a single file (TTL or RDF) or to a folder containing any number of these file types.
+	 * Note that all files with file extensions: ttl and rdf will be imported and validated as a whole for Linked USDL compliance.  
+	 * @param   path   The file path from where to import the Linked USDL model
+	 * @param   baseURI   the base URI to use in the model
+	 * @return  An initialized LinkedUSDLModel object already populated with all elements read.
+	 * @throws InvalidLinkedUSDLModelException 
+	 * @throws IOException 
+	 * @throws ReadModelException 
+	 */
+	public static LinkedUSDLModel createFromModel(String path, String baseURI) throws InvalidLinkedUSDLModelException, IOException, ReadModelException{
+		LinkedUSDLModel linkedUSDL = new LinkedUSDLModel(baseURI);
+		
 		Model model = new LinkedUSDLModelFactory().importModel(path);
+		
+		//TESTS		
+//		LinkedUSDLModelFactory.write(model, "./DebuggingFiles/Output.ttl", "TTL");
+//		Iterator it = model.getNsPrefixMap().entrySet().iterator();
+//	    while (it.hasNext()) {
+//	        Map.Entry pairs = (Map.Entry)it.next();
+//	        System.out.println("        - "+ pairs.getKey() + " = " + pairs.getValue());
+//	    }
+		
 		//validates the model against the Linked USDL specification
 		LinkedUSDLValidator.validateModel(model);
 		linkedUSDL.readModel(model);
@@ -60,8 +103,10 @@ public class LinkedUSDLModelFactory {
 	
 	private Model importModel(String path) throws IOException, ReadModelException{
 		Model model = ModelFactory.createDefaultModel();
+//		this.setPrefixes(model);
 		
 		ArrayList<String> fileNames = new ArrayList<String>();
+		Map<String, String> prefixes = new HashMap<String, String>(); //inverted map of prefixes KEY = URI, VALUE = name
 		
 		fileNames = this.getFileNames(path);
 		System.out.println(fileNames);
@@ -73,17 +118,21 @@ public class LinkedUSDLModelFactory {
 			if(ext.equalsIgnoreCase("ttl")){
 				temp = this.readFile(file, "TTL" );
 				if(temp != null){
-					this.addPrefix(temp);
+					prefixes = this.processPrefixes(temp, prefixes);
+//					this.addPrefix(temp, model);
 					model.add(temp);
 				}
 			}else if(ext.equalsIgnoreCase("rdf")){
 				temp = this.readFile(file, "RDF/XML" );
 				if(temp != null){
-					this.addPrefix(temp);
+					prefixes = this.processPrefixes(temp, prefixes);
+//					this.addPrefix(temp, model);
 					model.add(temp);
 				}
 			}
 		}
+		
+		model = this.setPrefixes(model, prefixes);
 		
 		return model;
 	}
@@ -142,28 +191,6 @@ public class LinkedUSDLModelFactory {
 	    return ext;
 	}
 	
-	private Model addPrefix(Model service) throws ReadModelException{
-		
-		try {
-			String name = this.getModelName(service);
-			service.setNsPrefix(name, service.getNsPrefixURI(""));
-		} catch (NullPointerException e) {
-			//e.printStackTrace();
-			throw new ReadModelException(ErrorMessagesEnum.NO_BASE_URI.getMessage(), e);
-		}
-		
-		return service;
-	}
-	
-	
-	private void printPrefixes(Model model){
-		Iterator it = model.getNsPrefixMap().entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry pairs = (Map.Entry)it.next();
-	        System.out.println("        - "+ pairs.getKey() + " = " + pairs.getValue());
-	    }
-	}
-	
 	private String getModelName(Model model){
 		String prefix = model.getNsPrefixURI("");
 		String[] tokens = prefix.split("/");
@@ -172,6 +199,54 @@ public class LinkedUSDLModelFactory {
 //		System.out.println(name);
 		
 		return name;
+	}
+	
+	private Map<String, String> processPrefixes(Model model, Map<String, String> prefixes) throws ReadModelException{
+		Map<String, String> result = prefixes;
+		
+		
+		try {
+			String name = this.getModelName(model);
+			Iterator it = model.getNsPrefixMap().entrySet().iterator();
+		    while (it.hasNext()) {
+		        Map.Entry pairs = (Map.Entry)it.next();
+		        String key = (String)pairs.getKey();
+		        if(key.equalsIgnoreCase(""))
+		        	key = name;
+		        
+		        result.put((String)pairs.getValue(), key);
+		        
+		    }
+		} catch (NullPointerException e) {
+			//e.printStackTrace();
+			throw new ReadModelException(ErrorMessagesEnum.NO_BASE_URI.getMessage(), e);
+		}
+		
+		return result;
+	}
+	
+	private Model setPrefixes(Model model, Map<String, String> prefixes){
+		Iterator it = prefixes.entrySet().iterator();
+		while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        String key = (String)pairs.getKey(); //URI
+	        String value = (String)pairs.getValue(); //preffix name
+	        model.setNsPrefix(value, key);
+	    }
+		
+		return model;
+	}
+	
+	//only for testing---to remove from this class
+	private static void write(Model model, String path, String format) throws IOException {
+		File outputFile = new File(path);
+		if (!outputFile.exists()) {
+        	outputFile.createNewFile();        	 
+        }
+
+		FileOutputStream out = new FileOutputStream(outputFile);
+		model.write(out, format);
+		out.close();
 	}
 
 }

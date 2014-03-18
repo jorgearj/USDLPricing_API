@@ -32,7 +32,7 @@ public enum FOAFEnum {
 	 * @return   A String of the property with its prefix.
 	 */
 	public String getPropertyString(){
-		return Prefixes.FOAF.getName() + property;
+		return Prefixes.FOAF.getName() + ":" + property;
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public enum FOAFEnum {
 	 */
 	public Property getProperty(Model model) {
 		if(type.equalsIgnoreCase("P")){
-			return model.createProperty(Prefixes.FOAF.getPrefix() + property);
+			return model.createProperty(Prefixes.FOAF.getPrefix() + ":" + property);
 		}else{
 			return null;
 		}
