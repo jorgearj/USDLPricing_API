@@ -73,7 +73,7 @@ public class PriceFunction {
 	@Override
 	public String toString() {
 		return "PriceFunction [name=" + name + ", stringFunction="
-				+ stringFunction + ", Usage variables=" + usageVariables
+				+ stringFunction +",SPARQLFunction = "+ this.SPARQLFunction+ ", Usage variables=" + usageVariables
 				+ ", Provider variables=" + providerVariables
 				+ ", constraints=" + constraints + ", comment=" + comment + "]";
 	}
@@ -166,13 +166,16 @@ public class PriceFunction {
 		Function func = null;
 		if(this.name != null)
 		{
-			func = model.createResource(Prefixes.BASE.getName() + this.name, SPIN.Function).as(Function.class);
-			func.addProperty(RDFSEnum.LABEL.getProperty(model), this.name);
+			func = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime(), SPIN.Function).as(Function.class);
+			func.addProperty(RDFSEnum.LABEL.getProperty(model), this.name.replaceAll(" ", "_"));
 		}
+		else
+			func = model.createResource(Prefixes.BASE.getPrefix() + "PriceFunction" + "_TIME"+System.nanoTime(),SPIN.Function).as(Function.class);
 		
 		if(this.stringFunction != null)// Create a function from the string stringFunction
 		{
 			MathExp2SPARQL parser = new MathExp2SPARQL(this.stringFunction,this.providerVariables,this.usageVariables);
+			//System.out.println(parser.getSPARQLQuery());
 			//ArrayList<String> detectedVariables = parser.getParsedVariables();
 			com.hp.hpl.jena.query.Query arqQuery = ARQFactory.get().createQuery(model,parser.getSPARQLQuery());
 			Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
@@ -189,11 +192,13 @@ public class PriceFunction {
 			func.addProperty(RDFSEnum.COMMENT.getProperty(model), this.comment);
 		
 		for(Usage var : this.usageVariables)
+		{
 			var.writeToModel(func,model);
-		
+		}
 		for(Provider var2 : this.providerVariables)
+		{
 			var2.writeToModel(func,model);
-		
+		}
 		owner.addProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model), func);//link the Price Component with the Price Plan
 	}
 	
@@ -215,9 +220,12 @@ public class PriceFunction {
 		
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			pf.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+		else
+			pf.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		Function ff = SPINModuleRegistry.get().getFunction(resource.getURI(), model);//get the function from the model
 		com.hp.hpl.jena.query.Query narq = ARQFactory.get().createQuery((Select)ff.getBody());//transform the spin objects that define the function into a SPARQL query
+		
 		//QueryExecution qexecc = ARQFactory.get().createQueryExecution(narq, model);//function execution
 		//ResultSet rsc = qexecc.execSelect();//function execution
 		if(narq != null)

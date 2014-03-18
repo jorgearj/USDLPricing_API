@@ -23,7 +23,7 @@ public enum Prefixes {
 	SPL  		("http://spinrdf.org/spl#>",					"spl"),
 	BASE		("http://USDLAPI.org/base#",       ""),//add a link
 	PF			("http://jena.hpl.hp.com/ARQ/property#",		"pf");
-	 
+
 	private String preffix;
 	private String name;
  

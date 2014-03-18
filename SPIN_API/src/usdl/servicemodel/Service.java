@@ -105,7 +105,7 @@ public class Service {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			service.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			service.setName(resource.getLocalName());
+			service.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			service.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
@@ -151,14 +151,14 @@ public class Service {
 	{
 		Resource service = null;
 		if(this.name != null)
-			service = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+			service = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
 		else
-			service = model.createResource(Prefixes.BASE.getName() +"Service" + "_" + System.currentTimeMillis());
+			service = model.createResource(Prefixes.BASE.getPrefix() +"Service" + "_TIME" + System.nanoTime());
 		
 		service.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.SERVICE.getResource(model));//rdf type
 		
 		if(this.name != null)
-			service.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+			service.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 		if(this.comment != null)
 			service.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
 		

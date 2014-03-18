@@ -69,7 +69,7 @@ public class Offering {
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			offering.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 		else
-			offering.setName(resource.getLocalName());
+			offering.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
 			offering.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
@@ -98,14 +98,14 @@ public class Offering {
 	{
 		Resource offering = null;
 		if(this.name != null)
-			offering = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
+			offering = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
 		else
-			offering = model.createResource(Prefixes.BASE.getName() +"ServiceOffering" + "_" + System.currentTimeMillis());
+			offering = model.createResource(Prefixes.BASE.getPrefix() +"ServiceOffering" + "_TIME" + System.nanoTime());
 		
-		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.BASE.getName() +"ServiceOffering" ));//rdf type
+		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_CORE.getPrefix() +"ServiceOffering" ));//rdf type
 		
 		if(this.name != null)
-			offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+			offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
 		
 		if(this.comment != null)
 			offering.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment

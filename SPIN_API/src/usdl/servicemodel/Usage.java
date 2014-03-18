@@ -68,17 +68,16 @@ public class Usage extends PriceVariable {
 		
 		// Initialize system functions and templates
 
-
+		
 		Resource var = null;
 		if (this.getName() != null) {
-			var = model.createResource(Prefixes.BASE.getName() + this.getName() + "_" + System.currentTimeMillis());
-			var.addProperty(RDFSEnum.LABEL.getProperty(model), this.getName());
-			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Usage"));
+			var = model.createResource(Prefixes.BASE.getPrefix() + this.getName().replaceAll(" ", "_"));
+			var.addProperty(RDFSEnum.LABEL.getProperty(model), this.getName().replaceAll(" ", "_"));
+			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "Usage"));
 		}
 		else
 		{
-			var = model.createResource(Prefixes.BASE.getName() + "UsageVariable" + "_" + System.currentTimeMillis());
-			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Usage"));
+			System.out.println("[Usage]Unnamed variable. Every created variable needs to have a name");//throw exception
 		}
 		
 		if(this.getComment() != null)

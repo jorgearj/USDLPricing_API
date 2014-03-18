@@ -82,14 +82,13 @@ public class CloudProvider {
 		CloudProvider provider = new CloudProvider();
 		
 		
-		//populate the Offering
 		if(resource.hasProperty(FOAFEnum.NAME.getProperty(model)))
 			provider.setName(resource.getProperty(FOAFEnum.NAME.getProperty(model)).getString());
 		else{
 			if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 				provider.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 			else
-				provider.setName(resource.getLocalName());
+				provider.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		}
 		
 		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
@@ -113,12 +112,16 @@ public class CloudProvider {
 		Resource provider = null;
 		
 		if(this.name != null)
-			provider =model.createResource(Prefixes.GR.getName() + this.name + "_" + System.currentTimeMillis());
+		{
+			provider =model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" +System.nanoTime());
+			provider.addProperty(FOAFEnum.NAME.getProperty(model),model.createLiteral(this.name.replaceAll(" ", "_")));
+		}
 		else
-			provider =model.createResource(Prefixes.GR.getName() + "BusinessEntity"+ "_" + System.currentTimeMillis());
+		{
+			provider =model.createResource(Prefixes.BASE.getPrefix() + "BusinessEntity"+ "_" +System.nanoTime());
+		}
 		
-		
-		provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getName() + "BusinessEntity"));//rdf type
+		provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "BusinessEntity"));//rdf type
 		
 		
 		owner.addProperty(USDLCoreEnum.HAS_PROVIDER.getProperty(model), provider);

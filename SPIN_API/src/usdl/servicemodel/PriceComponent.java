@@ -147,9 +147,14 @@ public class PriceComponent {
 		Resource pc = null;
 		if(name != null)
 		{
-			pc = model.createResource(Prefixes.BASE.getName() + this.name + "_" + System.currentTimeMillis());
-			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "PriceComponent"));//rdf type
-			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+			pc = model.createResource(Prefixes.BASE.getPrefix() + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
+			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
+			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
+		}
+		else
+		{
+			pc = model.createResource(Prefixes.BASE.getPrefix() + "PriceComponent" + "_TIME" + System.nanoTime());
+			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
 		}
 		
 		if(pc != null)
@@ -170,10 +175,13 @@ public class PriceComponent {
 				this.priceFunction.writeToModel(pc,model);
 			
 			for(QuantitativeValue metric : this.metrics)
+			{
 				metric.writeToModel(pc,model,2);
+			}
+				
 			
 			if(this.isDeduction)
-				pc.addProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getName() + "Deduction"));
+				pc.addProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "Deduction"));
 			
 			owner.addProperty(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model), pc);//link the Price Component with the Price Plan
 		}
@@ -214,6 +222,8 @@ public class PriceComponent {
 		
 		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
 			pc.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+		else
+			pc.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
 		
 		if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)) || resource.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)))
 		{
