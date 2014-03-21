@@ -47,7 +47,7 @@ public class APIReadGenericModelExample{
 
 		LinkedUSDLModel jmodel;
 		try {
-			jmodel = LinkedUSDLModelFactory.createFromModel("generic_model.ttl");//read a generic model
+			jmodel = LinkedUSDLModelFactory.createFromModel("./DebuggingFiles/generic_model.ttl");//read a generic model
 			System.out.println(jmodel.toString());
 			
 			//set variables values

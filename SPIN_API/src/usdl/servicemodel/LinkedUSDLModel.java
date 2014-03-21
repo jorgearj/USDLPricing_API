@@ -145,27 +145,38 @@ public class LinkedUSDLModel {
 		// Create main model
 		Model model = JenaUtil.createDefaultModel();
 	    
-		model = this.setModelPrefixes(model);
+		this.addPrefixes(model);
 		model.setNsPrefix("", this.baseURI + "#");
+		
 		for(Offering of : this.offerings)
 			of.writeToModel(model,this.baseURI);
 		
 		return model;
 	}
 	
-	private Model setModelPrefixes(Model model){
+	public Model addPrefixes(Model model)
+	{
+		model.setNsPrefix(	"price",Prefixes.USDL_PRICE.getPrefix() );
+		model.setNsPrefix(	"core",Prefixes.USDL_CORE.getPrefix() );
+		model.setNsPrefix(	"legal",Prefixes.USDL_LEGAL.getPrefix() );
+		model.setNsPrefix(	"rdf",Prefixes.RDF.getPrefix() );
+		model.setNsPrefix(	"owl",Prefixes.OWL.getPrefix() );
+		model.setNsPrefix(	"dc",Prefixes.DC.getPrefix() );
+		model.setNsPrefix(	"xsd",Prefixes.XSD.getPrefix() );
+		model.setNsPrefix(	"vann",Prefixes.VANN.getPrefix() );
+		model.setNsPrefix(	"foaf",Prefixes.FOAF.getPrefix() );
+		model.setNsPrefix(	"rdfs",Prefixes.RDFS.getPrefix() );
+		model.setNsPrefix(	"gr",Prefixes.GR.getPrefix() );
+		model.setNsPrefix(	"skos",Prefixes.SKOS.getPrefix() );
+		model.setNsPrefix(	"sp",Prefixes.SP.getPrefix() );
+		model.setNsPrefix(	"spl",Prefixes.SPL.getPrefix() );
+		model.setNsPrefix(	"spin",Prefixes.SPIN.getPrefix() );
+		model.setNsPrefix(	"cloud",Prefixes.CLOUD.getPrefix() );
 
-		Iterator<Entry<String, String>> it = this.prefixes.entrySet().iterator();
-		while (it.hasNext()) {
-	        Map.Entry<String, String> pairs = (Map.Entry<String, String>)it.next();
-	        String key = (String)pairs.getKey(); //URI
-	        String value = (String)pairs.getValue(); //preffix name
-	        model.setNsPrefix(value, key);
-	    }
+		
 		return model;
 	}
-	
-	
+
 	/**
 	 * Exports the LinkedUSDLModel to an RDF file.  
 	 * @param   path   The path where the final file will be stored

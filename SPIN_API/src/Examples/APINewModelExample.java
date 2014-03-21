@@ -126,7 +126,7 @@ public class APINewModelExample {
 		jmodel.setBaseURI("http://PricingAPIGenericModelExample.com");
 		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
 
-		File outputFile = new File("./generic_model.ttl");
+		File outputFile = new File("./DebuggingFiles/generic_model.ttl");
 		if (!outputFile.exists()) {
 			outputFile.createNewFile();
 		}

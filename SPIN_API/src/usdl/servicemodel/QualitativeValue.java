@@ -35,7 +35,7 @@ public class QualitativeValue extends Value {
 
 	@Override
 	public String toString() {
-		return "QualitativeValue [hasLabel=" + hasLabel + ",types ="+this.getTypes().toString()+ "]" ;
+		return "QualitativeValue [hasLabel=" + hasLabel + ",types ="+this.getTypes().toString()+ ",comment ="+this.getComment()+"]" ;
 	}
 	
 	//New functions
