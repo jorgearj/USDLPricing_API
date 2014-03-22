@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import usdl.constants.properties.PricingAPIProperties;
 import usdl.servicemodel.validations.LinkedUSDLValidator;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -33,16 +35,16 @@ import exceptions.ReadModelException;
  */
 public class LinkedUSDLModelFactory {
 	
-	
-	private static final String defaultBaseURI = "http://rdfs.genssiz.org/PricingAPI";
-	
+	protected LinkedUSDLModelFactory(){
+		
+	}
 	
 	/**
 	 * Creates an empty LinkedUSDLModel instance. 
 	 * @return  An initialized LinkedUSDLModel object.
 	 */
 	public static LinkedUSDLModel createEmptyModel(){
-		return new LinkedUSDLModel(defaultBaseURI);
+		return new LinkedUSDLModel(PricingAPIProperties.defaultBaseURI);
 	}
 	
 	/**
@@ -66,7 +68,7 @@ public class LinkedUSDLModelFactory {
 	 * @throws ReadModelException 
 	 */
 	public static LinkedUSDLModel createFromModel(String path) throws InvalidLinkedUSDLModelException, IOException, ReadModelException{
-		return LinkedUSDLModelFactory.createFromModel(path, defaultBaseURI);
+		return LinkedUSDLModelFactory.createFromModel(path, PricingAPIProperties.defaultBaseURI);
 	}
 	
 	/**
