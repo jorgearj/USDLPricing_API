@@ -383,7 +383,7 @@ public class Arsys {
 		// specifies the additional cost of a different OS
 		PriceComponent pc3 = new PriceComponent();
 		pp3.addPriceComponent(pc3);// add the price component to the price plan
-		pc3.setComment("PriceComponent2 of the PricePlan3");
+		pc3.setComment("PriceComponent3 of the PricePlan3");
 
 		PriceComponent pc3_b = new PriceComponent();
 		pp3.addPriceComponent(pc3_b);// add the price component to the price
@@ -468,9 +468,9 @@ public class Arsys {
 
 		windowswebprice.setValue(windowswebpricevalue);
 
-		pf3_b.addUsageVariable(redhats2monthsb);// link the variables to the
+		pf3_b.addUsageVariable(windowswebs2monthsb);// link the variables to the
 												// function
-		pf3_b.addProviderVariable(redhatprice);// link the variables to the
+		pf3_b.addProviderVariable(windowswebprice);// link the variables to the
 												// function
 				
 		// //////////////////////////////////////////END of the Specification of the s3 PricePlan/////////////////////////////////////////////
