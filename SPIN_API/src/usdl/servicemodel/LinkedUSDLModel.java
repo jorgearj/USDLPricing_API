@@ -37,8 +37,8 @@ public class LinkedUSDLModel {
 		super();
 		this.services = new ArrayList<Service>();
 		this.offerings = new ArrayList<Offering>();
-		this.prefixes = new HashMap<String, String>();
 		this.baseURI = baseURI;
+		this.prefixes = this.defaultPrefixes();
 		// Initialize system functions and templates
 		SPINModuleRegistry.get().init();
 		
@@ -139,14 +139,15 @@ public class LinkedUSDLModel {
 	/**
 	 * Creates a Jena Model representation of the LinkedUSDLModel.  
 	 * @param   baseURI   The string representing the baseURI to use in the resulting file. defaults to null.
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public Model WriteToModel()
+	public Model WriteToModel() throws InvalidLinkedUSDLModelException
 	{
 		// Create main model
 		Model model = JenaUtil.createDefaultModel();
 	    
 		model = this.setModelPrefixes(model);
-		model.setNsPrefix("", this.baseURI + "#");
+//		model.setNsPrefix("", this.baseURI + "#");
 		for(Offering of : this.offerings)
 			of.writeToModel(model,this.baseURI);
 		
@@ -191,7 +192,8 @@ public class LinkedUSDLModel {
 		out.close();
 	}
 	
-	private Map<String, String> processPrefixes(Model model){
+	
+	private Map<String, String> defaultPrefixes(){
 		Map<String, String> result = new HashMap<String, String>();
 		
 		//adicionar o baseURI
@@ -201,6 +203,14 @@ public class LinkedUSDLModel {
 			result.put(p.getPrefix(), p.getName());
 		}
 		
+		return result;
+	}
+	
+	private Map<String, String> processPrefixes(Model model){
+		Map<String, String> result = new HashMap<String, String>();
+		
+		
+		result = this.defaultPrefixes();
 		
 		Iterator<Entry<String,String>> it = model.getNsPrefixMap().entrySet().iterator();
 	    while (it.hasNext()) {

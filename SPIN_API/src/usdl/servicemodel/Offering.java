@@ -9,10 +9,15 @@ import usdl.constants.enums.ResourceNameEnum;
 import usdl.constants.enums.USDLCoreEnum;
 import usdl.constants.enums.USDLPriceEnum;
 import usdl.constants.properties.PricingAPIProperties;
+import usdl.servicemodel.validations.LinkedUSDLValidator;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
+
+import exceptions.ErrorMessagesEnum;
+import exceptions.InvalidLinkedUSDLModelException;
 
 public class Offering {
 	private String name = null;
@@ -123,8 +128,9 @@ public class Offering {
 	 * Creates a Resource representation of the Offering instance and writes it into the passed model.
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void writeToModel(Model model,String baseURI)
+	public void writeToModel(Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource offering = null;
 		
@@ -135,10 +141,12 @@ public class Offering {
 				this.namespace = PricingAPIProperties.defaultBaseURI;
 		}
 		
-		if(this.name != null)
+		if(this.name != null){
+			LinkedUSDLValidator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
 			offering = model.createResource(this.namespace + this.localName);
+		}
 		
-		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_CORE.getPrefix() +"ServiceOffering" ));//rdf type
+		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.OFFERING.getResource(model));//rdf type
 		
 		if(this.name != null)
 			offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
@@ -178,18 +186,18 @@ public class Offering {
 	
 	@Override
 	public String toString() {
-		String result = "	- " + this.name + "\n"+
-						"		- " + this.localName +"\n"+
-						"		- " + this.namespace +"\n"+
-						"		- " + this.comment +"\n"+
-						"		- SERVICES:\n";
+		String result = "- " + this.name + "\n"+
+						"	- " + this.localName +"\n"+
+						"	- " + this.namespace +"\n"+
+						"	- " + this.comment +"\n"+
+						"	- SERVICES:\n";
 		for(Service service : this.includes){
 			result = result + 
-						"			- " + service.toString() + "\n"; 
+						"		- " + service.toString() + "\n"; 
 		}
 		if(this.pricePlan != null){
 			result = result +
-						"		- PRICE PLAN: \n" + this.pricePlan.toString();
+						"	- PRICE PLAN: \n" + this.pricePlan.toString();
 		}
 		return result;
 	}

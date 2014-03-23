@@ -5,7 +5,8 @@ import usdl.constants.enums.Prefixes;
 public enum ErrorMessagesEnum {
 	NO_MODEL ("There is no RDF model."),
 	NO_BASE_URI("Model without BaseURI."),
-	MISSING_PREFIX("Missing necessary prefix.");
+	MISSING_PREFIX("Missing necessary prefix."),
+	DUPLICATE_RESOURCE("Attempted to create new resource with already existing URI");
 	
 	private String message;
  

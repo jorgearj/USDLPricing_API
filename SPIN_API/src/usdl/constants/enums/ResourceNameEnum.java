@@ -4,7 +4,10 @@ import usdl.constants.properties.PricingAPIProperties;
 
 public enum ResourceNameEnum {
 	
-	OFFERING("Service Offering");
+	OFFERING("Service Offering"),
+	SERVICE("Service"),
+	PRICEPLAN("Price Plan"),
+	PRICECOMPONENT("Price Component");
 	
 	private String name;
 	

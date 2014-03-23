@@ -239,17 +239,5 @@ public class LinkedUSDLModelFactory {
 		
 		return model;
 	}
-	
-	//only for testing---to remove from this class
-	private static void write(Model model, String path, String format) throws IOException {
-		File outputFile = new File(path);
-		if (!outputFile.exists()) {
-        	outputFile.createNewFile();        	 
-        }
-
-		FileOutputStream out = new FileOutputStream(outputFile);
-		model.write(out, format);
-		out.close();
-	}
 
 }

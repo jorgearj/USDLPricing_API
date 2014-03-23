@@ -16,6 +16,7 @@ public class APITest {
 		System.out.println("STARTING API");
 		try {
 			LinkedUSDLModel model = LinkedUSDLModelFactory.createFromModel("./ServiceExamples/");
+//			LinkedUSDLModel model = LinkedUSDLModelFactory.createEmptyModel();
 			System.out.println(model.toString());
 			model.writeModelToFile("./DebuggingFiles/test.ttl", "TTL");
 		} catch (InvalidLinkedUSDLModelException | IOException
