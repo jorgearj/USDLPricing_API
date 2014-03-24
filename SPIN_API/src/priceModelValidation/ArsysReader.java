@@ -56,11 +56,11 @@ public class ArsysReader {
 							for(Usage var : usageVars)//for each usage var, set a value.
 							{
 								QuantitativeValue val = new QuantitativeValue();
-								System.out.println("Insert the value for the " + var.getName() +" variable.\nDetails: \n"+var.getComment());
+								//System.out.println("Insert the value for the " + var.getName() +" variable.\nDetails: \n"+var.getComment());
 								
-								Scanner in = new Scanner(System.in);
+								//Scanner in = new Scanner(System.in);
 								//double num = in.nextInt();
-								in.close(); 
+								//in.close(); 
 								
 								val.setValue(1);//1month
 								var.setValue(val);//add the new value to the usage variable 

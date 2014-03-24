@@ -78,7 +78,8 @@ public class Arsys {
 		
 		
 		QuantitativeValue CPUCores=null,CPUSpeed=null;
-		CPUCores = CPUSpeed = new QuantitativeValue();
+		CPUCores =new QuantitativeValue();
+		CPUSpeed = new QuantitativeValue();
 		
 		CPUCores.addType(CLOUDEnum.CPUCORES.getConceptURI());
 		CPUCores.setValue(2);
@@ -105,7 +106,6 @@ public class Arsys {
 		DiskSize.setValue(320);
 		DiskSize.setUnitOfMeasurement("B86");//GB
 		
-		StorageType = new QualitativeValue();
 		StorageType.addType(CLOUDEnum.STORAGETYPE.getConceptURI());
 		StorageType.setHasLabel("SATA");
 		s1QuantFeat.add(DiskSize);
@@ -164,29 +164,29 @@ public class Arsys {
 		
 		//s1 includes  CentOS
 		Service s2 = s1;//s2 includes Red Hat Enterprise Linux 6
-		ArrayList<QuantitativeValue> s2QuantFeat = s1QuantFeat;//container for the Quantitative Features
-		ArrayList<QualitativeValue> s2QualFeat = s1QualFeat;//container for the Qualitative Features
+		ArrayList<QuantitativeValue> s2QuantFeat = (ArrayList<QuantitativeValue>) s1QuantFeat.clone();//container for the Quantitative Features
+		ArrayList<QualitativeValue> s2QualFeat = (ArrayList<QualitativeValue>) s1QualFeat.clone();//container for the Qualitative Features
 		Service s3 = s1;//s3 includes Windows Server R2 2008 Web Ed.
-		ArrayList<QuantitativeValue> s3QuantFeat = s1QuantFeat;//container for the Quantitative Features
-		ArrayList<QualitativeValue> s3QualFeat = s1QualFeat;//container for the Qualitative Features
+		ArrayList<QuantitativeValue> s3QuantFeat = (ArrayList<QuantitativeValue>) s1QuantFeat.clone();//container for the Quantitative Features
+		ArrayList<QualitativeValue> s3QualFeat = (ArrayList<QualitativeValue>) s1QualFeat.clone();//container for the Qualitative Features
 		//every new service is the same as the s1 but with the difference that each possesses a different OS
 		
 		//add the respective OS to the services and their management method
 		
 		QualitativeValue OS = new QualitativeValue();
-		Platform.addType(CLOUDEnum.UNIX.getConceptURI());
+		OS.addType(CLOUDEnum.UNIX.getConceptURI());
 		OS.setComment("Operating System");
 		OS.setHasLabel("CentOS 6");
 		s1QualFeat.add(OS);
 		
 		OS = new QualitativeValue();
-		Platform.addType(CLOUDEnum.UNIX.getConceptURI());
+		OS.addType(CLOUDEnum.UNIX.getConceptURI());
 		OS.setComment("Operating System");
 		OS.setHasLabel(" Red Hat Enterprise Linux 6");
 		s2QualFeat.add(OS);
 		
 		OS = new QualitativeValue();
-		Platform.addType(CLOUDEnum.WINDOWS.getConceptURI());
+		OS.addType(CLOUDEnum.WINDOWS.getConceptURI());
 		OS.setComment("Operating System");
 		OS.setHasLabel("Windows Server R2 2008 Web Ed.");
 		s3QualFeat.add(OS);
@@ -196,12 +196,14 @@ public class Arsys {
 		//add their management control methods, all offerings can be managed via WEB or, depending on their OS, via Console or GUI
 		
 		QualitativeValue console , gui , web ;
-		console=gui=web=new QualitativeValue();
+		console=new QualitativeValue();
+		gui=new QualitativeValue();
+		web=new QualitativeValue();
 		web.addType(CLOUDEnum.WEB.getConceptURI());
 		web.setHasLabel("Server Control Panel");
-		s1QualFeat.add(OS);
-		s2QualFeat.add(OS);
-		s3QualFeat.add(OS);
+		s1QualFeat.add(web);
+		s2QualFeat.add(web);
+		s3QualFeat.add(web);
 
 		
 		console.addType(CLOUDEnum.CONSOLE.getConceptURI());

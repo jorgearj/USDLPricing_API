@@ -59,7 +59,7 @@ public class QualitativeValue extends Value {
 		}
 		else
 		{
-			qv = model.createResource(baseURI +"#"  + "QuantitativeValue" + "_TIME" + System.nanoTime());
+			qv = model.createResource(baseURI +"#"  + "QualitativeValue" + "_TIME" + System.nanoTime());
 			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "QualitativeValue"));//rdf type
 			for(String s : this.getTypes())
 			{

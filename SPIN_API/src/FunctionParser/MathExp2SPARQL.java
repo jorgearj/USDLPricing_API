@@ -196,12 +196,12 @@ public class MathExp2SPARQL {
 		if (node instanceof SymbolNode) {//symbol node
 			if (SYMBOLS_MAP.containsKey(node.getString().toLowerCase()))
 			{
-				System.out.println("Operator - " + node.getString());
+				//System.out.println("Operator - " + node.getString());
 				stack.add(opmap.get(node.toString()));
 			}
 			else
 			{
-				System.out.println("Variable - " + node.getString());
+				//System.out.println("Variable - " + node.getString());
 				if(StringUtils.isAllUpperCase(node.getString()))
 					stack.add(node.getString());
 				else
