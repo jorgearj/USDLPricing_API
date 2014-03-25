@@ -117,11 +117,11 @@ public class MathExp2SPARQL {
 			SYMBOLS_MAP.put(str.toLowerCase(), str);
 		}
 	}
-	
+
 	public MathExp2SPARQL(String StringFunction,List<Provider> prov,List<Usage> usage) {
 		Parser p = new Parser(true);
 		Map<String,Operator> temp =p.getFactory().getIdentifier2OperatorMap();
-		
+
 		Iterator<String> it = temp.keySet().iterator();
 		while(it.hasNext())
 		{
@@ -130,31 +130,135 @@ public class MathExp2SPARQL {
 			//System.out.println(key + "  " +val); //print the key-value entry
 			opmap.put(key, val);
 		}
-		ASTNode obj = p.parse(StringFunction);//insert the mathematical formula here
-		convert(obj);
 		
-		SPARQLQuery = "SELECT ?result\n" +
-				"WHERE {\n";
-		for(String s : usageVariables)//here we can detect the type of the variable by matching the variables name with the JAVA Object. Through the JAVA object we can see if its a Qualitative or Quantitative Value and treat it as such
+		if(StringFunction.contains("IF"))
 		{
-			if (!StringUtils.isAllUpperCase(s))
-				SPARQLQuery = SPARQLQuery + "\n:" + s + " price:hasValue ?"
-						+ s + "_instance .\n" + "?" + s
-						+ "_instance gr:hasValue ?" + s + "_value .\n";
-			else
+			SPARQLQuery = "SELECT ?result\n" +
+					"WHERE {\n";
+			String[] partitions = StringFunction.split("~"); 
+			ArrayList<String> parcels = new ArrayList<String>();
+			int counter=0;
+			for(String part : partitions)
 			{
+				String[] data = part.split(";");
+				String cond = data[0].replace("IF", "");
+				cond = cond.replace("ELSEIF", "");
+				cond = cond.replace("ELSE", "");
+				String form = data[1];
+				//System.out.println("Cond:  "+cond+"\nForm:  "+form);
+				
+				stack.clear();
+				infixstack.clear();
+				usageVariables.clear();
+				
+				ASTNode objcond = p.parse(cond);
+				convert(objcond);
+				String fa = prefixToInfix(stack,infixstack);
+				fa=fa.replace("[", "");
+				fa=fa.replace("]", "");
+				
+				for(String s : usageVariables)//here we can detect the type of the variable by matching the variables name with the JAVA Object. Through the JAVA object we can see if its a Qualitative or Quantitative Value and treat it as such
+				{
+					if(!SPARQLQuery.contains(s))
+					{
+						if (!StringUtils.isAllUpperCase(s))
+							SPARQLQuery = SPARQLQuery + "\n:" + s + " price:hasValue ?"
+									+ s + "_instance .\n" + "?" + s
+									+ "_instance gr:hasValue ?" + s + "_value .\n";
+						else
+						{
+							//add syntax to deal with constant qualitative attributes like, WINDOWS will probably be 'windows' in the SPARQL Query
+						}
+					}
+				}
+				
+				
+
+				stack.clear();
+				infixstack.clear();
+				usageVariables.clear();
+				
+				ASTNode objform= p.parse(form);
+				convert(objform);
+				 String fb = prefixToInfix(stack,infixstack);
+				fb=fb.replace("[", "");
+				fb=fb.replace("]", "");
+				
+				for(String s : usageVariables)//here we can detect the type of the variable by matching the variables name with the JAVA Object. Through the JAVA object we can see if its a Qualitative or Quantitative Value and treat it as such
+				{
+					if(!SPARQLQuery.contains(s))
+					{
+						if (!StringUtils.isAllUpperCase(s))
+							SPARQLQuery = SPARQLQuery + "\n:" + s + " price:hasValue ?"
+									+ s + "_instance .\n" + "?" + s
+									+ "_instance gr:hasValue ?" + s + "_value .\n";
+						else
+						{
+							//add syntax to deal with constant qualitative attributes like, WINDOWS will probably be 'windows' in the SPARQL Query
+						}
+					}
+				}
+				
+				//BIND (IF(((?gbs > 1) && (?gbs <= (10 * 1024))), ((?gbs - 1) * ?price10), 0) AS ?priceA) .
+				
+				String parcel = "BIND(IF(( "  +fa + " ),("+fb+"),0) AS ?result"+counter+++" ).";
+				parcels.add(parcel);
+				//System.out.println("Cond : "+fa+"\nForm:  "+fb+"\n***************************");
 				
 			}
-				//add syntax to deal with constant qualitative attributes like, WINDOWS will probably be 'windows' in the SPARQL Query
+			//  BIND ((((?priceA + ?priceB) + ?priceC) + ?priceD) AS ?price) .
+			
+			
+			String sum = "";
+			counter--;
+			for(; counter>=0;counter--)
+			{
+				if(counter==0)
+					sum = sum + "?result"+counter;
+				else
+					sum = sum + "?result" + counter + "+";
+			}
+			
+			String lastParcel = "BIND(("+sum+") AS ?result ) .";
+			
+			
+			
+			for(String s : parcels)
+				SPARQLQuery = SPARQLQuery + s + "\n" ;
+			
+			SPARQLQuery = SPARQLQuery + lastParcel+"\n";
+			SPARQLQuery = SPARQLQuery + "\n}\n";
+			
+			//System.out.println(SPARQLQuery);
 		}
-		
-		String f = prefixToInfix(stack,infixstack);
-		f=f.replace("[", "");
-		f=f.replace("]", "");
-		SPARQLQuery = SPARQLQuery + "\nBIND(("+ f + ") AS ?result  ) .\n" +
-				"}";
+		else
+		{
+			ASTNode obj = p.parse(StringFunction);//insert the mathematical formula here
+			convert(obj);
+
+			SPARQLQuery = "SELECT ?result\n" +
+					"WHERE {\n";
+			for(String s : usageVariables)//here we can detect the type of the variable by matching the variables name with the JAVA Object. Through the JAVA object we can see if its a Qualitative or Quantitative Value and treat it as such
+			{
+				if (!StringUtils.isAllUpperCase(s))
+					SPARQLQuery = SPARQLQuery + "\n:" + s + " price:hasValue ?"
+							+ s + "_instance .\n" + "?" + s
+							+ "_instance gr:hasValue ?" + s + "_value .\n";
+				else
+				{
+
+				}
+					//add syntax to deal with constant qualitative attributes like, WINDOWS will probably be 'windows' in the SPARQL Query
+			}
+
+			String f = prefixToInfix(stack,infixstack);
+			f=f.replace("[", "");
+			f=f.replace("]", "");
+			SPARQLQuery = SPARQLQuery + "\nBIND(("+ f + ") AS ?result  ) .\n" +
+					"}";
+		}
 	}
-	
+
 	public ArrayList<String> getParsedVariables()
 	{
 		return this.usageVariables;
@@ -164,11 +268,11 @@ public class MathExp2SPARQL {
 		return this.SPARQLQuery;
 	}
 	public IExpr convert(ASTNode node) throws ConversionException {
-		
+
 		if (node == null) {
 			return null;
 		}
-		
+
 		if (node instanceof FunctionNode) { //function node
 			final FunctionNode functionNode = (FunctionNode) node;
 			final IAST ast = F.ast(convert((ASTNode) functionNode.get(0)));
@@ -178,7 +282,7 @@ public class MathExp2SPARQL {
 			// code below
 			return ast;
 		}
-		
+
 		if (node instanceof FractionNode) { //fraction node
 			FractionNode fr = (FractionNode) node;
 			if (fr.isSign()) {
@@ -187,12 +291,12 @@ public class MathExp2SPARQL {
 			return F.fraction(
 					(IInteger) convert(((FractionNode) node).getNumerator()),(IInteger) convert(((FractionNode) node).getDenominator()));
 		}
-		
+
 		if (node instanceof PatternNode) { //pattern node
 			final PatternNode pn = (PatternNode) node;
 			return F.pattern((ISymbol) convert(pn.getSymbol()),convert(pn.getConstraint()));
 		}
-		
+
 		if (node instanceof SymbolNode) {//symbol node
 			if (SYMBOLS_MAP.containsKey(node.getString().toLowerCase()))
 			{
@@ -206,30 +310,31 @@ public class MathExp2SPARQL {
 					stack.add(node.getString());
 				else
 					stack.add("?"+node.getString().concat("_value"));
-				
+
 				usageVariables.add(node.getString());
 			}
 			return F.symbol(node.getString());
 
 		}
-		
+
 		if (node instanceof IntegerNode) { // integer node
 			final IntegerNode integerNode = (IntegerNode) node;
 			final String iStr = integerNode.getString();
 			if (iStr != null) {
-				//System.out.println("IntegerNode - "+ integerNode.getNumberFormat());
+				//System.out.println("IntegerNode - "+F.integer(iStr, integerNode.getNumberFormat()));
+				stack.add(""+F.integer(iStr, integerNode.getNumberFormat()));
 				return F.integer(iStr, integerNode.getNumberFormat());
 			}
 			//System.out.println("IntegerNode - " + integerNode.getIntValue());
 			stack.add(""+integerNode.getIntValue());
 			return F.integer(integerNode.getIntValue());
 		}
-		
+
 		if (node instanceof StringNode) { //string node
-			// System.out.println("StringNode - " + node.getString());
+			 //System.out.println("StringNode - " + node.getString());
 			return F.stringx(node.getString());
 		}
-		
+
 		if (node instanceof FloatNode) { //float node
 			//System.out.println("FloatNode - " + node.getString());
 			stack.add(node.getString());

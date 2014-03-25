@@ -6,6 +6,7 @@ import usdl.constants.enums.GREnum;
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.USDLPriceEnum;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
@@ -160,7 +161,7 @@ public class PriceSpec {
 		if(this.validThrough != null)
 			ps.addProperty(GREnum.VALID_THROUGH.getProperty(model), model.createTypedLiteral(this.validThrough,XSDDatatype.XSDdate));
 		
-		owner.addProperty(GREnum.HAS_PRICE_SPECIFICATION.getProperty(model), ps);
+		owner.addProperty(USDLPriceEnum.HAS_PRICE.getProperty(model), ps);
 	}
 	
 	/**

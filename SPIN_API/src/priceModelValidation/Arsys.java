@@ -94,7 +94,7 @@ public class Arsys {
 		QuantitativeValue MemorySize =  new QuantitativeValue();
 		MemorySize.addType(CLOUDEnum.MEMORYSIZE.getConceptURI());
 		MemorySize.setValue(2);
-		MemorySize.setUnitOfMeasurement("B86");//GB
+		MemorySize.setUnitOfMeasurement("E34");//GB
 		s1QuantFeat.add(MemorySize);
 
 		//DiskSize, StorageType
@@ -104,7 +104,7 @@ public class Arsys {
 
 		DiskSize.addType(CLOUDEnum.DISKSIZE.getConceptURI());
 		DiskSize.setValue(320);
-		DiskSize.setUnitOfMeasurement("B86");//GB
+		DiskSize.setUnitOfMeasurement("E34");//GB
 		
 		StorageType.addType(CLOUDEnum.STORAGETYPE.getConceptURI());
 		StorageType.setHasLabel("SATA");

@@ -106,6 +106,7 @@ public class PricePlan {
 		double pc_price = -1, lower_limit = -1, upper_limit = -1, function_price = -1,finalvalue=0;
 		for(PriceComponent pc : this.priceComponents)
 		{
+			pc_price = -1; lower_limit = -1; upper_limit = -1;function_price = -1;
 			//get the variables and define their value
 			if(pc.getPriceFunction() != null)
 			{
@@ -126,7 +127,6 @@ public class PricePlan {
 
 			if (pc.getPrice() != null) {
 				pc_price = pc.getPrice().getValue();
-				
 			}
 
 			if(function_price >=0)
@@ -145,7 +145,7 @@ public class PricePlan {
 					pc_price = lower_limit;
 			}
 			
-			if(function_price >= 0 && pc_price >= 0)
+			if(pc.getPrice() != null && pc.getPriceFunction() != null)
 				System.out.println("Dynamic and static price? offer->"+this.name+",pc->"+pc.getName() + "price ->"+pc_price);//throw expection?
 			
 			if(pc.isDeduction())
@@ -155,7 +155,7 @@ public class PricePlan {
 					finalprice = finalprice+" - " +function_price;
 					finalvalue-=function_price;
 				}
-				else
+				if(pc_price >= 0)
 				{
 					finalprice = finalprice+" - " +pc_price;
 					finalvalue-=pc_price;
@@ -168,7 +168,7 @@ public class PricePlan {
 					finalprice = finalprice+" + " +function_price;
 					finalvalue+=function_price;
 				}
-				else
+				if(pc_price >= 0)
 				{
 					finalprice = finalprice+" + " +pc_price;
 					finalvalue+=pc_price;
