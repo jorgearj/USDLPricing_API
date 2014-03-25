@@ -1,5 +1,4 @@
 
-
 package priceModelValidation;
 
 import java.io.IOException;
@@ -19,14 +18,14 @@ import com.hp.hpl.jena.rdf.model.Model;
 import exceptions.InvalidLinkedUSDLModelException;
 import exceptions.ReadModelException;
 
-public class AmazonRIReader {
+public class AmazonSIReader {
 	
 	
 	public static void main(String[] args)
 	{
 		LinkedUSDLModel jmodel;
 		try {
-			jmodel = LinkedUSDLModelFactory.createFromModel("./DebuggingFiles/amazonRI.ttl");//read a generic model
+			jmodel = LinkedUSDLModelFactory.createFromModel("./DebuggingFiles/amazonSI.ttl");//read a generic model
 			//System.out.println(jmodel.toString());
 			
 			//set variables values
@@ -93,4 +92,5 @@ public class AmazonRIReader {
 		}
 	}
 }
+
 

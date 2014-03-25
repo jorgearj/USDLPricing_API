@@ -1,11 +1,12 @@
 /**
  * @author Daniel Guedes Barrigas - danielgbarrigas@hotmail.com / danielgbarrigas@gmail.com
  * 
- * Uses the LinkedUSDL Pricing API to model a Reserved Instance from Amazon EC2.
+ * Uses the LinkedUSDL Pricing API to model an On Demand Instance from Amazon EC2.
  * Info about their offerings can be seen at: https://aws.amazon.com/ec2/pricing/
- * The pricing method adopted by Amazon's Reserved Instance is a VB bundled Reserved Instance model
+ * The pricing method adopted by Amazon's On Demand Instances is a VB bundled Reserved Instance model
  *
  */
+
 package priceModelValidation;
 
 import java.io.File;
@@ -22,14 +23,13 @@ import usdl.servicemodel.Offering;
 import usdl.servicemodel.PriceComponent;
 import usdl.servicemodel.PriceFunction;
 import usdl.servicemodel.PricePlan;
-import usdl.servicemodel.PriceSpec;
 import usdl.servicemodel.Provider;
 import usdl.servicemodel.QualitativeValue;
 import usdl.servicemodel.QuantitativeValue;
 import usdl.servicemodel.Service;
 import usdl.servicemodel.Usage;
 
-public class AmazonReserved {
+public class AmazonOnDemand {
 
 	
 	public static void main(String[] args) throws IOException
@@ -38,12 +38,12 @@ public class AmazonReserved {
 
 		jmodel = LinkedUSDLModelFactory.createEmptyModel();
 		
-		AmazonReservedOffering(jmodel);
+		AmazonOnDemandOffering(jmodel);
 		
-		jmodel.setBaseURI("http://PricingAPIAmazonReservedInstance.com");
+		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandInstance.com");
 		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
 
-		File outputFile = new File("./DebuggingFiles/amazonRI.ttl");
+		File outputFile = new File("./DebuggingFiles/amazonOD.ttl");
 		if (!outputFile.exists()) {
 			outputFile.createNewFile();
 		}
@@ -54,13 +54,13 @@ public class AmazonReserved {
 	}
 	
 	
-	public static void AmazonReservedOffering(LinkedUSDLModel jmodel) throws IOException
+	public static void AmazonOnDemandOffering(LinkedUSDLModel jmodel) throws IOException
 	{
 		//first, create the services 
 		Service s1 = new Service();
 
 
-		s1.setName("m3.medium-RI-1YEAR-LIGHT");
+		s1.setName("m3.medium-OD");
 
 		ArrayList<QuantitativeValue> s1QuantFeat = new ArrayList<QuantitativeValue>();//container for the Quantitative Features
 		ArrayList<QualitativeValue> s1QualFeat = new ArrayList<QualitativeValue>();//container for the Qualitative Features
@@ -156,20 +156,20 @@ public class AmazonReserved {
 		
 		Offering of = new Offering();
 		of.addService(s1);
-		of.setName("m3.medium-RI-1YEAR-LIGHT Offering");
+		of.setName("m3.medium-OD Offering");
 		
 		PricePlan pp = new PricePlan();
 		of.setPricePlan(pp);
 		
-		pp.setName("PricePlan-m3.medium-RI-1YEAR-LIGHT");
+		pp.setName("PricePlan-m3.medium-OD");
 		
 		PriceComponent pc_hourly = new PriceComponent();//Component that is responsible for calculating the price per hour of the instance
 		pp.addPriceComponent(pc_hourly);
-		pc_hourly.setName("HourlyPC-PPm3.medium-RI-1YEAR-LIGHT");
+		pc_hourly.setName("HourlyPC-PPm3.medium-OD");
 		
 		PriceFunction pf_hourly = new PriceFunction();
 		pc_hourly.setPriceFunction(pf_hourly);
-		pf_hourly.setName("m3.medium-RI-1YEAR-LIGHT-hourly_cost");
+		pf_hourly.setName("m3.medium-OD-hourly_cost");
 		
 		Usage NumberOfHours = new Usage();
 		pf_hourly.addUsageVariable(NumberOfHours);
@@ -181,27 +181,18 @@ public class AmazonReserved {
 		CostPerHour.setName("CostPerHour" + "TIME"+System.nanoTime());
 		QuantitativeValue val = new QuantitativeValue();
 		CostPerHour.setValue(val);
-		val.setValue(0.064);
+		val.setValue(0.113);
 		
 		
 		pf_hourly.setStringFunction(CostPerHour.getName() + "*" +NumberOfHours.getName() );
 		
-		
-		PriceComponent pc_upfront = new PriceComponent();//Component that represents the initial fee required from the customer
-		pp.addPriceComponent(pc_upfront);
-		pc_upfront.setName("UpFrontPC-PPm3.medium-RI-1YEAR-LIGHT");
-		
-		PriceSpec upfront = new PriceSpec();
-		pc_upfront.setPrice(upfront);
-		upfront.setValue(110);
-		
 		PriceComponent traffic_pc = new PriceComponent();//Component responsible for calculating the total price to pay related only to the Data transferral on Amazon EC2
 		pp.addPriceComponent(traffic_pc);
-		traffic_pc.setName("DataCostPC-PPm3.medium-RI-1YEAR-LIGHT");
+		traffic_pc.setName("DataCostPC-PPm3.medium-OD");
 		
 		PriceFunction data_cost_pf = new PriceFunction();
 		traffic_pc.setPriceFunction(data_cost_pf);
-		data_cost_pf.setName("m3.medium-RI-1YEAR-LIGHT-data_transferrals_cost");
+		data_cost_pf.setName("m3.medium-OD-data_transferrals_cost");
 		
 		Provider price10 = new Provider();
 		data_cost_pf.addProviderVariable(price10);

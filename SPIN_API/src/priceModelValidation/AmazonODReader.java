@@ -19,14 +19,14 @@ import com.hp.hpl.jena.rdf.model.Model;
 import exceptions.InvalidLinkedUSDLModelException;
 import exceptions.ReadModelException;
 
-public class AmazonRIReader {
+public class AmazonODReader {
 	
 	
 	public static void main(String[] args)
 	{
 		LinkedUSDLModel jmodel;
 		try {
-			jmodel = LinkedUSDLModelFactory.createFromModel("./DebuggingFiles/amazonRI.ttl");//read a generic model
+			jmodel = LinkedUSDLModelFactory.createFromModel("./DebuggingFiles/amazonOD.ttl");//read a generic model
 			//System.out.println(jmodel.toString());
 			
 			//set variables values

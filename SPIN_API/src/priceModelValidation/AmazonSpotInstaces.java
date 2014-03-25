@@ -1,9 +1,11 @@
 /**
  * @author Daniel Guedes Barrigas - danielgbarrigas@hotmail.com / danielgbarrigas@gmail.com
  * 
- * Uses the LinkedUSDL Pricing API to model a Reserved Instance from Amazon EC2.
+ * Uses the LinkedUSDL Pricing API to model a Spot instance Instance from Amazon EC2.
  * Info about their offerings can be seen at: https://aws.amazon.com/ec2/pricing/
- * The pricing method adopted by Amazon's Reserved Instance is a VB bundled Reserved Instance model
+ * The pricing method adopted by Amazon's Spot Instances is a VB bundled Spot Instance model
+ * It also makes use of the json.simple library in order to extract the price on the instance directly from the JSON provided by Amazon EC2. This way, any time the price is updated accoding to the market needs, this program will be able to extract the new price
+ * as long as the structure of the JSON document remains the same.
  *
  */
 package priceModelValidation;
@@ -11,7 +13,16 @@ package priceModelValidation;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.apache.commons.io.IOUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
@@ -22,28 +33,28 @@ import usdl.servicemodel.Offering;
 import usdl.servicemodel.PriceComponent;
 import usdl.servicemodel.PriceFunction;
 import usdl.servicemodel.PricePlan;
-import usdl.servicemodel.PriceSpec;
 import usdl.servicemodel.Provider;
 import usdl.servicemodel.QualitativeValue;
 import usdl.servicemodel.QuantitativeValue;
 import usdl.servicemodel.Service;
 import usdl.servicemodel.Usage;
 
-public class AmazonReserved {
 
-	
-	public static void main(String[] args) throws IOException
+
+public class AmazonSpotInstaces {
+	private static String url = "http://aws-assets-pricing-prod.s3.amazonaws.com/pricing/ec2/spot.js";
+	public static void main(String[] args) throws MalformedURLException, IOException, ParseException
 	{
 		LinkedUSDLModel jmodel;
 
 		jmodel = LinkedUSDLModelFactory.createEmptyModel();
 		
-		AmazonReservedOffering(jmodel);
+		AmazonSpotInstanceOffering(jmodel);
 		
-		jmodel.setBaseURI("http://PricingAPIAmazonReservedInstance.com");
+		jmodel.setBaseURI("http://PricingAPIAmazonSpotInstance.com");
 		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
 
-		File outputFile = new File("./DebuggingFiles/amazonRI.ttl");
+		File outputFile = new File("./DebuggingFiles/amazonSI.ttl");
 		if (!outputFile.exists()) {
 			outputFile.createNewFile();
 		}
@@ -54,13 +65,63 @@ public class AmazonReserved {
 	}
 	
 	
-	public static void AmazonReservedOffering(LinkedUSDLModel jmodel) throws IOException
-	{
+	
+	@SuppressWarnings("unchecked")
+	public static void AmazonSpotInstanceOffering(LinkedUSDLModel jmodel) throws IOException, ParseException
+	{	
+		
+		//First, we fetch the JSON String from AmazonEC2
+		
+		String JsonString = IOUtils.toString(new URL(url).openStream());
+		JsonString = JsonString.substring(9, JsonString.length()-1);
+		
+        JSONParser parser = new JSONParser(); 
+        Object obj = parser.parse(JsonString);  
+        
+        JSONObject jsonObject = (JSONObject) obj;  
+       
+        //Double version = (Double) jsonObject.get("vers");  
+       
+        JSONObject configs = (JSONObject) jsonObject.get("config");
+       
+        JSONArray regions = (JSONArray) (configs.get("regions"));  
+        Iterator<JSONObject> iterator = regions.iterator();  
+        
+        //first region
+        JSONObject reg = iterator.next();
+        //System.out.println(reg.get("region"));
+        //String region = (String) reg.get("region");
+        
+        JSONArray instance_types = (JSONArray) reg.get("instanceTypes");
+        Iterator<JSONObject> itemp = instance_types.iterator(); 
+        
+        JSONObject fdt= itemp.next();
+        //System.out.println(fdt.get("type"));
+        String instanceType = (String) fdt.get("type");
+        
+        JSONArray instance_details = (JSONArray) fdt.get("sizes");
+        Iterator<JSONObject> itdetail = instance_details.iterator(); 
+        
+        JSONObject cont = itdetail.next();
+        //System.out.println(cont.get("size"));
+        String instname = (String) cont.get("size");
+        
+        JSONArray osoption = (JSONArray) cont.get("valueColumns");
+        Iterator<JSONObject> osit = osoption.iterator(); 
+        
+        JSONObject osj = osit.next();
+        //System.out.println(osj.get("name"));
+        //String OSName = (String) osj.get("name");
+        
+        JSONObject instprice = (JSONObject) osj.get("prices");
+       // System.out.println(osprice.get("USD"));
+		Double instpricej = (Double.parseDouble( (String)instprice.get("USD")));
+		
 		//first, create the services 
 		Service s1 = new Service();
 
 
-		s1.setName("m3.medium-RI-1YEAR-LIGHT");
+		s1.setName(instname+"-SI-"+instanceType);
 
 		ArrayList<QuantitativeValue> s1QuantFeat = new ArrayList<QuantitativeValue>();//container for the Quantitative Features
 		ArrayList<QualitativeValue> s1QualFeat = new ArrayList<QualitativeValue>();//container for the Qualitative Features
@@ -76,10 +137,10 @@ public class AmazonReserved {
 		CPUSpeed = new QuantitativeValue();
 		
 		CPUCores.addType(CLOUDEnum.CPUCORES.getConceptURI());
-		CPUCores.setValue(1);
+		CPUCores.setValue(4);
 	
 		CPUSpeed.addType(CLOUDEnum.CPUSPEED.getConceptURI());
-		CPUSpeed.setValue(3);
+		CPUSpeed.setValue(13);
 		CPUSpeed.setUnitOfMeasurement("ECU");//EC2 Compute Unit
 		s1QuantFeat.add(CPUCores);
 		s1QuantFeat.add(CPUSpeed);
@@ -87,7 +148,7 @@ public class AmazonReserved {
 		// /MEMORYSIZE
 		QuantitativeValue MemorySize =  new QuantitativeValue();
 		MemorySize.addType(CLOUDEnum.MEMORYSIZE.getConceptURI());
-		MemorySize.setValue(3.75);
+		MemorySize.setValue(15);
 		MemorySize.setUnitOfMeasurement("B86");//GB
 		s1QuantFeat.add(MemorySize);
 		
@@ -97,7 +158,7 @@ public class AmazonReserved {
 		QualitativeValue StorageType = new QualitativeValue();
 
 		DiskSize.addType(CLOUDEnum.DISKSIZE.getConceptURI());
-		DiskSize.setValue(4);
+		DiskSize.setValue(80);
 		DiskSize.setUnitOfMeasurement("B86");// GB
 
 		StorageType.addType(CLOUDEnum.STORAGETYPE.getConceptURI());
@@ -156,20 +217,20 @@ public class AmazonReserved {
 		
 		Offering of = new Offering();
 		of.addService(s1);
-		of.setName("m3.medium-RI-1YEAR-LIGHT Offering");
+		of.setName(instname+"-SI Offering");
 		
 		PricePlan pp = new PricePlan();
 		of.setPricePlan(pp);
 		
-		pp.setName("PricePlan-m3.medium-RI-1YEAR-LIGHT");
+		pp.setName("PricePlan-"+instname+"-SI");
 		
 		PriceComponent pc_hourly = new PriceComponent();//Component that is responsible for calculating the price per hour of the instance
 		pp.addPriceComponent(pc_hourly);
-		pc_hourly.setName("HourlyPC-PPm3.medium-RI-1YEAR-LIGHT");
+		pc_hourly.setName("HourlyPC-PP"+instname+"-SI");
 		
 		PriceFunction pf_hourly = new PriceFunction();
 		pc_hourly.setPriceFunction(pf_hourly);
-		pf_hourly.setName("m3.medium-RI-1YEAR-LIGHT-hourly_cost");
+		pf_hourly.setName(instname+"-SI-hourly_cost");
 		
 		Usage NumberOfHours = new Usage();
 		pf_hourly.addUsageVariable(NumberOfHours);
@@ -181,27 +242,18 @@ public class AmazonReserved {
 		CostPerHour.setName("CostPerHour" + "TIME"+System.nanoTime());
 		QuantitativeValue val = new QuantitativeValue();
 		CostPerHour.setValue(val);
-		val.setValue(0.064);
+		val.setValue(instpricej);
 		
 		
 		pf_hourly.setStringFunction(CostPerHour.getName() + "*" +NumberOfHours.getName() );
 		
-		
-		PriceComponent pc_upfront = new PriceComponent();//Component that represents the initial fee required from the customer
-		pp.addPriceComponent(pc_upfront);
-		pc_upfront.setName("UpFrontPC-PPm3.medium-RI-1YEAR-LIGHT");
-		
-		PriceSpec upfront = new PriceSpec();
-		pc_upfront.setPrice(upfront);
-		upfront.setValue(110);
-		
 		PriceComponent traffic_pc = new PriceComponent();//Component responsible for calculating the total price to pay related only to the Data transferral on Amazon EC2
 		pp.addPriceComponent(traffic_pc);
-		traffic_pc.setName("DataCostPC-PPm3.medium-RI-1YEAR-LIGHT");
+		traffic_pc.setName("DataCostPC-PP"+instname+"-OD");
 		
 		PriceFunction data_cost_pf = new PriceFunction();
 		traffic_pc.setPriceFunction(data_cost_pf);
-		data_cost_pf.setName("m3.medium-RI-1YEAR-LIGHT-data_transferrals_cost");
+		data_cost_pf.setName(instname+"-SI-data_transferrals_cost");
 		
 		Provider price10 = new Provider();
 		data_cost_pf.addProviderVariable(price10);
@@ -248,7 +300,4 @@ public class AmazonReserved {
 		jmodel.setOfferings(offs);
 
 	}
-	
-	
 }
-
