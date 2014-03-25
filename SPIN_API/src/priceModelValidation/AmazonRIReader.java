@@ -1,3 +1,12 @@
+/**
+ * @author Daniel Guedes Barrigas - danielgbarrigas@hotmail.com / danielgbarrigas@gmail.com
+ * 
+ * Uses the LinkedUSDL Pricing API to model a Reserved Instance from Amazon EC2.
+ * Info about their offerings can be seen at: https://aws.amazon.com/ec2/pricing/
+ * The pricing method adopted by arsys is a VB bundled Reserved Instance model
+ *
+ */
+
 package priceModelValidation;
 
 import java.io.IOException;
