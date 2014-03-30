@@ -182,7 +182,7 @@ public class AmazonOnDemand {
 		QuantitativeValue val = new QuantitativeValue();
 		CostPerHour.setValue(val);
 		val.setValue(0.113);
-		
+		val.setUnitOfMeasurement("USD");
 		
 		pf_hourly.setStringFunction(CostPerHour.getName() + "*" +NumberOfHours.getName() );
 		
@@ -200,7 +200,7 @@ public class AmazonOnDemand {
 		QuantitativeValue valb = new QuantitativeValue();
 		price10.setValue(valb);
 		valb.setValue(0.12);
-		
+		valb.setUnitOfMeasurement("USD");
 		
 		Provider price40 = new Provider();
 		data_cost_pf.addProviderVariable(price40);
@@ -208,6 +208,7 @@ public class AmazonOnDemand {
 		QuantitativeValue valc = new QuantitativeValue();
 		price40.setValue(valc);
 		valc.setValue(0.09);
+		valc.setUnitOfMeasurement("USD");
 		
 		Provider price100 = new Provider();
 		data_cost_pf.addProviderVariable(price100);
@@ -215,6 +216,7 @@ public class AmazonOnDemand {
 		QuantitativeValue vald = new QuantitativeValue();
 		price100.setValue(vald);
 		vald.setValue(0.07);
+		vald.setUnitOfMeasurement("USD");
 		
 		Provider price350 = new Provider();
 		data_cost_pf.addProviderVariable(price350);
@@ -222,6 +224,7 @@ public class AmazonOnDemand {
 		QuantitativeValue vale = new QuantitativeValue();
 		price350.setValue(vale);
 		vale.setValue(0.05);
+		vale.setUnitOfMeasurement("USD");
 		
 		Usage gbout = new Usage();
 		data_cost_pf.addUsageVariable(gbout);

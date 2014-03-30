@@ -243,7 +243,7 @@ public class AmazonSpotInstaces {
 		QuantitativeValue val = new QuantitativeValue();
 		CostPerHour.setValue(val);
 		val.setValue(instpricej);
-		
+		val.setUnitOfMeasurement("USD");
 		
 		pf_hourly.setStringFunction(CostPerHour.getName() + "*" +NumberOfHours.getName() );
 		
@@ -261,7 +261,7 @@ public class AmazonSpotInstaces {
 		QuantitativeValue valb = new QuantitativeValue();
 		price10.setValue(valb);
 		valb.setValue(0.12);
-		
+		valb.setUnitOfMeasurement("USD");
 		
 		Provider price40 = new Provider();
 		data_cost_pf.addProviderVariable(price40);
@@ -269,6 +269,7 @@ public class AmazonSpotInstaces {
 		QuantitativeValue valc = new QuantitativeValue();
 		price40.setValue(valc);
 		valc.setValue(0.09);
+		valc.setUnitOfMeasurement("USD");
 		
 		Provider price100 = new Provider();
 		data_cost_pf.addProviderVariable(price100);
@@ -276,6 +277,7 @@ public class AmazonSpotInstaces {
 		QuantitativeValue vald = new QuantitativeValue();
 		price100.setValue(vald);
 		vald.setValue(0.07);
+		vald.setUnitOfMeasurement("USD");
 		
 		Provider price350 = new Provider();
 		data_cost_pf.addProviderVariable(price350);
@@ -283,6 +285,7 @@ public class AmazonSpotInstaces {
 		QuantitativeValue vale = new QuantitativeValue();
 		price350.setValue(vale);
 		vale.setValue(0.05);
+		vale.setUnitOfMeasurement("USD");
 		
 		Usage gbout = new Usage();
 		data_cost_pf.addUsageVariable(gbout);
