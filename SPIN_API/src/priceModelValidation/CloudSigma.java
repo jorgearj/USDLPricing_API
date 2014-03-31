@@ -171,7 +171,7 @@ public class CloudSigma {
 		CPUSpeed.setUnitOfMeasurement("A86");//Ghz
 		CPUSpeed.setMinValue(0.25);
 		CPUSpeed.setMaxValue(80);
-		s1QuantFeat.add(CPUCores);
+		s1QuantFeat.add(CPUSpeed);
 		
 		//OS
 		QualitativeValue OS = new QualitativeValue();
@@ -251,77 +251,77 @@ public class CloudSigma {
 		ssdcost.setValue(val);
 		
 		pf1.setStringFunction("IF "+ssdGB.getName() +"<15360 && "+usageTimeMonths.getName() +"<= 1 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 1 "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 1 "+  "~ " +
 				                         "ELSEIF " + ssdGB.getName() +"<15360 && "+usageTimeMonths.getName() +"> 1 && " + usageTimeMonths.getName() +" <= 3 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 3 * (1-0.03) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 3 * (1-0.03) "+  "~ " +
 				                         "ELSEIF " + ssdGB.getName() +"<15360 && "+usageTimeMonths.getName() +"> 3 && " + usageTimeMonths.getName() +" <= 6 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 6  * (1-0.1) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 6  * (1-0.1) "+  "~ " +
 				                         "ELSEIF " + ssdGB.getName() +"<15360 && "+usageTimeMonths.getName() +"> 6 && " + usageTimeMonths.getName() +" <= 12 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 12  * (1-0.25) "+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 12  * (1-0.25) "+  "~ " +
 				                         "ELSEIF " + ssdGB.getName() +"<15360 && "+usageTimeMonths.getName() +"> 12 && " + usageTimeMonths.getName() +" <= 24 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 24  * (1-0.35) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 24  * (1-0.35) "+  "~ " +
 				                         "ELSEIF " + ssdGB.getName() +"<15360 && "+usageTimeMonths.getName() +"> 24 && " + usageTimeMonths.getName() +" <= 36 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 36  * (1-0.45) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 36  * (1-0.45) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 15360 && " + ssdGB.getName() + "< 25600 && " +usageTimeMonths.getName() +"<= 1 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 1  * (1-0.075)"+  "~ " +//////////////////
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 1  * (1-0.075)"+  "~ " +//////////////////
 				                         "ELSEIF " +  ssdGB.getName() +">= 15360 && " + ssdGB.getName() + "< 25600 && " + usageTimeMonths.getName() +"> 1 && " + usageTimeMonths.getName() +" <= 3 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 3 * (1-0.075) * (1- 0.03) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 3 * (1-0.075) * (1- 0.03) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 15360 && " + ssdGB.getName() + "< 25600 && " + usageTimeMonths.getName() +"> 3 && " + usageTimeMonths.getName() +" <= 6 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 6 * (1-0.075) * (1- 0.1) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 6 * (1-0.075) * (1- 0.1) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 15360 && " + ssdGB.getName() + "< 25600 && " + usageTimeMonths.getName() +"> 6 && " + usageTimeMonths.getName() +" <= 12 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 12 * (1-0.075) * (1- 0.25) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 12 * (1-0.075) * (1- 0.25) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 15360 && " + ssdGB.getName() + "< 25600 && " + usageTimeMonths.getName() +"> 12 && " + usageTimeMonths.getName() +" <= 24 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 24 * (1-0.075) * (1- 0.35) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 24 * (1-0.075) * (1- 0.35) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 15360 && " + ssdGB.getName() + "< 25600 && " + usageTimeMonths.getName() +"> 24 && " + usageTimeMonths.getName() +" <= 36 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 36 * (1-0.075) * (1- 0.45) "+  "~ " +//////////////////////
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 36 * (1-0.075) * (1- 0.45) "+  "~ " +//////////////////////
 				                         "ELSEIF " +  ssdGB.getName() +">= 25600 && " + ssdGB.getName() + "< 51200 && " +usageTimeMonths.getName() +"<= 1 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 1  * (1-0.125)"+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 1  * (1-0.125)"+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName()+">= 25600 && " + ssdGB.getName() + "< 51200 && " + usageTimeMonths.getName() +"> 1 && " + usageTimeMonths.getName() +" <= 3 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 3 * (1-0.125) * (1- 0.03) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 3 * (1-0.125) * (1- 0.03) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 25600 && " + ssdGB.getName() + "< 51200 && " + usageTimeMonths.getName() +"> 3 && " + usageTimeMonths.getName() +" <= 6 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 6 * (1-0.125) * (1- 0.1) "+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 6 * (1-0.125) * (1- 0.1) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 25600 && " + ssdGB.getName() + "< 51200 && " + usageTimeMonths.getName() +"> 6 && " + usageTimeMonths.getName() +" <= 12 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 12 * (1-0.125) * (1- 0.25) "+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 12 * (1-0.125) * (1- 0.25) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 25600 && " + ssdGB.getName() + "< 51200 && " + usageTimeMonths.getName() +"> 12 && " + usageTimeMonths.getName() +" <= 24 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 24 * (1-0.125) * (1- 0.35) "+  "~ " +
+				                         "("+ssdcost.getName() + " * " + ssdGB.getName() + ") * 24 * (1-0.125) * (1- 0.35) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 25600 && " + ssdGB.getName() + "< 51200 && "+ usageTimeMonths.getName() +"> 24 && " + usageTimeMonths.getName() +" <= 36 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 36 * (1-0.125) * (1- 0.45) "+  "~ " +///////////////////////
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 36 * (1-0.125) * (1- 0.45) "+  "~ " +///////////////////////
 				                         "ELSEIF " +  ssdGB.getName() +">= 51200 && " + ssdGB.getName() + "< 256000 && " +usageTimeMonths.getName() +"<= 1 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 1  * (1-0.2)"+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 1  * (1-0.2)"+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName()+">= 51200 && " + ssdGB.getName() + "< 256000 && " + usageTimeMonths.getName() +"> 1 && " + usageTimeMonths.getName() +" <= 3 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 3 * (1-0.2) * (1- 0.03) "+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 3 * (1-0.2) * (1- 0.03) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 51200 && " + ssdGB.getName() + "< 256000 && " + usageTimeMonths.getName() +"> 3 && " + usageTimeMonths.getName() +" <= 6 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 6 * (1-0.2) * (1- 0.1) "+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 6 * (1-0.2) * (1- 0.1) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 51200 && " + ssdGB.getName() + "< 256000 && " + usageTimeMonths.getName() +"> 6 && " + usageTimeMonths.getName() +" <= 12 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 12 * (1-0.2) * (1- 0.25) "+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 12 * (1-0.2) * (1- 0.25) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 51200 && " + ssdGB.getName() + "< 256000 && " + usageTimeMonths.getName() +"> 12 && " + usageTimeMonths.getName() +" <= 24 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 24 * (1-0.2) * (1- 0.35) "+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 24 * (1-0.2) * (1- 0.35) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 51200 && " + ssdGB.getName() + "< 256000 && "+ usageTimeMonths.getName() +"> 24 && " + usageTimeMonths.getName() +" <= 36 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 36 * (1-0.2) * (1- 0.45) "+  "~ " +///////////////////////
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 36 * (1-0.2) * (1- 0.45) "+  "~ " +///////////////////////
 				                         "ELSEIF " +  ssdGB.getName() +">= 256000 && " + ssdGB.getName() + "< 1024000 && " +usageTimeMonths.getName() +"<= 1 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 1  * (1-0.3)"+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 1  * (1-0.3)"+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName()+">= 256000 && " + ssdGB.getName() + "< 1024000 && " + usageTimeMonths.getName() +"> 1 && " + usageTimeMonths.getName() +" <= 3 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 3 * (1-0.3) * (1- 0.03) "+  "~ " +
+				                         "("+ ssdcost.getName() + " * " + ssdGB.getName() + ") * 3 * (1-0.3) * (1- 0.03) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 256000 && " + ssdGB.getName() + "< 1024000 && " + usageTimeMonths.getName() +"> 3 && " + usageTimeMonths.getName() +" <= 6 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 6 * (1-0.3) * (1- 0.1) "+  "~ " +
-				                         "ELSEIF " +  ssdGB.getName() +">= 256000 && " + ssdGB.getName() + "< 1024000 && " + usageTimeMonths.getName() +"> 6 && " + usageTimeMonths.getName() +" <= 12 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 12 * (1-0.3) * (1- 0.25) "+  "~ " +
+				                         "("+  ssdcost.getName() + " * " + ssdGB.getName() + ") * 6 * (1-0.3) * (1- 0.1) "+  "~ " +
+				                          "ELSEIF " +  ssdGB.getName() +">= 256000 && " + ssdGB.getName() + "< 1024000 && " + usageTimeMonths.getName() +"> 6 && " + usageTimeMonths.getName() +" <= 12 ;" +
+				                         "("+   ssdcost.getName() + " * " + ssdGB.getName() + ") * 12 * (1-0.3) * (1- 0.25) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 256000 && " + ssdGB.getName() + "< 1024000 && " + usageTimeMonths.getName() +"> 12 && " + usageTimeMonths.getName() +" <= 24 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 24 * (1-0.3) * (1- 0.35) "+  "~ " +
+				                         "("+    ssdcost.getName() + " * " + ssdGB.getName() + ") * 24 * (1-0.3) * (1- 0.35) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 256000 && " + ssdGB.getName() + "< 1024000 && "+ usageTimeMonths.getName() +"> 24 && " + usageTimeMonths.getName() +" <= 36 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 36 * (1-0.3) * (1- 0.45) "+  "~ " +///////////////////////
+				                         "("+   ssdcost.getName() + " * " + ssdGB.getName() + ") * 36 * (1-0.3) * (1- 0.45) "+  "~ " +///////////////////////
 				                         "ELSEIF " +  ssdGB.getName() +">= 1024000  && " +usageTimeMonths.getName() +"<= 1 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 1  * (1-0.425)"+  "~ " +
+				                         "("+   ssdcost.getName() + " * " + ssdGB.getName() + ") * 1  * (1-0.425)"+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 1024000  && " + usageTimeMonths.getName() +"> 1 && " + usageTimeMonths.getName() +" <= 3 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 3 * (1-0.425) * (1- 0.03) "+  "~ " +
+				                         "("+   ssdcost.getName() + " * " + ssdGB.getName() + ") * 3 * (1-0.425) * (1- 0.03) "+  "~ " +
 				                         "ELSEIF " + ssdGB.getName() +">= 1024000  && " + usageTimeMonths.getName() +"> 3 && " + usageTimeMonths.getName() +" <= 6 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 6 * (1-0.425) * (1- 0.1) "+  "~ " +
+				                         "("+   ssdcost.getName() + " * " + ssdGB.getName() + ") * 6 * (1-0.425) * (1- 0.1) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 1024000  && " + usageTimeMonths.getName() +"> 6 && " + usageTimeMonths.getName() +" <= 12 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 12 * (1-0.425) * (1- 0.25) "+  "~ " +
+				                         "("+     ssdcost.getName() + " * " + ssdGB.getName() + ") * 12 * (1-0.425) * (1- 0.25) "+  "~ " +
 				                         "ELSEIF " +  ssdGB.getName() +">= 1024000  && " + usageTimeMonths.getName() +"> 12 && " + usageTimeMonths.getName() +" <= 24 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 24 * (1-0.425) * (1- 0.35) "+  "~ " +
+				                         "("+    ssdcost.getName() + " * " + ssdGB.getName() + ") * 24 * (1-0.425) * (1- 0.35) "+  "~ " +
 				                         "ELSEIF " + ssdGB.getName() +">= 1024000  && "+ usageTimeMonths.getName() +"> 24 && " + usageTimeMonths.getName() +" <= 36 ;" +
-				                         ssdcost.getName() + " * " + ssdGB.getName() + " * 36 * (1-0.425) * (1- 0.45) "                     
+				                         "("+    ssdcost.getName() + " * " + ssdGB.getName() + ") * 36 * (1-0.425) * (1- 0.45) "                     
 				);
 
 
@@ -360,77 +360,77 @@ public class CloudSigma {
 		ramcost.setValue(valb);
 		
 		pf2.setStringFunction("IF "+ramGB.getName() +"<50 && "+usageTimeHours.getName() +"<= 720 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 720 "+  "~ " +
+				"("+ ramcost.getName() + " * " + ramGB.getName() + ") * 720 "+  "~ " +
                 "ELSEIF " + ramGB.getName() +"<50 && "+usageTimeHours.getName() +"> 720 && " + usageTimeHours.getName() +" <= 2160 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 2160 * (1-0.03) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 2160 * (1-0.03) "+  "~ " +
                 "ELSEIF " + ramGB.getName() +"<50 && "+usageTimeHours.getName() +"> 2160 && " + usageTimeHours.getName() +" <= 4320 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 4320  * (1-0.1) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 4320  * (1-0.1) "+  "~ " +
                 "ELSEIF " + ramGB.getName() +"<50 && "+usageTimeHours.getName() +"> 4320 && " + usageTimeHours.getName() +" <= 8640 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 8640  * (1-0.25) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 8640  * (1-0.25) "+  "~ " +
                 "ELSEIF " + ramGB.getName() +"<50 && "+usageTimeHours.getName() +"> 8640 && " + usageTimeHours.getName() +" <= 17280 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 17280  * (1-0.35) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 17280  * (1-0.35) "+  "~ " +
                 "ELSEIF " + ramGB.getName() +"<50 && "+usageTimeHours.getName() +"> 17280 && " + usageTimeHours.getName() +" <= 25920 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 25920  * (1-0.45) "+  "~ " +
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 25920  * (1-0.45) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 50 && " + ramGB.getName() + "< 100 && " +usageTimeHours.getName() +"<= 720 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 720  * (1-0.075)"+  "~ " +//////////////////
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 720  * (1-0.075)"+  "~ " +//////////////////
                 "ELSEIF " +  ramGB.getName() +">= 50 && " + ramGB.getName() + "< 100 && " + usageTimeHours.getName() +"> 720 && " + usageTimeHours.getName() +" <= 2160 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 2160 * (1-0.075) * (1- 0.03) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 2160 * (1-0.075) * (1- 0.03) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 50 && " + ramGB.getName() + "< 100 && " + usageTimeHours.getName() +"> 2160 && " + usageTimeHours.getName() +" <= 4320 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 4320 * (1-0.075) * (1- 0.1) "+  "~ " +
+                "("+   ramcost.getName() + " * " + ramGB.getName() + ") * 4320 * (1-0.075) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 50 && " + ramGB.getName() + "< 100 && " + usageTimeHours.getName() +"> 4320 && " + usageTimeHours.getName() +" <= 8640 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 8640 * (1-0.075) * (1- 0.25) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 8640 * (1-0.075) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 50 && " + ramGB.getName() + "< 100 && " + usageTimeHours.getName() +"> 8640 && " + usageTimeHours.getName() +" <= 17280 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 17280 * (1-0.075) * (1- 0.35) "+  "~ " +
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 17280 * (1-0.075) * (1- 0.35) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 50 && " + ramGB.getName() + "< 100 && " + usageTimeHours.getName() +"> 17280 && " + usageTimeHours.getName() +" <= 25920 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 25920 * (1-0.075) * (1- 0.45) "+  "~ " +//////////////////////
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 25920 * (1-0.075) * (1- 0.45) "+  "~ " +//////////////////////
                 "ELSEIF " +  ramGB.getName() +">= 100 && " + ramGB.getName() + "< 500 && " +usageTimeHours.getName() +"<= 720 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 720  * (1-0.125)"+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 720  * (1-0.125)"+  "~ " +
                 "ELSEIF " +  ramGB.getName()+">= 100 && " + ramGB.getName() + "< 500 && " + usageTimeHours.getName() +"> 720 && " + usageTimeHours.getName() +" <= 2160 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 2160 * (1-0.125) * (1- 0.03) "+  "~ " +
+                "("+   ramcost.getName() + " * " + ramGB.getName() + ") * 2160 * (1-0.125) * (1- 0.03) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 100 && " + ramGB.getName() + "< 500 && " + usageTimeHours.getName() +"> 2160 && " + usageTimeHours.getName() +" <= 4320 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 4320 * (1-0.125) * (1- 0.1) "+  "~ " +
+                "("+   ramcost.getName() + " * " + ramGB.getName() + ") * 4320 * (1-0.125) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 100 && " + ramGB.getName() + "< 500 && " + usageTimeHours.getName() +"> 4320 && " + usageTimeHours.getName() +" <= 8640 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 8640 * (1-0.125) * (1- 0.25) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 8640 * (1-0.125) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 100 && " + ramGB.getName() + "< 500 && " + usageTimeHours.getName() +"> 8640 && " + usageTimeHours.getName() +" <= 17280 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 17280 * (1-0.125) * (1- 0.35) "+  "~ " +
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 17280 * (1-0.125) * (1- 0.35) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 100 && " + ramGB.getName() + "< 500 && "+ usageTimeHours.getName() +"> 17280 && " + usageTimeHours.getName() +" <= 25920 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 25920 * (1-0.125) * (1- 0.45) "+  "~ " +///////////////////////
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 25920 * (1-0.125) * (1- 0.45) "+  "~ " +///////////////////////
                 "ELSEIF " +  ramGB.getName() +">= 500 && " + ramGB.getName() + "< 4000 && " +usageTimeHours.getName() +"<= 720 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 720  * (1-0.2)"+  "~ " +
+                "("+   ramcost.getName() + " * " + ramGB.getName() + ") * 720  * (1-0.2)"+  "~ " +
                 "ELSEIF " +  ramGB.getName()+">= 500 && " + ramGB.getName() + "< 4000 && " + usageTimeHours.getName() +"> 720 && " + usageTimeHours.getName() +" <= 2160 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 2160 * (1-0.2) * (1- 0.03) "+  "~ " +
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 2160 * (1-0.2) * (1- 0.03) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 500 && " + ramGB.getName() + "< 4000 && " + usageTimeHours.getName() +"> 2160 && " + usageTimeHours.getName() +" <= 4320 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 4320 * (1-0.2) * (1- 0.1) "+  "~ " +
+                "("+    ramcost.getName() + " * " + ramGB.getName() + ") * 4320 * (1-0.2) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 500 && " + ramGB.getName() + "< 400 && " + usageTimeHours.getName() +"> 4320 && " + usageTimeHours.getName() +" <= 8640 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 8640 * (1-0.2) * (1- 0.25) "+  "~ " +
+                "("+    ramcost.getName() + " * " + ramGB.getName() + ") * 8640 * (1-0.2) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 500 && " + ramGB.getName() + "< 4000 && " + usageTimeHours.getName() +"> 8640 && " + usageTimeHours.getName() +" <= 17280 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 17280 * (1-0.2) * (1- 0.35) "+  "~ " +
+                "("+   ramcost.getName() + " * " + ramGB.getName() + ") * 17280 * (1-0.2) * (1- 0.35) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 500 && " + ramGB.getName() + "< 4000 && "+ usageTimeHours.getName() +"> 17280 && " + usageTimeHours.getName() +" <= 25920 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 25920 * (1-0.2) * (1- 0.45) "+  "~ " +///////////////////////
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 25920 * (1-0.2) * (1- 0.45) "+  "~ " +///////////////////////
                 "ELSEIF " +  ramGB.getName() +">= 4000 && " + ramGB.getName() + "< 10000 && " +usageTimeHours.getName() +"<= 720 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 720  * (1-0.3)"+  "~ " +
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 720  * (1-0.3)"+  "~ " +
                 "ELSEIF " +  ramGB.getName()+">= 4000 && " + ramGB.getName() + "< 10000 && " + usageTimeHours.getName() +"> 720 && " + usageTimeHours.getName() +" <= 2160 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 2160 * (1-0.3) * (1- 0.03) "+  "~ " +
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 2160 * (1-0.3) * (1- 0.03) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 4000 && " + ramGB.getName() + "< 10000 && " + usageTimeHours.getName() +"> 2160 && " + usageTimeHours.getName() +" <= 4320 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 4320 * (1-0.3) * (1- 0.1) "+  "~ " +
+                "("+   ramcost.getName() + " * " + ramGB.getName() + ") * 4320 * (1-0.3) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 4000 && " + ramGB.getName() + "< 10000 && " + usageTimeHours.getName() +"> 4320 && " + usageTimeHours.getName() +" <= 8640 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 8640 * (1-0.3) * (1- 0.25) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 8640 * (1-0.3) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 4000 && " + ramGB.getName() + "< 10000 && " + usageTimeHours.getName() +"> 8640 && " + usageTimeHours.getName() +" <= 17280 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 17280 * (1-0.3) * (1- 0.35) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 17280 * (1-0.3) * (1- 0.35) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 40000 && " + ramGB.getName() + "< 10000 && "+ usageTimeHours.getName() +"> 17280 && " + usageTimeHours.getName() +" <= 25920 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 25920 * (1-0.3) * (1- 0.45) "+  "~ " +///////////////////////
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 25920 * (1-0.3) * (1- 0.45) "+  "~ " +///////////////////////
                 "ELSEIF " +  ramGB.getName() +">= 10000  && " +usageTimeHours.getName() +"<= 720 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 720  * (1-0.425)"+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 720  * (1-0.425)"+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 10000  && " + usageTimeHours.getName() +"> 720 && " + usageTimeHours.getName() +" <= 2160 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 2160 * (1-0.425) * (1- 0.03) "+  "~ " +
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 2160 * (1-0.425) * (1- 0.03) "+  "~ " +
                 "ELSEIF " + ramGB.getName() +">= 10000  && " + usageTimeHours.getName() +"> 2160 && " + usageTimeHours.getName() +" <= 4320 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 4320 * (1-0.425) * (1- 0.1) "+  "~ " +
+                "("+ ramcost.getName() + " * " + ramGB.getName() + ") * 4320 * (1-0.425) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 10000  && " + usageTimeHours.getName() +"> 4320 && " + usageTimeHours.getName() +" <= 8640 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 8640 * (1-0.425) * (1- 0.25) "+  "~ " +
+                "("+   ramcost.getName() + " * " + ramGB.getName() + ") * 8640 * (1-0.425) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  ramGB.getName() +">= 10000  && " + usageTimeHours.getName() +"> 8640 && " + usageTimeHours.getName() +" <= 17280 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 17280 * (1-0.425) * (1- 0.35) "+  "~ " +
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 17280 * (1-0.425) * (1- 0.35) "+  "~ " +
                 "ELSEIF " + ramGB.getName() +">= 10000  && "+ usageTimeHours.getName() +"> 17280 && " + usageTimeHours.getName() +" <= 25920 ;" +
-                ramcost.getName() + " * " + ramGB.getName() + " * 25920 * (1-0.425) * (1- 0.45) "                     
+                "("+  ramcost.getName() + " * " + ramGB.getName() + ") * 25920 * (1-0.425) * (1- 0.45) "                     
 );
 		
 		/*---------------------------------------------------------------------*/
@@ -466,77 +466,77 @@ public class CloudSigma {
 		cpuspeedcost.setValue(valc);
 		
 		pf3.setStringFunction("IF "+cpuSpeed.getName() +"<50 && "+usageTimeHoursb.getName() +"<= 720 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 720 "+  "~ " +
+				"("+cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 720 "+  "~ " +
                 "ELSEIF " + cpuSpeed.getName() +"<50 && "+usageTimeHoursb.getName() +"> 720 && " + usageTimeHoursb.getName() +" <= 2160 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 2160 * (1-0.03) "+  "~ " +
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 2160 * (1-0.03) "+  "~ " +
                 "ELSEIF " + cpuSpeed.getName() +"<50 && "+usageTimeHoursb.getName() +"> 2160 && " + usageTimeHoursb.getName() +" <= 4320 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 4320  * (1-0.1) "+  "~ " +
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 4320  * (1-0.1) "+  "~ " +
                 "ELSEIF " + cpuSpeed.getName() +"<50 && "+usageTimeHoursb.getName() +"> 4320 && " + usageTimeHoursb.getName() +" <= 8640 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 8640  * (1-0.25) "+  "~ " +
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 8640  * (1-0.25) "+  "~ " +
                 "ELSEIF " + cpuSpeed.getName() +"<50 && "+usageTimeHoursb.getName() +"> 8640 && " + usageTimeHoursb.getName() +" <= 17280 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 17280  * (1-0.35) "+  "~ " +
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 17280  * (1-0.35) "+  "~ " +
                 "ELSEIF " + cpuSpeed.getName() +"<50 && "+usageTimeHoursb.getName() +"> 17280 && " + usageTimeHoursb.getName() +" <= 25920 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 25920  * (1-0.45) "+  "~ " +
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 25920  * (1-0.45) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 50 && " + cpuSpeed.getName() + "< 100 && " +usageTimeHoursb.getName() +"<= 720 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 720  * (1-0.075)"+  "~ " +//////////////////
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 720  * (1-0.075)"+  "~ " +//////////////////
                 "ELSEIF " +  cpuSpeed.getName() +">= 50 && " + cpuSpeed.getName() + "< 100 && " + usageTimeHoursb.getName() +"> 720 && " + usageTimeHoursb.getName() +" <= 2160 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 2160 * (1-0.075) * (1- 0.03) "+  "~ " +
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 2160 * (1-0.075) * (1- 0.03) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 50 && " + cpuSpeed.getName() + "< 100 && " + usageTimeHoursb.getName() +"> 2160 && " + usageTimeHoursb.getName() +" <= 4320 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 4320 * (1-0.075) * (1- 0.1) "+  "~ " +
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 4320 * (1-0.075) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 50 && " + cpuSpeed.getName() + "< 100 && " + usageTimeHoursb.getName() +"> 4320 && " + usageTimeHoursb.getName() +" <= 8640 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 8640 * (1-0.075) * (1- 0.25) "+  "~ " +
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 8640 * (1-0.075) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 50 && " + cpuSpeed.getName() + "< 100 && " + usageTimeHoursb.getName() +"> 8640 && " + usageTimeHoursb.getName() +" <= 17280 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 17280 * (1-0.075) * (1- 0.35) "+  "~ " +
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 17280 * (1-0.075) * (1- 0.35) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 50 && " + cpuSpeed.getName() + "< 100 && " + usageTimeHoursb.getName() +"> 17280 && " + usageTimeHoursb.getName() +" <= 25920 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 25920 * (1-0.075) * (1- 0.45) "+  "~ " +//////////////////////
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 25920 * (1-0.075) * (1- 0.45) "+  "~ " +//////////////////////
                 "ELSEIF " +  cpuSpeed.getName() +">= 100 && " + cpuSpeed.getName() + "< 500 && " +usageTimeHoursb.getName() +"<= 720 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 720  * (1-0.125)"+  "~ " +
+                "("+    cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 720  * (1-0.125)"+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName()+">= 100 && " + cpuSpeed.getName() + "< 500 && " + usageTimeHoursb.getName() +"> 720 && " + usageTimeHoursb.getName() +" <= 2160 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 2160 * (1-0.125) * (1- 0.03) "+  "~ " +
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 2160 * (1-0.125) * (1- 0.03) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 100 && " + cpuSpeed.getName() + "< 500 && " + usageTimeHoursb.getName() +"> 2160 && " + usageTimeHoursb.getName() +" <= 4320 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 4320 * (1-0.125) * (1- 0.1) "+  "~ " +
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 4320 * (1-0.125) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 100 && " + cpuSpeed.getName() + "< 500 && " + usageTimeHoursb.getName() +"> 4320 && " + usageTimeHoursb.getName() +" <= 8640 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 8640 * (1-0.125) * (1- 0.25) "+  "~ " +
+                "("+   cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 8640 * (1-0.125) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 100 && " + cpuSpeed.getName() + "< 500 && " + usageTimeHoursb.getName() +"> 8640 && " + usageTimeHoursb.getName() +" <= 17280 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 17280 * (1-0.125) * (1- 0.35) "+  "~ " +
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 17280 * (1-0.125) * (1- 0.35) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 100 && " + cpuSpeed.getName() + "< 500 && "+ usageTimeHoursb.getName() +"> 17280 && " + usageTimeHoursb.getName() +" <= 25920 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 25920 * (1-0.125) * (1- 0.45) "+  "~ " +///////////////////////
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 25920 * (1-0.125) * (1- 0.45) "+  "~ " +///////////////////////
                 "ELSEIF " +  cpuSpeed.getName() +">= 500 && " + cpuSpeed.getName() + "< 4000 && " +usageTimeHoursb.getName() +"<= 720 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 720  * (1-0.2)"+  "~ " +
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 720  * (1-0.2)"+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName()+">= 500 && " + cpuSpeed.getName() + "< 4000 && " + usageTimeHoursb.getName() +"> 720 && " + usageTimeHoursb.getName() +" <= 2160 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 2160 * (1-0.2) * (1- 0.03) "+  "~ " +
+                "("+   cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 2160 * (1-0.2) * (1- 0.03) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 500 && " + cpuSpeed.getName() + "< 4000 && " + usageTimeHoursb.getName() +"> 2160 && " + usageTimeHoursb.getName() +" <= 4320 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 4320 * (1-0.2) * (1- 0.1) "+  "~ " +
+                "("+   cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 4320 * (1-0.2) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 500 && " + cpuSpeed.getName() + "< 400 && " + usageTimeHoursb.getName() +"> 4320 && " + usageTimeHoursb.getName() +" <= 8640 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 8640 * (1-0.2) * (1- 0.25) "+  "~ " +
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 8640 * (1-0.2) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 500 && " + cpuSpeed.getName() + "< 4000 && " + usageTimeHoursb.getName() +"> 8640 && " + usageTimeHoursb.getName() +" <= 17280 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 17280 * (1-0.2) * (1- 0.35) "+  "~ " +
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 17280 * (1-0.2) * (1- 0.35) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 500 && " + cpuSpeed.getName() + "< 4000 && "+ usageTimeHoursb.getName() +"> 17280 && " + usageTimeHoursb.getName() +" <= 25920 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 25920 * (1-0.2) * (1- 0.45) "+  "~ " +///////////////////////
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 25920 * (1-0.2) * (1- 0.45) "+  "~ " +///////////////////////
                 "ELSEIF " +  cpuSpeed.getName() +">= 4000 && " + cpuSpeed.getName() + "< 10000 && " +usageTimeHoursb.getName() +"<= 720 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 720  * (1-0.3)"+  "~ " +
+                "("+   cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 720  * (1-0.3)"+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName()+">= 4000 && " + cpuSpeed.getName() + "< 10000 && " + usageTimeHoursb.getName() +"> 720 && " + usageTimeHoursb.getName() +" <= 2160 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 2160 * (1-0.3) * (1- 0.03) "+  "~ " +
+                "("+    cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 2160 * (1-0.3) * (1- 0.03) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 4000 && " + cpuSpeed.getName() + "< 10000 && " + usageTimeHoursb.getName() +"> 2160 && " + usageTimeHoursb.getName() +" <= 4320 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 4320 * (1-0.3) * (1- 0.1) "+  "~ " +
+                "("+    cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 4320 * (1-0.3) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 4000 && " + cpuSpeed.getName() + "< 10000 && " + usageTimeHoursb.getName() +"> 4320 && " + usageTimeHoursb.getName() +" <= 8640 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 8640 * (1-0.3) * (1- 0.25) "+  "~ " +
+                "("+   cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 8640 * (1-0.3) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 4000 && " + cpuSpeed.getName() + "< 10000 && " + usageTimeHoursb.getName() +"> 8640 && " + usageTimeHoursb.getName() +" <= 17280 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 17280 * (1-0.3) * (1- 0.35) "+  "~ " +
+                "("+ cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 17280 * (1-0.3) * (1- 0.35) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 40000 && " + cpuSpeed.getName() + "< 10000 && "+ usageTimeHoursb.getName() +"> 17280 && " + usageTimeHoursb.getName() +" <= 25920 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 25920 * (1-0.3) * (1- 0.45) "+  "~ " +///////////////////////
+                "("+    cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 25920 * (1-0.3) * (1- 0.45) "+  "~ " +///////////////////////
                 "ELSEIF " +  cpuSpeed.getName() +">= 10000  && " +usageTimeHoursb.getName() +"<= 720 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 720  * (1-0.425)"+  "~ " +
+                "("+    cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 720  * (1-0.425)"+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 10000  && " + usageTimeHoursb.getName() +"> 720 && " + usageTimeHoursb.getName() +" <= 2160 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 2160 * (1-0.425) * (1- 0.03) "+  "~ " +
+                "("+   cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 2160 * (1-0.425) * (1- 0.03) "+  "~ " +
                 "ELSEIF " + cpuSpeed.getName() +">= 10000  && " + usageTimeHoursb.getName() +"> 2160 && " + usageTimeHoursb.getName() +" <= 4320 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 4320 * (1-0.425) * (1- 0.1) "+  "~ " +
+                "("+   cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 4320 * (1-0.425) * (1- 0.1) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 10000  && " + usageTimeHoursb.getName() +"> 4320 && " + usageTimeHoursb.getName() +" <= 8640 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 8640 * (1-0.425) * (1- 0.25) "+  "~ " +
+                "("+   cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 8640 * (1-0.425) * (1- 0.25) "+  "~ " +
                 "ELSEIF " +  cpuSpeed.getName() +">= 10000  && " + usageTimeHoursb.getName() +"> 8640 && " + usageTimeHoursb.getName() +" <= 17280 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 17280 * (1-0.425) * (1- 0.35) "+  "~ " +
+                "("+    cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 17280 * (1-0.425) * (1- 0.35) "+  "~ " +
                 "ELSEIF " + cpuSpeed.getName() +">= 10000  && "+ usageTimeHoursb.getName() +"> 17280 && " + usageTimeHoursb.getName() +" <= 25920 ;" +
-                cpuspeedcost.getName() + " * " + cpuSpeed.getName() + " * 25920 * (1-0.425) * (1- 0.45) "                     
+                "("+  cpuspeedcost.getName() + " * " + cpuSpeed.getName() + ") * 25920 * (1-0.425) * (1- 0.45) "                     
 );
 		
 		/*---------------------------------------------------------------------*/

@@ -114,6 +114,7 @@ public class PricePlan {
 					com.hp.hpl.jena.query.Query q = ARQFactory.get().createQuery(pc.getPriceFunction().getSPARQLFunction());
 					QueryExecution qexecc = ARQFactory.get().createQueryExecution(q, model);	
 					ResultSet rsc = qexecc.execSelect();
+					//System.out.println(q.toString());
 					function_price = rsc.nextSolution().getLiteral("result").getDouble();// final result is store in the ?result variable of the query
 				}
 			}
@@ -147,6 +148,7 @@ public class PricePlan {
 			
 			if(pc.getPrice() != null && pc.getPriceFunction() != null)
 				System.out.println("Dynamic and static price? offer->"+this.name+",pc->"+pc.getName() + "price ->"+pc_price);//throw expection?
+			
 			
 			if(pc.isDeduction())
 			{

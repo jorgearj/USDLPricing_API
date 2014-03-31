@@ -181,7 +181,7 @@ public class PriceComponent {
 				
 			
 			if(this.isDeduction)
-				pc.addProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "Deduction"));
+				pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "Deduction"));
 			
 			owner.addProperty(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model), pc);//link the Price Component with the Price Plan
 		}
