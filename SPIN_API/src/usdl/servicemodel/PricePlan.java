@@ -1,16 +1,12 @@
 package usdl.servicemodel;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.topbraid.spin.arq.ARQFactory;
-
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
@@ -25,11 +21,11 @@ import usdl.servicemodel.PriceSpec;
  * @version 1.0, March 06
  */
 public class PricePlan {
-	private String name;
+	private String name = null;
 	private PriceSpec priceCap = null;
 	private PriceSpec priceFloor = null;
-	private List<PriceComponent> priceComponents = null;
-	private String comment;
+	private ArrayList<PriceComponent> priceComponents = null;
+	private String comment = null;
 	//private List<Offering> offerings;//needed? NO
 	
 	
@@ -38,6 +34,28 @@ public class PricePlan {
 		super();
 		priceComponents = new ArrayList<PriceComponent>();
 	}
+	
+	public PricePlan(PricePlan source) {//copy construct
+		super();
+		priceComponents = new ArrayList<PriceComponent>();
+		
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		if(source.getPriceCap() != null)
+			this.setPriceCap(new PriceSpec(source.getPriceCap()));
+		
+		if(source.getPriceFloor() != null)
+			this.setPriceFloor(new PriceSpec(source.getPriceFloor()));
+		
+		for(PriceComponent pc : source.getPriceComponents())
+			this.addPriceComponent(new PriceComponent(pc));
+	}
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -56,10 +74,10 @@ public class PricePlan {
 	public void setPriceFloor(PriceSpec priceFloor) {
 		this.priceFloor = priceFloor;
 	}
-	public List<PriceComponent> getPriceComponents() {
+	public ArrayList<PriceComponent> getPriceComponents() {
 		return priceComponents;
 	}
-	public void setPriceComponents(List<PriceComponent> priceComponents) {
+	public void setPriceComponents(ArrayList<PriceComponent> priceComponents) {
 		this.priceComponents = priceComponents;
 	}
 	public String getComment() {
@@ -129,7 +147,7 @@ public class PricePlan {
 			if (pc.getPrice() != null) {
 				pc_price = pc.getPrice().getValue();
 			}
-
+			
 			if(function_price >=0)
 			{
 				if(function_price > upper_limit && upper_limit >= 0)

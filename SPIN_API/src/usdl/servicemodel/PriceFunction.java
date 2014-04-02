@@ -2,8 +2,6 @@ package usdl.servicemodel;
 
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.topbraid.spin.arq.ARQ2SPIN;
 import org.topbraid.spin.arq.ARQFactory;
 import org.topbraid.spin.model.Function;
@@ -15,7 +13,6 @@ import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLPriceEnum;
 import FunctionParser.MathExp2SPARQL;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -31,9 +28,9 @@ public class PriceFunction {
 	private String name = null;
 	private String stringFunction = null;
 	private String SPARQLFunction = null;
-	private List<Usage> usageVariables = null;
-	private List<Provider> providerVariables = null;
-	private List<Constraint> constraints = null;
+	private ArrayList<Usage> usageVariables = null;
+	private ArrayList<Provider> providerVariables = null;
+	private ArrayList<Constraint> constraints = null;
 	private String comment = null;
 	private String oldBaseURI = null;
 	public PriceFunction() {
@@ -43,6 +40,35 @@ public class PriceFunction {
 		constraints = new ArrayList<Constraint>();
 		
 	}
+	
+	public PriceFunction(PriceFunction source) {//copy constructor
+		super();
+		usageVariables = new ArrayList<Usage>();
+		providerVariables = new ArrayList<Provider>();
+		constraints = new ArrayList<Constraint>();
+		
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		if(source.getSPARQLFunction() != null)
+			this.setSPARQLFunction(source.getSPARQLFunction());
+		
+		if(source.getStringFunction() != null)
+			this.setStringFunction(source.getStringFunction());
+		
+		if(source.getOldBaseURI() != null)
+			this.setOldBaseURI(source.getOldBaseURI());
+		
+		for(Usage uv : source.getUsageVariables())
+			this.addUsageVariable(new Usage(uv));
+		
+		for(Provider cv : source.getProviderVariables())
+			this.addProviderVariable(new Provider(cv));
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -56,10 +82,10 @@ public class PriceFunction {
 		this.stringFunction = stringFunction;
 	}
 
-	public List<Constraint> getConstraints() {
+	public ArrayList<Constraint> getConstraints() {
 		return constraints;
 	}
-	public void setConstraints(List<Constraint> constraints) {
+	public void setConstraints(ArrayList<Constraint> constraints) {
 		this.constraints = constraints;
 	}
 	public String getComment() {
@@ -75,16 +101,16 @@ public class PriceFunction {
 				+ ", Provider variables=" + providerVariables
 				+ ", constraints=" + constraints + ", comment=" + comment + "]";
 	}
-	public List<Usage> getUsageVariables() {
+	public ArrayList<Usage> getUsageVariables() {
 		return usageVariables;
 	}
-	public void setUsageVariables(List<Usage> variables) {
+	public void setUsageVariables(ArrayList<Usage> variables) {
 		usageVariables = variables;
 	}
-	public List<Provider> getProviderVariables() {
+	public ArrayList<Provider> getProviderVariables() {
 		return providerVariables;
 	}
-	public void setProviderVariables(List<Provider> variables) {
+	public void setProviderVariables(ArrayList<Provider> variables) {
 		providerVariables = variables;
 	}
 	public String getSPARQLFunction() {

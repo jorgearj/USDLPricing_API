@@ -2,12 +2,9 @@ package usdl.servicemodel;
 
 
 import java.util.ArrayList;
-import java.util.List;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
@@ -21,18 +18,46 @@ import usdl.servicemodel.PriceSpec;
  * @version 1.0, March 06
  */
 public class PriceComponent {
-	private String name;
+	private String name = null;
 	private boolean isDeduction = false;
 	private PriceSpec componentCap = null;
 	private PriceSpec componentFloor = null;
 	private PriceSpec price = null;
 	private PriceFunction priceFunction = null;
-	private List<QuantitativeValue> metrics = null;
+	private ArrayList<QuantitativeValue> metrics = null;
 	private String comment = null;
 	
 	public PriceComponent() {
 		super();
 		metrics = new ArrayList<QuantitativeValue>();
+	}
+	
+	public PriceComponent(PriceComponent source) {//copy construct
+		super();
+		metrics = new ArrayList<QuantitativeValue>();
+		
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		if(source.getComponentCap() != null)
+			this.setComponentCap(new PriceSpec(source.getComponentCap()));
+		
+		if(source.getComponentFloor() != null)
+			this.setComponentFloor(new PriceSpec(source.getComponentFloor()));
+		
+		if(source.getPrice() != null)
+			this.setPrice(new PriceSpec(source.getPrice()));
+		
+		if(source.getPriceFunction() != null)
+			this.setPriceFunction(new PriceFunction(source.getPriceFunction()));
+		
+		for(QuantitativeValue met : source.getMetrics())
+			this.addMetric(new QuantitativeValue(met));
+		
+		
 	}
 
 	public String getName() {
@@ -83,11 +108,11 @@ public class PriceComponent {
 		this.priceFunction = priceFunction;
 	}
 
-	public List<QuantitativeValue> getMetrics() {
+	public ArrayList<QuantitativeValue> getMetrics() {
 		return metrics;
 	}
 
-	public void setMetrics(List<QuantitativeValue> metrics) {
+	public void setMetrics(ArrayList<QuantitativeValue> metrics) {
 		this.metrics = metrics;
 	}
 

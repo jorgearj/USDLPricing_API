@@ -28,8 +28,8 @@ import com.hp.hpl.jena.rdf.model.Model;
 import exceptions.InvalidLinkedUSDLModelException;
 
 public class LinkedUSDLModel {
-	private List<Service> services;
-	private List<Offering> offerings;
+	private ArrayList<Service> services;
+	private ArrayList<Offering> offerings;
 	private String baseURI;
 	private Map<String,String> prefixes; // inverted prefixes map KEY = URI, VALUE = prefix name
 	
@@ -45,22 +45,22 @@ public class LinkedUSDLModel {
 	}
 
 
-	public List<Service> getServices() {
+	public ArrayList<Service> getServices() {
 		return services;
 	}
 
 
-	public void setServices(List<Service> services) {
+	public void setServices(ArrayList<Service> services) {
 		this.services = services;
 	}
 
 
-	public List<Offering> getOfferings() {
+	public ArrayList<Offering> getOfferings() {
 		return offerings;
 	}
 
 
-	public void setOfferings(List<Offering> offerings) {
+	public void setOfferings(ArrayList<Offering> offerings) {
 		this.offerings = offerings;
 	}
 
@@ -107,8 +107,8 @@ public class LinkedUSDLModel {
 	}
 	
 	
-	private List<Offering> readAllOfferings(Model model){
-		List<Offering> offeringsList = new ArrayList<>();
+	private ArrayList<Offering> readAllOfferings(Model model){
+		ArrayList<Offering> offeringsList = new ArrayList<>();
 		String variableName = "offering";
 		
 		String queryString = ReaderQueries.readAllOfferings(variableName);
@@ -130,8 +130,8 @@ public class LinkedUSDLModel {
 		return offeringsList;
 	}
 	
-	private List<Service> readAllServices(Model model){
-		List<Service> servicesList = new ArrayList<>();
+	private ArrayList<Service> readAllServices(Model model){
+		ArrayList<Service> servicesList = new ArrayList<>();
 		
 		return servicesList;
 	}

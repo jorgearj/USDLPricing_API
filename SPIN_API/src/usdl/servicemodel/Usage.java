@@ -23,6 +23,25 @@ public class Usage extends PriceVariable {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Usage(Usage source) {//copy constructor
+		super();
+		// TODO Auto-generated constructor stub
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		if(source.getValue() != null)
+		{
+			if(source.getValue() instanceof QuantitativeValue)
+				this.setValue(new QuantitativeValue((QuantitativeValue)source.getValue()));
+			else
+				this.setValue(new QuantitativeValue((QuantitativeValue)source.getValue()));
+		}
+		
+	}
+	
 	/**
 	 * Reads a Usage object from the Semantic Model. 
 	 * @param   resource   The Resource object of the Usage variable.

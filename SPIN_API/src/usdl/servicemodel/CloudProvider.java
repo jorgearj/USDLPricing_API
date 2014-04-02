@@ -1,6 +1,7 @@
 package usdl.servicemodel;
 
-import java.util.List;
+import java.util.ArrayList;
+
 
 import usdl.constants.enums.FOAFEnum;
 import usdl.constants.enums.Prefixes;
@@ -12,15 +13,37 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 public class CloudProvider {
-	private String name;
-	private String comment;
-	private String homepage;
-	private List<Service> providedServices;
+	private String name=null;
+	private String comment=null;
+	private String homepage=null;
+	private ArrayList<Service> providedServices;
 
 	
 	public CloudProvider() {
 		super();
+		providedServices = new ArrayList<Service>();
 	}
+	
+	public CloudProvider(CloudProvider source) {//copy constructor
+		super();
+		
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		if(source.getHomepage() != null)
+			this.setHomepage(source.getHomepage());
+		
+		ArrayList<Service> myCopy = new ArrayList<Service>();
+		for(Service s : source.getProvidedServices())
+			myCopy.add(new Service(s));
+		
+		this.setProvidedServices(myCopy);
+	}
+	
+	
 
 	
 	public String getName() {
@@ -54,12 +77,12 @@ public class CloudProvider {
 	}
 
 
-	public List<Service> getProvidedServices() {
+	public ArrayList<Service> getProvidedServices() {
 		return providedServices;
 	}
 
 
-	public void setProvidedServices(List<Service> providedServices) {
+	public void setProvidedServices(ArrayList<Service> providedServices) {
 		this.providedServices = providedServices;
 	}
 

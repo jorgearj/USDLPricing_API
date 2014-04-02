@@ -23,6 +23,25 @@ public class Provider extends PriceVariable {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Provider(Provider source) {//copy constructor
+		super();
+		// TODO Auto-generated constructor stub
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		if(source.getValue() != null)
+		{
+			if(source.getValue() instanceof QuantitativeValue)
+				this.setValue(new QuantitativeValue((QuantitativeValue)source.getValue()));
+			else
+				this.setValue(new QuantitativeValue((QuantitativeValue)source.getValue()));
+		}
+		
+	}
+	
 	/**
 	 * Creates a Resource representation of the Provider instance and writes it into the passed model.
 	 * @param   owner    Resource that is linked to this object.

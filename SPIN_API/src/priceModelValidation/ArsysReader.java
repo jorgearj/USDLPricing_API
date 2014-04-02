@@ -62,7 +62,7 @@ public class ArsysReader {
 								//double num = in.nextInt();
 								//in.close(); 
 								
-								val.setValue(1);//1month
+								val.setValue(5);//1month
 								var.setValue(val);//add the new value to the usage variable 
 							}
 						}

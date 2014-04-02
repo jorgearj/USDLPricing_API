@@ -22,6 +22,28 @@ public class Offering {
 		super();
 		this.includes = new ArrayList<>();
 	}
+	
+	public Offering(Offering source) {//copy constructor
+		super();
+		
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		if(source.getIncludes().size() > 0)
+		{
+			ArrayList<Service> myIncludeCopy = new ArrayList<Service>();
+			for(Service s : source.getIncludes())
+				myIncludeCopy.add(new Service(s));
+			
+			this.setIncludes(myIncludeCopy);
+		}
+		
+		if(source.getPricePlan() != null)
+			this.setPricePlan(new PricePlan(source.getPricePlan()));
+	}
 
 	public String getName() {
 		return name;

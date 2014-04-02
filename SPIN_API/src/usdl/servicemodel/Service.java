@@ -1,19 +1,16 @@
 package usdl.servicemodel;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-
 import usdl.constants.enums.GREnum;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.USDLCoreEnum;
 
 
-public class Service {
+public class Service{
 	private String name=null;
 	//a service can include several other services - current approach may lead to an infinite loop. 
 	private ArrayList<Service> includes=null;
@@ -29,16 +26,48 @@ public class Service {
 		 includes = new ArrayList<Service>();
 	}
 	
+	public Service(Service source)  {//copy constructor
+		
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		
+		for(Service s : source.getIncludes())
+			this.includes.add(new Service(s));
+		
+		ArrayList<QuantitativeValue> QuantCopy = new ArrayList<QuantitativeValue>();
+		for(QuantitativeValue  qv: source.getQuantfeatures())
+			QuantCopy.add(new QuantitativeValue(qv));
+		
+		this.setQuantfeatures(QuantCopy);
+		
+		ArrayList<QualitativeValue> QualCopy = new ArrayList<QualitativeValue>();
+		for(QualitativeValue qval : source.getQualfeatures())
+			QualCopy.add(new QualitativeValue(qval));
+		
+		this.setQualfeatures(QualCopy);
+		
+		if(source.getProvider() != null)
+			this.setProvider(new CloudProvider(source.getProvider()));
+			
+         
+    }
+	
+
 	public String getName() {
 		return name;
 		
 	}
 
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public List<Service> getIncludes() {
+	public ArrayList<Service> getIncludes() {
 		return includes;
 	}
 

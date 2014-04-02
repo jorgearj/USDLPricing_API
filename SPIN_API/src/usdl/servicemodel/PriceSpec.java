@@ -34,6 +34,36 @@ public class PriceSpec {
 	public PriceSpec() {
 		super();
 	}
+	
+	public PriceSpec(PriceSpec source)//copy constructor
+	{
+		if(source.getName() != null)
+			this.setName(source.getName());
+		
+		if(source.getCurrency() != null)
+			this.setCurrency(source.getCurrency());
+		
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+		
+		if(source.getMaxValue() >= 0)
+			this.setMaxValue(source.getMaxValue());
+		
+		if(source.getMinValue() >= 0)
+			this.setMinValue(source.getMinValue());
+		
+		if(source.isAddedTaxIncluded())
+			this.setAddedTaxIncluded(true);
+		
+		if(source.getValue() >= 0)
+			this.setValue(source.getValue());
+		
+		if(source.getValidFrom() != null)
+			this.setValidFrom((Date)source.getValidFrom().clone());
+		
+		if(source.getValidThrough() != null)
+			this.setValidFrom((Date)source.getValidThrough().clone());
+	}
 
 	public String getName() {
 		return name;
