@@ -36,6 +36,7 @@ public class PriceFunction {
 	private List<Constraint> constraints = null;
 	private String comment = null;
 	private String oldBaseURI = null;
+	
 	public PriceFunction() {
 		super();
 		usageVariables = new ArrayList<Usage>();
@@ -43,6 +44,35 @@ public class PriceFunction {
 		constraints = new ArrayList<Constraint>();
 		
 	}
+	
+	public PriceFunction(PriceFunction source) {//copy constructor
+		super();
+		usageVariables = new ArrayList<Usage>();
+		providerVariables = new ArrayList<Provider>();
+		constraints = new ArrayList<Constraint>();
+
+		if(source.getName() != null)
+			this.setName(source.getName());
+
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+
+		if(source.getSPARQLFunction() != null)
+			this.setSPARQLFunction(source.getSPARQLFunction());
+
+		if(source.getStringFunction() != null)
+			this.setStringFunction(source.getStringFunction());
+
+		if(source.getOldBaseURI() != null)
+			this.setOldBaseURI(source.getOldBaseURI());
+
+		for(Usage uv : source.getUsageVariables())
+			this.addUsageVariable(new Usage(uv));
+
+		for(Provider cv : source.getProviderVariables())
+			this.addProviderVariable(new Provider(cv));
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -20,7 +20,24 @@ public class Usage extends PriceVariable {
 
 	public Usage() {
 		super();
-		// TODO Auto-generated constructor stub
+	}
+	
+	public Usage(Usage source) {//copy constructor
+		super();
+		if(source.getName() != null)
+			this.setName(source.getName());
+
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+
+		if(source.getValue() != null)
+		{
+			if(source.getValue() instanceof QuantitativeValue)
+				this.setValue(new QuantitativeValue((QuantitativeValue)source.getValue()));
+			else
+				this.setValue(new QuantitativeValue((QuantitativeValue)source.getValue()));
+		}
+
 	}
 	
 	/**

@@ -16,7 +16,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
-import exceptions.ErrorMessagesEnum;
+import exceptions.ErrorEnum;
 import exceptions.InvalidLinkedUSDLModelException;
 
 public class Offering {
@@ -26,20 +26,41 @@ public class Offering {
 	private String comment = null;
 	private String localName = null;
 	private String namespace = null;
+	private final String resourceType = ResourceNameEnum.OFFERING.getResourceType();
 	
 	public Offering(){
-		this(ResourceNameEnum.OFFERING.getResourceName());
+		this(ResourceNameEnum.OFFERING.getResourceName(), null);
 	}
 	
 	public Offering(String name){
+		this(name, null);
+	}
+	
+	public Offering(Offering source) {//copy constructor
 		super();
-		this.includes = new ArrayList<>();
-		this.name = name;
-		this.localName = name.replaceAll(" ", "_");
+
+		if(source.getName() != null)
+			this.setName(source.getName());
+
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+
+		if(source.getIncludes().size() > 0)
+		{
+			ArrayList<Service> myIncludeCopy = new ArrayList<Service>();
+			for(Service s : source.getIncludes())
+				myIncludeCopy.add(new Service(s));
+
+			this.setIncludes(myIncludeCopy);
+		}
+
+		if(source.getPricePlan() != null)
+			this.setPricePlan(new PricePlan(source.getPricePlan()));
 	}
 	
 	public Offering(String name, String nameSpace) {
-		this(name);
+		this.includes = new ArrayList<>();
+		this.setName(name);
 		this.namespace = nameSpace;
 	}
 
@@ -48,7 +69,12 @@ public class Offering {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if(name != null && !name.equalsIgnoreCase("")){
+			this.name = name;
+		}else{
+			this.name = ResourceNameEnum.OFFERING.getResourceName();
+		}
+		this.setLocalName(this.name);
 	}
 
 	public ArrayList<Service> getIncludes() {
@@ -80,7 +106,7 @@ public class Offering {
 	}
 
 	public void setLocalName(String localName) {
-		this.localName = localName;
+		this.localName = localName.replaceAll(" ", "_");
 	}
 
 	public String getNamespace() {
@@ -96,31 +122,45 @@ public class Offering {
 	 * @param   resource   The Resource object of the Linked USDL ServiceOffering.
 	 * @param   model   Model where the resource is located.
 	 * @return  An Offering object populated with its information extracted from the Semantic Model.
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public static Offering readFromModel(Resource resource, Model model){
-		Offering offering = new Offering(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());
-		ArrayList<Service> services = new ArrayList<Service>();
-		//populate the Offering
+	protected static Offering readFromModel(Resource resource, Model model) throws InvalidLinkedUSDLModelException{
+		Offering offering = null;
 		
-		//if this condition is not verified the name is already defined to be the resource localname
-		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
-			offering.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
-		
-		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
-			offering.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
-		
-		//get included services
-		StmtIterator iter = resource.listProperties(USDLCoreEnum.INCLUDES.getProperty(model));
-		while (iter.hasNext()) {
-			Resource service = iter.next().getResource();			
-			services.add(Service.readFromModel(service, model));
-		}
-		offering.setIncludes(services);
+		//validates if there is already a resource for this uri.
+		if(resource.getLocalName() != null && resource.getNameSpace() != null){
+			
+			offering = new Offering(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());
+			ArrayList<Service> services = new ArrayList<Service>();
+			//populate the Offering
+			
+			//if this condition is not verified the name is already defined to be the resource localname
+			if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+				offering.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+			
+			if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+				offering.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
+			
+			//get included services
+			StmtIterator iter = resource.listProperties(USDLCoreEnum.INCLUDES.getProperty(model));
+			while (iter.hasNext()) {
+				Resource service = iter.next().getResource();
+				Service serv = Service.readFromModel(service, model);
+				if(serv != null){
+					services.add(serv);
+				}
+			}
+			offering.setIncludes(services);
 
-//		if (resource.hasProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model))) {
-//			Resource pp = resource.getProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model)).getResource();
-//			offering.setPricePlan(PricePlan.readFromModel(pp, model));
-//		}
+			if (resource.hasProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model))) {
+				Resource pp = resource.getProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model)).getResource();
+				PricePlan pricePlan = PricePlan.readFromModel(pp, model);
+				if(pricePlan != null){
+					offering.setPricePlan(pricePlan);
+				}
+			}
+		}
+		
 		return offering;
 	}
 	
@@ -130,7 +170,7 @@ public class Offering {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void writeToModel(Model model,String baseURI) throws InvalidLinkedUSDLModelException
+	protected void writeToModel(Model model, String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource offering = null;
 		
@@ -141,28 +181,29 @@ public class Offering {
 				this.namespace = PricingAPIProperties.defaultBaseURI;
 		}
 		
-		if(this.name != null){
-			LinkedUSDLValidator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+		if(this.localName != null){
+			LinkedUSDLValidator validator = new LinkedUSDLValidator();
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
 			offering = model.createResource(this.namespace + this.localName);
-		}
-		
-		offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.OFFERING.getResource(model));//rdf type
-		
-		if(this.name != null)
-			offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
-		
-		if(this.comment != null)
-			offering.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
-		
-		if(!includes.isEmpty()){
+			
+			offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.OFFERING.getResource(model));//rdf type
+			
+			if(this.name != null)
+				offering.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+			
+			if(this.comment != null)
+				offering.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
+			
 			for(Service service : includes)
 			{
-				service.writeToModel(offering, model,baseURI);
+				if(service != null){
+					service.writeToModel(offering, model, baseURI);
+				}
 			}
+			
+			if(this.pricePlan != null)
+				pricePlan.writeToModel(offering, model,baseURI);
 		}
-		
-		if(this.pricePlan != null)
-			pricePlan.writeToModel(offering, model,baseURI);
 	}
 	
 	
@@ -182,6 +223,42 @@ public class Offering {
 	public void removeService(int index)
 	{
 		this.includes.remove(index);
+	}
+	
+	
+	protected void validate() throws InvalidLinkedUSDLModelException{
+		boolean hasOneService = false;
+		
+		this.validateSelfData();
+		
+		if(this.getIncludes().size() > 0){
+			for(Service serv : this.getIncludes()){
+				if(serv != null){
+					serv.validate();
+					hasOneService = true;
+				}else{
+					throw new InvalidLinkedUSDLModelException(ErrorEnum.NULL_RESOURCE, new String[]{this.getName(), ResourceNameEnum.SERVICE.getResourceType()});
+				}
+			}
+		}else{
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.OFFERING_WITHOUT_SERVICE, this.getName());
+		}
+		
+		if(!hasOneService){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.OFFERING_WITHOUT_SERVICE, this.getName());
+		}
+		
+		if(this.getPricePlan() != null){
+			this.getPricePlan().validate();
+		}else{
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.OFFERING_WITHOUT_PRICEPLAN, this.getName());
+		}
+	}
+	
+	private void validateSelfData() throws InvalidLinkedUSDLModelException{
+		if(this.getName() == null || this.getName().equalsIgnoreCase("")){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.MISSING_RESOURCE_DATA, new String[]{this.name, "name"});
+		}
 	}
 	
 	@Override

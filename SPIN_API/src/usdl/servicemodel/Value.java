@@ -10,7 +10,6 @@ public class Value {
 	public Value() {
 		super();
 		types = new ArrayList<String>();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {

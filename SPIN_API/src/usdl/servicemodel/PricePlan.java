@@ -11,6 +11,8 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
+import exceptions.InvalidLinkedUSDLModelException;
+
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
@@ -38,6 +40,27 @@ public class PricePlan {
 		super();
 		priceComponents = new ArrayList<PriceComponent>();
 	}
+	
+	public PricePlan(PricePlan source) {//copy construct
+		super();
+		priceComponents = new ArrayList<PriceComponent>();
+
+		if(source.getName() != null)
+			this.setName(source.getName());
+
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+
+		if(source.getPriceCap() != null)
+			this.setPriceCap(new PriceSpec(source.getPriceCap()));
+
+		if(source.getPriceFloor() != null)
+			this.setPriceFloor(new PriceSpec(source.getPriceFloor()));
+
+		for(PriceComponent pc : source.getPriceComponents())
+			this.addPriceComponent(new PriceComponent(pc));
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -196,7 +219,7 @@ public class PricePlan {
 	 * @param   model   Model where the resource is located.
 	 * @return  A PricePlan object populated with its information extracted from the Semantic Model.
 	 */
-	public static PricePlan readFromModel(Resource resource, Model model)
+	protected static PricePlan readFromModel(Resource resource, Model model)
 	{
 		PricePlan pp = new PricePlan();
 		
@@ -242,7 +265,7 @@ public class PricePlan {
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
 	 */
-	public void writeToModel(Resource owner,Model model,String baseURI)
+	protected void writeToModel(Resource owner,Model model,String baseURI)
 	{
 				Resource pp = null;
 				if(this.name != null)
@@ -277,5 +300,16 @@ public class PricePlan {
 				}
 				
 				owner.addProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model), pp);//establish a connection between the owner of the PricePlan and the created PricePlan, wich will probably be an instance of the ServiceOffering object
+	}
+	
+	protected void validate() throws InvalidLinkedUSDLModelException{
+		System.out.println("VALIDATE PRICEPLAN: " + this.getName());
+//		if(this.getIncludes() > 0){
+//			for(Service serv : this.getIncludes()){
+//				serv.validate();
+//			}
+//		}else{
+//			throws InvalidLinkedUSDLModelException(ErrorMessagesEnum.OFFERING_WITHOUT_SERVICE.getMessage());
+//		}
 	}
 }

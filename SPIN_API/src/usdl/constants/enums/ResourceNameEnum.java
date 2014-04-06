@@ -14,7 +14,11 @@ public enum ResourceNameEnum {
 	private ResourceNameEnum(String n) {
 		name = n;
 	}
-
+	
+	public String getResourceType(){
+		return name;
+	}
+	
 	public String getResourceName() {
 		return name + " " + PricingAPIProperties.resourceCounter++;
 	}

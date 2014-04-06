@@ -1,5 +1,6 @@
 package usdl.servicemodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import usdl.constants.enums.FOAFEnum;
@@ -20,6 +21,26 @@ public class CloudProvider {
 	
 	public CloudProvider() {
 		super();
+		providedServices = new ArrayList<Service>();
+	}
+	
+	public CloudProvider(CloudProvider source) {//copy constructor
+		super();
+
+		if(source.getName() != null)
+			this.setName(source.getName());
+
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+
+		if(source.getHomepage() != null)
+			this.setHomepage(source.getHomepage());
+
+		ArrayList<Service> myCopy = new ArrayList<Service>();
+		for(Service s : source.getProvidedServices())
+			myCopy.add(new Service(s));
+
+		this.setProvidedServices(myCopy);
 	}
 
 	

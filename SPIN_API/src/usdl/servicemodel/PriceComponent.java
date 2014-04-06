@@ -34,6 +34,33 @@ public class PriceComponent {
 		super();
 		metrics = new ArrayList<QuantitativeValue>();
 	}
+	
+	public PriceComponent(PriceComponent source) {//copy construct
+		super();
+		metrics = new ArrayList<QuantitativeValue>();
+
+		if(source.getName() != null)
+			this.setName(source.getName());
+
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+
+		if(source.getComponentCap() != null)
+			this.setComponentCap(new PriceSpec(source.getComponentCap()));
+
+		if(source.getComponentFloor() != null)
+			this.setComponentFloor(new PriceSpec(source.getComponentFloor()));
+
+		if(source.getPrice() != null)
+			this.setPrice(new PriceSpec(source.getPrice()));
+
+		if(source.getPriceFunction() != null)
+			this.setPriceFunction(new PriceFunction(source.getPriceFunction()));
+
+		for(QuantitativeValue met : source.getMetrics())
+			this.addMetric(new QuantitativeValue(met));
+
+	}
 
 	public String getName() {
 		return name;

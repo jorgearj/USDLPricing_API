@@ -11,6 +11,9 @@ import com.hp.hpl.jena.rdf.model.Resource;
 //http://www.heppnetz.de/ontologies/goodrelations/v1.html#QualitativeValue
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
+import exceptions.ErrorEnum;
+import exceptions.InvalidLinkedUSDLModelException;
+
 /**
  * The QualitativeValue class represents an instance of a QualitativeValue resource of the LinkedUSDL Pricing model. 
  * @author  Daniel Barrigas
@@ -18,13 +21,31 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
  * @version 1.0, March 06
  */
 public class QualitativeValue extends Value {
-	public String hasLabel = null;
+	private String hasLabel = null;
+	
 
 	public QualitativeValue() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
+	public QualitativeValue(QualitativeValue source)  {//copy constructor
+
+		if(source.getName() != null)
+			this.setName(source.getName());
+
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+
+		if(source.getTypes().size() > 0)
+		{
+			for(String s : source.getTypes())
+				this.addType(s);
+		}
+
+		if(source.getHasValue() != null)
+			this.setHasLabel(source.getHasValue());
+    }
+	
 	public String getHasValue() {
 		return hasLabel;
 	}
@@ -111,5 +132,16 @@ public class QualitativeValue extends Value {
 		}
 		
 		return val;
+	}
+	
+	protected void validate() throws InvalidLinkedUSDLModelException{
+		this.validateSelfData();
+
+	}
+	
+	private void validateSelfData() throws InvalidLinkedUSDLModelException{
+		if(this.getName() == null || this.getName().equalsIgnoreCase("")){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.MISSING_RESOURCE_DATA, new String[]{this.getName(), "name"});
+		}
 	}
 }

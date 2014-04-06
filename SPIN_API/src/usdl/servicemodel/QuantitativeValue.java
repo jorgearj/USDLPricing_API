@@ -25,8 +25,34 @@ public class QuantitativeValue extends Value {
 	
 	public QuantitativeValue() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
+	
+	public QuantitativeValue(QuantitativeValue source)  {//copy constructor
+
+		if(source.getName() != null)
+			this.setName(source.getName());
+
+		if(source.getComment() != null)
+			this.setComment(source.getComment());
+
+		if(source.getTypes().size() > 0)
+		{
+			for(String s : source.getTypes())
+				this.addType(s);
+		}
+
+		if(source.getMaxValue() >= 0)
+			this.setMaxValue(source.getMaxValue());
+
+		if(source.getMinValue() >= 0)
+			this.setMinValue(source.getMinValue());
+
+		if(source.getUnitOfMeasurement() != null)
+			this.setUnitOfMeasurement(source.getUnitOfMeasurement());
+
+		if(source.getValue() >= -1)
+			this.setValue(source.getValue());
+    }
 
 	public double getValue() {
 		return value;

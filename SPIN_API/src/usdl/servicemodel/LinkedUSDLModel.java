@@ -14,6 +14,7 @@ import org.topbraid.spin.system.SPINModuleRegistry;
 import org.topbraid.spin.util.JenaUtil;
 
 import usdl.constants.enums.Prefixes;
+import usdl.constants.enums.ResourceNameEnum;
 import usdl.queries.ReaderQueries;
 import usdl.servicemodel.validations.LinkedUSDLValidator;
 
@@ -25,6 +26,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 
+import exceptions.ErrorEnum;
 import exceptions.InvalidLinkedUSDLModelException;
 
 public class LinkedUSDLModel {
@@ -44,7 +46,7 @@ public class LinkedUSDLModel {
 		
 	}
 
-
+	
 	public List<Service> getServices() {
 		return services;
 	}
@@ -62,6 +64,14 @@ public class LinkedUSDLModel {
 
 	public void setOfferings(List<Offering> offerings) {
 		this.offerings = offerings;
+	}
+	
+	public void addOffering(Offering off){
+		this.offerings.add(off);
+	}
+	
+	public void addService(Service serv){
+		this.services.add(serv);
 	}
 
 	public String getBaseURI() {
@@ -97,8 +107,9 @@ public class LinkedUSDLModel {
 	/**
 	 * Imports an RDF model and maps it to java objects populating the LinkedUSDLModel structure  
 	 * @param   model   The model to read from
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void readModel(Model model){
+	public void readModel(Model model) throws InvalidLinkedUSDLModelException{
 		System.out.println("READING FROM MODEL");
 		this.setPrefixes(this.processPrefixes(model));
 		
@@ -107,7 +118,7 @@ public class LinkedUSDLModel {
 	}
 	
 	
-	private List<Offering> readAllOfferings(Model model){
+	private List<Offering> readAllOfferings(Model model) throws InvalidLinkedUSDLModelException{
 		List<Offering> offeringsList = new ArrayList<>();
 		String variableName = "offering";
 		
@@ -121,8 +132,9 @@ public class LinkedUSDLModel {
 		while(results.hasNext()){
 			QuerySolution row = results.next();
 			Offering offering = Offering.readFromModel(row.getResource(variableName), model);
-//			System.out.println(offering.toString());
-			offeringsList.add(offering);
+			if(offering != null){
+				offeringsList.add(offering);
+			}
 		}
 		
 		exec.close();
@@ -168,7 +180,7 @@ public class LinkedUSDLModel {
 	
 	
 	/**
-	 * Exports the LinkedUSDLModel to an RDF file.  
+	 * Exports the LinkedUSDLModel to an RDF file. Note that the model will always be validated. 
 	 * @param   path   The path where the final file will be stored
 	 * @param   format	the RDFFormat to use 
 	 * @throws InvalidLinkedUSDLModelException 
@@ -176,9 +188,61 @@ public class LinkedUSDLModel {
 	 */
 	public void writeModelToFile(String path, String format) throws InvalidLinkedUSDLModelException, IOException
 	{
-		Model model = this.WriteToModel();
-		LinkedUSDLValidator.validateModel(model);
-		this.write(model, path, format);
+		this.writeModelToFile(path, format, true);
+	}
+	
+	/**
+	 * Exports the LinkedUSDLModel to an RDF file. In case of <code>validation</code> set to false no validation will be performed. Do this at your own risk. 
+	 * @param   path   The path where the final file will be stored
+	 * @param   format	the RDFFormat to use 
+	 * @param   validation  enable/disable linked USDL model validation
+	 * @throws InvalidLinkedUSDLModelException 
+	 * @throws IOException 
+	 */
+	public void writeModelToFile(String path, String format, boolean validation) throws InvalidLinkedUSDLModelException, IOException
+	{
+		Model model;
+		
+		if(validation){
+			this.validateModel();
+			
+			model = this.WriteToModel();
+		
+			LinkedUSDLValidator validator = new LinkedUSDLValidator();
+			validator.validateModel(model);
+			this.write(model, path, format);
+		}else{
+			model = this.WriteToModel();
+			this.write(model, path, format);
+		}
+		
+	}
+	
+	/**
+	 * Checks the current Linked USDL model instance validity. Throws any exception captured during the validation process.
+	 * These Exceptions should be caught by the invoker.
+	 * @throws InvalidLinkedUSDLModelException 
+	 */
+	public void validateModel() throws InvalidLinkedUSDLModelException{
+		boolean hasOneValidOffering = false;
+		
+		if(this.getOfferings().size() > 0){
+			for(Offering off : this.getOfferings()){
+				if(off != null){
+					off.validate();
+					hasOneValidOffering = true;
+				}else{
+					throw new InvalidLinkedUSDLModelException(ErrorEnum.NULL_RESOURCE, new String[]{"Root", ResourceNameEnum.OFFERING.getResourceType()});
+				}
+			}
+		}else{
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.NO_OFFERINGS_FOUND);
+		}
+		
+		if(!hasOneValidOffering){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.NO_OFFERINGS_FOUND);
+		}
+		
 	}
 	
 	private void write(Model model, String path, String format) throws IOException {
