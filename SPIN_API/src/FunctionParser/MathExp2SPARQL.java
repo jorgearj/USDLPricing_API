@@ -130,7 +130,7 @@ public class MathExp2SPARQL {
 			//System.out.println(key + "  " +val); //print the key-value entry
 			opmap.put(key, val);
 		}
-		
+
 		if(StringFunction.contains("IF"))
 		{
 			SPARQLQuery = "SELECT ?result\n" +
@@ -180,7 +180,7 @@ public class MathExp2SPARQL {
 				
 				ASTNode objform= p.parse(form);
 				convert(objform);
-				 String fb = prefixToInfix(stack,infixstack);
+				String fb = prefixToInfix(stack,infixstack);
 				fb=fb.replace("[", "");
 				fb=fb.replace("]", "");
 				
@@ -200,7 +200,6 @@ public class MathExp2SPARQL {
 				}
 				
 				//BIND (IF(((?gbs > 1) && (?gbs <= (10 * 1024))), ((?gbs - 1) * ?price10), 0) AS ?priceA) .
-				
 				String parcel = "BIND(IF(( "  +fa + " ),("+fb+"),0) AS ?result"+counter+++" ).";
 				parcels.add(parcel);
 				//System.out.println("Cond : "+fa+"\nForm:  "+fb+"\n***************************");
@@ -285,11 +284,13 @@ public class MathExp2SPARQL {
 
 		if (node instanceof FractionNode) { //fraction node
 			FractionNode fr = (FractionNode) node;
-			if (fr.isSign()) {
-				return F.fraction((IInteger) convert(fr.getNumerator()),(IInteger) convert(fr.getDenominator())).negate();
-			}
-			return F.fraction(
-					(IInteger) convert(((FractionNode) node).getNumerator()),(IInteger) convert(((FractionNode) node).getDenominator()));
+			//System.out.println(node.toString());
+			stack.add("("+node.toString()+")");
+//			if (fr.isSign()) {
+//				return F.fraction((IInteger) convert(fr.getNumerator()),(IInteger) convert(fr.getDenominator())).negate(); //only need the fraction as a string
+//			}
+//			return F.fraction(
+//					(IInteger) convert(((FractionNode) node).getNumerator()),(IInteger) convert(((FractionNode) node).getDenominator()));
 		}
 
 		if (node instanceof PatternNode) { //pattern node
@@ -348,13 +349,26 @@ public class MathExp2SPARQL {
 		String s;
 		while (!stack.isEmpty()) {
 			s = stack.pop();
+			
 			if (opmap.containsValue(s)) {
-				String nelem = "( " +infixstack.pop()  +" "+ s +" "+ infixstack.pop() + " )";
+				String pop1=infixstack.pop();
+				String pop2=infixstack.pop();
+				//System.out.println(pop1 + s +pop2);
+				if(s.equals("==")) s="=";
+				String nelem = "( " +pop1  +" "+ s +" "+ pop2 + " )";
 				infixstack.push(nelem);
-			} else {
+			}
+			else if(s.equals("CEIL"))
+			{
+				String nelem = "CEIL" + infixstack.pop() ;
+				infixstack.push(nelem);
+			}
+			else {
 				infixstack.add(s);
 			}
 		}
+		
+
 		return infixstack.toString();
 	}
 

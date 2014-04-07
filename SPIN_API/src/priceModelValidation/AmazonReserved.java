@@ -88,7 +88,7 @@ public class AmazonReserved {
 		QuantitativeValue MemorySize =  new QuantitativeValue();
 		MemorySize.addType(CLOUDEnum.MEMORYSIZE.getConceptURI());
 		MemorySize.setValue(3.75);
-		MemorySize.setUnitOfMeasurement("B86");//GB
+		MemorySize.setUnitOfMeasurement("E34");//GB
 		s1QuantFeat.add(MemorySize);
 		
 		
@@ -98,7 +98,7 @@ public class AmazonReserved {
 
 		DiskSize.addType(CLOUDEnum.DISKSIZE.getConceptURI());
 		DiskSize.setValue(4);
-		DiskSize.setUnitOfMeasurement("B86");// GB
+		DiskSize.setUnitOfMeasurement("E34");// GB
 
 		StorageType.addType(CLOUDEnum.STORAGETYPE.getConceptURI());
 		StorageType.setHasLabel("SSD");

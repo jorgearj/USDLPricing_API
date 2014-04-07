@@ -28,6 +28,10 @@ public class Service{
 	
 	public Service(Service source)  {//copy constructor
 		
+		quantfeatures = new ArrayList<QuantitativeValue>();
+		 qualfeatures = new ArrayList<QualitativeValue>();
+		 includes = new ArrayList<Service>();
+		
 		if(source.getName() != null)
 			this.setName(source.getName());
 		
@@ -62,7 +66,16 @@ public class Service{
 		
 	}
 
-
+	public void addQuantitativeFeature(QuantitativeValue qv)
+	{
+		this.getQuantfeatures().add(qv);
+	}
+	
+	public void addQualitativeFeature(QualitativeValue qv)
+	{
+		this.getQualfeatures().add(qv);
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
