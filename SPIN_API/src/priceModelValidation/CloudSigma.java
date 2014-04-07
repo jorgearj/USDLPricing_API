@@ -14,6 +14,9 @@
  * 12Months
  * 24Months
  * 36Months
+ * 
+ * This is a simple example that tries to model every subscription plan available. It asks the number of months that the user will be using the service and, depending on that value, it applies the corresponding discounts. Of course, this 
+ * is a pratical example to test a more complex mathematical expression and should not be used as a valid example. The valid approach for CloudSigma is illustrated by the CloudSigmaSimples class, which models a 6Months subscription plan.
  */
 package priceModelValidation;
 
