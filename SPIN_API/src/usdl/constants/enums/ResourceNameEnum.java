@@ -7,7 +7,10 @@ public enum ResourceNameEnum {
 	OFFERING("Service Offering"),
 	SERVICE("Service"),
 	PRICEPLAN("Price Plan"),
-	PRICECOMPONENT("Price Component");
+	PRICECOMPONENT("Price Component"),
+	PRICEFUNCTION("Price Function"),
+	PRICESPEC("Price Specification"),
+	QUANTVALUE("Quantitative Value");
 	
 	private String name;
 	

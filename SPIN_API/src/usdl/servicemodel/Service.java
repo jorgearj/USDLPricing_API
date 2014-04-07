@@ -218,7 +218,6 @@ public class Service {
 	protected static Service readFromModel(Resource resource, Model model){
 		Service service = null;
 		
-		//validates if there is already a resource for this uri.
 		if(resource.getLocalName() != null && resource.getNameSpace() != null){
 			service = new Service(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());
 
@@ -326,6 +325,7 @@ public class Service {
 		
 	}
 	
+	//TODO: finish validations
 	protected void validate() throws InvalidLinkedUSDLModelException{
 		this.validateSelfData();
 		

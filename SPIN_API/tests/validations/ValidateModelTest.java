@@ -1,17 +1,16 @@
 package validations;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Test;
 
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.LinkedUSDLModelFactory;
 import usdl.servicemodel.Offering;
+import usdl.servicemodel.PriceComponent;
 import usdl.servicemodel.PricePlan;
+import usdl.servicemodel.PriceSpec;
 import usdl.servicemodel.Service;
-import usdl.servicemodel.validations.LinkedUSDLValidator;
 import exceptions.InvalidLinkedUSDLModelException;
 import exceptions.ReadModelException;
 
@@ -83,6 +82,42 @@ public class ValidateModelTest {
 	} 
 	
 	@Test
+	public void pricePlanWithoutComponent() throws InvalidLinkedUSDLModelException, IOException, ReadModelException {
+		
+		LinkedUSDLModel model = LinkedUSDLModelFactory.createEmptyModel();
+		Offering offering = new Offering("Offering1");
+		Service service = new Service();
+		service.setName("Service1");
+		offering.addService(service);
+		PricePlan plan = new PricePlan();
+		plan.setName("PricePlan1");
+		offering.setPricePlan(plan);
+		
+		model.addOffering(offering);
+		
+		model.validateModel();
+	}
+	
+	@Test
+	public void componentWithoutPrice() throws InvalidLinkedUSDLModelException, IOException, ReadModelException {
+		
+		LinkedUSDLModel model = LinkedUSDLModelFactory.createEmptyModel();
+		Offering offering = new Offering("Offering1");
+		Service service = new Service();
+		service.setName("Service1");
+		offering.addService(service);
+		PricePlan plan = new PricePlan();
+		plan.setName("PricePlan1");
+		PriceComponent comp = new PriceComponent("Component1");
+		plan.addPriceComponent(comp);
+		offering.setPricePlan(plan);
+		
+		model.addOffering(offering);
+		
+		model.validateModel();
+	}
+	
+	@Test
 	public void validOffering() throws InvalidLinkedUSDLModelException, IOException, ReadModelException {
 		
 		LinkedUSDLModel model = LinkedUSDLModelFactory.createEmptyModel();
@@ -92,6 +127,9 @@ public class ValidateModelTest {
 		offering.addService(service);
 		PricePlan plan = new PricePlan();
 		plan.setName("PricePlan1");
+		PriceComponent priceComp = new PriceComponent("PriceComponent1");
+		priceComp.setPrice(new PriceSpec("Price for Price Component 1"));
+		plan.addPriceComponent(priceComp);
 		offering.setPricePlan(plan);
 		
 		model.addOffering(offering);

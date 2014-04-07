@@ -36,6 +36,12 @@ public class Offering {
 		this(name, null);
 	}
 	
+	public Offering(String name, String nameSpace) {
+		this.includes = new ArrayList<>();
+		this.setName(name);
+		this.namespace = nameSpace;
+	}
+	
 	public Offering(Offering source) {//copy constructor
 		super();
 
@@ -58,12 +64,6 @@ public class Offering {
 			this.setPricePlan(new PricePlan(source.getPricePlan()));
 	}
 	
-	public Offering(String name, String nameSpace) {
-		this.includes = new ArrayList<>();
-		this.setName(name);
-		this.namespace = nameSpace;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -124,14 +124,12 @@ public class Offering {
 	 * @return  An Offering object populated with its information extracted from the Semantic Model.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	protected static Offering readFromModel(Resource resource, Model model) throws InvalidLinkedUSDLModelException{
+	protected static Offering readFromModel(Resource resource, Model model){
 		Offering offering = null;
 		
-		//validates if there is already a resource for this uri.
 		if(resource.getLocalName() != null && resource.getNameSpace() != null){
 			
 			offering = new Offering(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());
-			ArrayList<Service> services = new ArrayList<Service>();
 			//populate the Offering
 			
 			//if this condition is not verified the name is already defined to be the resource localname
@@ -147,10 +145,9 @@ public class Offering {
 				Resource service = iter.next().getResource();
 				Service serv = Service.readFromModel(service, model);
 				if(serv != null){
-					services.add(serv);
+					offering.addService(serv);
 				}
 			}
-			offering.setIncludes(services);
 
 			if (resource.hasProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model))) {
 				Resource pp = resource.getProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model)).getResource();

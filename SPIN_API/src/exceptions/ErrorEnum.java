@@ -18,7 +18,7 @@ public enum ErrorEnum {
 	OFFERING_WITHOUT_SERVICE("ServiceOffering \"{0}\" has no included Services. At least one Service must be included."),
 	OFFERING_WITHOUT_PRICEPLAN("ServiceOffering \"{0}\" has no PricePlan defined. A PricePlan must be defined."),
 	PRICEPLAN_WITHOUT_COMPONENTS("PricePlan \"{0}\" has no PriceComponent defined. At least one PriceComponent must be defined."),
-	COMPONENT_WITHOUT_PRICE("PriceComponent \"{0}\" has no price. It must have either a PriceSpecification or a PriceFunction");
+	COMPONENT_WITHOUT_PRICE("PriceComponent \"{0}\" has no mean to calculate its price. It must have either a PriceSpecification or a PriceFunction");
 	
 	private String message;
  

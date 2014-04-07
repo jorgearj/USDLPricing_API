@@ -6,11 +6,18 @@ import usdl.constants.enums.GREnum;
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.ResourceNameEnum;
+import usdl.constants.properties.PricingAPIProperties;
+import usdl.servicemodel.validations.LinkedUSDLValidator;
 
-import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
+
+import exceptions.ErrorEnum;
+import exceptions.InvalidLinkedUSDLModelException;
 
 /**
  * The Usage class represents an instance of a PriceSpec resource of the GR model. 
@@ -28,10 +35,23 @@ public class PriceSpec {
 	private Date validFrom = null;
 	private Date validThrough = null;
 	private String comment = null;//
+	private String localName = null;
+	private String namespace = null;
+	private final String resourceType = ResourceNameEnum.OFFERING.getResourceType();
 	
 
-	public PriceSpec() {
-		super();
+	
+	public PriceSpec(){
+		this(ResourceNameEnum.OFFERING.getResourceName(), null);
+	}
+	
+	public PriceSpec(String name){
+		this(name, null);
+	}
+	
+	public PriceSpec(String name, String nameSpace) {
+		this.setName(name);
+		this.namespace = nameSpace;
 	}
 	
 	public PriceSpec(PriceSpec source)//copy constructor
@@ -69,8 +89,14 @@ public class PriceSpec {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if(name != null && !name.equalsIgnoreCase("")){
+			this.name = name;
+		}else{
+			this.name = ResourceNameEnum.OFFERING.getResourceName();
+		}
+		this.setLocalName(this.name);
 	}
+
 
 	public String getCurrency() {
 		return currency;
@@ -136,6 +162,22 @@ public class PriceSpec {
 		this.comment = comment;
 	}
 
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName.replaceAll(" ", "_");
+	}
+
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+	
 	@Override
 	public String toString() {
 		return "PriceSpec [name=" + name + ", currency=" + currency
@@ -151,46 +193,56 @@ public class PriceSpec {
 	 * Creates a Resource representation of the PriceSpec instance and writes it into the passed model.
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void writeToModel(Resource owner,Model model,String baseURI)
+	public void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource ps = null;
-		if(this.name != null)
-		{
-			ps = model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") +"_TIME"+ System.nanoTime());
-			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "PriceSpecification"));//rdf type
-			ps.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
-		}
-		else
-		{
-			ps = model.createResource(baseURI +"#"  + "PriceSpecification"+"_TIME"+ System.nanoTime());
-			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "PriceSpecification"));//rdf type
+		
+		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
+			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+				this.namespace = baseURI;
+			else //use the default baseURI
+				this.namespace = PricingAPIProperties.defaultBaseURI;
 		}
 		
-		if(this.comment != null)
-			ps.addProperty(RDFSEnum.COMMENT.getProperty(model), this.comment);
+		if(this.localName != null){
+			LinkedUSDLValidator validator = new LinkedUSDLValidator();
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));			
+			ps = model.createResource(this.namespace + this.localName);
+			
+			ps.addProperty(RDFEnum.RDF_TYPE.getProperty(model), GREnum.PRICE_SPEC.getResource(model));//rdf type
+			
+			if(this.name != null)
+				ps.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
 		
-		ps.addLiteral(GREnum.VALUE_ADDED_TAX_INCLUDED.getProperty(model), this.addedTaxIncluded);
+			if(this.comment != null)
+				ps.addProperty(RDFSEnum.COMMENT.getProperty(model), this.comment);
+			
+			ps.addLiteral(GREnum.VALUE_ADDED_TAX_INCLUDED.getProperty(model), this.addedTaxIncluded);
+			
+			if(this.currency != null)
+				 ps.addProperty(GREnum.HAS_CURRENCY.getProperty(model), this.currency);
+			
+			if(this.value >=0)
+				ps.addLiteral(GREnum.HAS_CURRENCY_VALUE.getProperty(model), this.value);
+			
+			if(this.maxValue >=0)
+				ps.addLiteral(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model), this.maxValue);
+			
+			if(this.minValue >=0)
+				ps.addLiteral(GREnum.HAS_MIN_CURRENCY_VALUE.getProperty(model), this.minValue);
+			
+			if(this.validFrom != null)
+				ps.addProperty(GREnum.VALID_FROM.getProperty(model), model.createTypedLiteral(this.validFrom,XSDDatatype.XSDdate));
+			
+			if(this.validThrough != null)
+				ps.addProperty(GREnum.VALID_THROUGH.getProperty(model), model.createTypedLiteral(this.validThrough,XSDDatatype.XSDdate));
+			
+			owner.addProperty(GREnum.HAS_PRICE_SPECIFICATION.getProperty(model), ps);
+		}
 		
-		if(this.currency != null)
-			 ps.addProperty(GREnum.HAS_CURRENCY.getProperty(model), this.currency);
 		
-		if(this.value >=0)
-			ps.addLiteral(GREnum.HAS_CURRENCY_VALUE.getProperty(model), this.value);
-		
-		if(this.maxValue >=0)
-			ps.addLiteral(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model), this.maxValue);
-		
-		if(this.minValue >=0)
-			ps.addLiteral(GREnum.HAS_MIN_CURRENCY_VALUE.getProperty(model), this.minValue);
-		
-		if(this.validFrom != null)
-			ps.addProperty(GREnum.VALID_FROM.getProperty(model), model.createTypedLiteral(this.validFrom,XSDDatatype.XSDdate));
-		
-		if(this.validThrough != null)
-			ps.addProperty(GREnum.VALID_THROUGH.getProperty(model), model.createTypedLiteral(this.validThrough,XSDDatatype.XSDdate));
-		
-		owner.addProperty(GREnum.HAS_PRICE_SPECIFICATION.getProperty(model), ps);
 	}
 	
 	/**
@@ -201,50 +253,60 @@ public class PriceSpec {
 	 */
 	public static PriceSpec readFromModel(Resource resource,Model model)
 	{
-		PriceSpec ps = new PriceSpec();
-		//populate the PricePlan
-
-
-		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
-			ps.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
-		else
-		{
-			if(resource.getLocalName() != null)
-				ps.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
-		}
+		PriceSpec ps = null;
 		
-		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
-			ps.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
-		
-		if(resource.hasProperty(GREnum.VALUE_ADDED_TAX_INCLUDED.getProperty(model)))
-			ps.setAddedTaxIncluded( resource.getProperty(GREnum.VALUE_ADDED_TAX_INCLUDED.getProperty(model)).getBoolean() );
-		
-		if(resource.hasProperty(GREnum.HAS_CURRENCY.getProperty(model)))
-			ps.setCurrency(resource.getProperty(GREnum.HAS_CURRENCY.getProperty(model)).getString());
-		
-		if(resource.hasProperty(GREnum.HAS_CURRENCY_VALUE.getProperty(model)))
-				ps.setValue(resource.getProperty(GREnum.HAS_CURRENCY_VALUE.getProperty(model)).getDouble());
-		
-		if(resource.hasProperty(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model)))
-			ps.setMaxValue(resource.getProperty(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model)).getDouble());
-		
-		if(resource.hasProperty(GREnum.HAS_MIN_CURRENCY_VALUE.getProperty(model)))
-			ps.setMinValue(resource.getProperty(GREnum.HAS_MIN_CURRENCY_VALUE.getProperty(model)).getDouble());
+		if(resource.getLocalName() != null && resource.getNameSpace() != null){
+			
+			ps = new PriceSpec(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());
+			//populate the PricePlan
 	
-		if(resource.hasProperty(GREnum.VALID_FROM.getProperty(model)))
-		{
-			Resource temp = resource.getProperty(GREnum.VALID_FROM.getProperty(model)).getResource();
-			ps.setValidFrom(((XSDDateTime)temp).asCalendar().getTime());
-		}
+	
+			if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+				ps.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+			
+			if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+				ps.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
+			
+			if(resource.hasProperty(GREnum.VALUE_ADDED_TAX_INCLUDED.getProperty(model)))
+				ps.setAddedTaxIncluded( resource.getProperty(GREnum.VALUE_ADDED_TAX_INCLUDED.getProperty(model)).getBoolean() );
+			
+			if(resource.hasProperty(GREnum.HAS_CURRENCY.getProperty(model)))
+				ps.setCurrency(resource.getProperty(GREnum.HAS_CURRENCY.getProperty(model)).getString());
+			
+			if(resource.hasProperty(GREnum.HAS_CURRENCY_VALUE.getProperty(model)))
+				ps.setValue(resource.getProperty(GREnum.HAS_CURRENCY_VALUE.getProperty(model)).getDouble());
+			
+			if(resource.hasProperty(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model)))
+				ps.setMaxValue(resource.getProperty(GREnum.HAS_MAX_CURRENCY_VALUE.getProperty(model)).getDouble());
+			
+			if(resource.hasProperty(GREnum.HAS_MIN_CURRENCY_VALUE.getProperty(model)))
+				ps.setMinValue(resource.getProperty(GREnum.HAS_MIN_CURRENCY_VALUE.getProperty(model)).getDouble());
 		
-		if(resource.hasProperty(GREnum.VALID_THROUGH.getProperty(model)))
-		{
-			Resource temp = resource.getProperty(GREnum.VALID_THROUGH.getProperty(model)).getResource();
-			ps.setValidThrough(((XSDDateTime)temp).asCalendar().getTime());
+			if(resource.hasProperty(GREnum.VALID_FROM.getProperty(model)))
+			{
+				Resource temp = resource.getProperty(GREnum.VALID_FROM.getProperty(model)).getResource();
+				ps.setValidFrom(((XSDDateTime)temp).asCalendar().getTime());
+			}
+			
+			if(resource.hasProperty(GREnum.VALID_THROUGH.getProperty(model)))
+			{
+				Resource temp = resource.getProperty(GREnum.VALID_THROUGH.getProperty(model)).getResource();
+				ps.setValidThrough(((XSDDateTime)temp).asCalendar().getTime());
+			}
 		}
 		return ps;
 	}
 
+	protected void validate() throws InvalidLinkedUSDLModelException{
+		this.validateSelfData();
+		
+	}
+	
+	private void validateSelfData() throws InvalidLinkedUSDLModelException{
+		if(this.getName() == null || this.getName().equalsIgnoreCase("")){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.MISSING_RESOURCE_DATA, new String[]{this.name, "name"});
+		}
+	}
 	
 	
 }
