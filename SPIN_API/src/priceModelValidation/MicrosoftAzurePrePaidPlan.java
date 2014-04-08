@@ -3,9 +3,15 @@
  * @author Daniel Guedes Barrigas - danielgbarrigas@hotmail.com / danielgbarrigas@gmail.com
  * 
  * Uses the LinkedUSDL Pricing API to model the Subscription plan from Microsoft Azure 
- * Info about their offerings can be seen at: http://www.windowsazure.com/en-us/pricing/details/virtual-machines/#linux
+ * Info about their offerings can be seen at:
+ *  http://www.windowsazure.com/en-us/pricing/details/virtual-machines/#linux
+ *  http://azure.microsoft.com/pt-br/pricing/details/data-transfers/
+ *  http://msdn.microsoft.com/library/azure/dn197896.aspx
+ *  http://azure.microsoft.com/en-us/pricing/calculator/?scenario=virtual-machines
  * The pricing method adopted by Microsoft Azure's pre-paid plan is a VB Bundlded PrePaid Credit model. They provide pre-payment plans from which the customer can choose the one
  * that suits his needs the best.
+ * 
+ * For this example we chose to model the A1(Small) VM running  Linux on US East.
  */
 
 
@@ -206,11 +212,11 @@ public class MicrosoftAzurePrePaidPlan {
 		VMCost6m.setName("VMCost6m"+"TIME"+System.nanoTime());
 		
 		QuantitativeValue val = new QuantitativeValue();
-		val.setValue(0.036);
+		val.setValue(0.038);
 		val.setUnitOfMeasurement("EUR");
 		VMCost6m.setValue(val);
 		
-		pf1.setStringFunction( "6*31*24" + "*" +VMCost6m.getName());
+		pf1.setStringFunction( "6*732" + "*" +VMCost6m.getName());
 		
 		////////////////
 		
@@ -273,7 +279,7 @@ public class MicrosoftAzurePrePaidPlan {
 		backupcost.setName("backupcost"+"TIME"+System.nanoTime());
 		
 		QuantitativeValue vald = new QuantitativeValue();
-		vald.setValue(0.30);
+		vald.setValue(0.167);
 		vald.setUnitOfMeasurement("EUR");
 		backupcost.setValue(vald);
 		
@@ -352,7 +358,7 @@ public class MicrosoftAzurePrePaidPlan {
 		backupcostb.setName("backupcost"+"TIME"+System.nanoTime());
 		
 		QuantitativeValue valh = new QuantitativeValue();
-		valh.setValue(0.30);
+		valh.setValue(0.167);
 		valh.setUnitOfMeasurement("EUR");
 		backupcostb.setValue(valh);
 		
@@ -364,12 +370,8 @@ public class MicrosoftAzurePrePaidPlan {
 		
 		pf5.setStringFunction( "IF ("+NGBbrb.getName()+">5) ;"+"6*(5*" +backupcost.getName()+ ")");
 		
-		
-		////Deduction to be applied to the total price. The discount depends on the amount that the user will pay.
-		
-		
 		///////////////////////////////////////////
-		PriceComponent pc6 = new PriceComponent();//PriceComponent responsible for calculating the Cost of the backup_recovery feature
+		PriceComponent pc6 = new PriceComponent();
 		pp.addPriceComponent(pc6);
 		pc6.setName("pc6-totaldeduction");
 		pc6.setComment("Responsible for calculating the total deduction to be applied to the final price.");
@@ -385,7 +387,7 @@ public class MicrosoftAzurePrePaidPlan {
 		backupcostc.setName("backupcost"+"TIME"+System.nanoTime());
 		
 		QuantitativeValue vali = new QuantitativeValue();
-		vali.setValue(0.30);
+		vali.setValue(0.167);
 		vali.setUnitOfMeasurement("EUR");
 		backupcostc.setValue(vali);
 		
@@ -436,7 +438,7 @@ public class MicrosoftAzurePrePaidPlan {
 		VMCost6mb.setName("VMCost6m"+"TIME"+System.nanoTime());
 		
 		QuantitativeValue vall = new QuantitativeValue();
-		vall.setValue(0.036);
+		vall.setValue(0.038);
 		vall.setUnitOfMeasurement("EUR");
 		VMCost6mb.setValue(vall);
 		
@@ -452,7 +454,6 @@ public class MicrosoftAzurePrePaidPlan {
 				"( (6*31*24" + "*" +VMCost6mb.getName()+") + (("+NGBOut_z1c.getName() +"*"+gboutcost_z1c.getName() + "+" + NGBOut_z2c.getName() + "*" + gboutcost_z2c.getName() + ")*6) + ("+"6*(" + NGBbrc.getName()+  "*" +backupcostc.getName()+ "))) * (1-0.255) "+ "~" +
 				"ELSEIF ( (6*31*24" + "*" +VMCost6mb.getName()+") + (("+NGBOut_z1c.getName() +"*"+gboutcost_z1c.getName() + "+" + NGBOut_z2c.getName() + "*" + gboutcost_z2c.getName() + ")*6) + ("+"6*(" + NGBbrc.getName()+  "*" +backupcostc.getName()+ "))) >= 29799 ;" +
 				"( (6*31*24" + "*" +VMCost6mb.getName()+") + (("+NGBOut_z1c.getName() +"*"+gboutcost_z1c.getName() + "+" + NGBOut_z2c.getName() + "*" + gboutcost_z2c.getName() + ")*6) + ("+"6*(" + NGBbrc.getName()+  "*" +backupcostc.getName()+ "))) * (1-0.295) "+ "~"
-				
 				);
 		
 		// END

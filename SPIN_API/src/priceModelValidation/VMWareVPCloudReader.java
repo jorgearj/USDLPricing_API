@@ -47,8 +47,8 @@ public class VMWareVPCloudReader {
 						if(pc.getPriceFunction() != null)//if it has a price function
 						{
 							PriceFunction pf = pc.getPriceFunction();
-							System.out.println("Off: "+off.getName());
-							System.out.println(pf.getSPARQLFunction());
+							//System.out.println("Off: "+off.getName());
+							//System.out.println(pf.getSPARQLFunction());
 							
 							List<Usage> usageVars = pf.getUsageVariables();//fetch its usage variables
 							Collections.sort(usageVars, new Comparator<Usage>() {//sort them alphabetically, this can be included in the API

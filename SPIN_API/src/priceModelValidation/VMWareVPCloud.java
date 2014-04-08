@@ -5,6 +5,9 @@
  * Uses the LinkedUSDL Pricing API to model the 3 months Subscription plan from VMWare Hybrid vCloud
  * Info about their offerings can be seen at: http://vcloud.vmware.com/about_services/pricing
  * The pricing method adopted by VMWare's Hybrid vCloud service is a PB Bundled Recurring Resource Pooling plan. 
+ * Details about their offerings can be found at:
+ * http://vcloud.vmware.com/about_services/pricing
+ * http://www.vmware.com/files/pdf/vchs/VMware_vCloud_Hybrid_Service_Purchasing_and_Subscription.pdf
  */
 
 
