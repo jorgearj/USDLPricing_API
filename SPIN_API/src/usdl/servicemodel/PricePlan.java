@@ -80,7 +80,7 @@ public class PricePlan {
 		if(name != null && !name.equalsIgnoreCase("")){
 			this.name = name;
 		}else{
-			this.name = ResourceNameEnum.OFFERING.getResourceName();
+			this.name = ResourceNameEnum.PRICEPLAN.getResourceName();
 		}
 		this.setLocalName(this.name);
 	}
@@ -154,6 +154,7 @@ public class PricePlan {
 	 * Calculates the price value of the Price Plan.  The price value is the sum of each its Price Components.
 	 * @return  A PriceSpec instance that contains the price value of the Price Plan.
 	 */
+	//TODO: review the calculation process
 	public String calculatePrice(Model model)
 	{
 		//sum each of the price components price value

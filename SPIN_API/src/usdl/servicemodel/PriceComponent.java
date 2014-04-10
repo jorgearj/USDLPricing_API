@@ -88,7 +88,7 @@ public class PriceComponent {
 		if(name != null && !name.equalsIgnoreCase("")){
 			this.name = name;
 		}else{
-			this.name = ResourceNameEnum.OFFERING.getResourceName();
+			this.name = ResourceNameEnum.PRICECOMPONENT.getResourceName();
 		}
 		this.setLocalName(this.name);
 	}
@@ -209,7 +209,7 @@ public class PriceComponent {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void writeToModel(Resource owner, Model model,String baseURI) throws InvalidLinkedUSDLModelException
+	protected void writeToModel(Resource owner, Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource pc = null;
 		
@@ -265,7 +265,7 @@ public class PriceComponent {
 	 * @param   model   Model where the resource is located.
 	 * @return  A PriceComponent object populated with its information extracted from the Semantic Model.
 	 */
-	public static PriceComponent readFromModel(Resource resource,Model model)
+	protected static PriceComponent readFromModel(Resource resource,Model model)
 	{
 		PriceComponent pc = null;
 		if(resource.getLocalName() != null && resource.getNameSpace() != null){

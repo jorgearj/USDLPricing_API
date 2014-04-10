@@ -10,7 +10,11 @@ public enum ResourceNameEnum {
 	PRICECOMPONENT("Price Component"),
 	PRICEFUNCTION("Price Function"),
 	PRICESPEC("Price Specification"),
-	QUANTVALUE("Quantitative Value");
+	QUANTVALUE("Quantitative Value"),
+	QUALVALUE("Qualitative Value"),
+	CLOUDPROVIDER("Business Entity"),
+	USAGE("Usage Variable"),
+	PROVIDER("Provider Variable");
 	
 	private String name;
 	

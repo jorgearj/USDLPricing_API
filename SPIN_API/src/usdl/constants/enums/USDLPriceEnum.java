@@ -16,6 +16,8 @@ public enum USDLPriceEnum {
 	PRICE_COMPONENT ("PriceComponent", "C"),
 	DEDUCTION ("Deduction", "C"),
 	PRICE_FUNCTION ("PriceFunction", "C"),
+	USAGE("Usage", "C"),
+	PROVIDER("Constant", "C"),
 	HAS_PRICE_PLAN	("hasPricePlan",	"P"),
 	HAS_PRICE_COMPONENT	("hasPriceComponent",	"P"),
 	HAS_PRICE_CAP ("hasPriceCap",	"P"),

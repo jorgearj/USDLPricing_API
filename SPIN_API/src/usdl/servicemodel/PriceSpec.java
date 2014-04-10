@@ -42,7 +42,7 @@ public class PriceSpec {
 
 	
 	public PriceSpec(){
-		this(ResourceNameEnum.OFFERING.getResourceName(), null);
+		this(ResourceNameEnum.PRICESPEC.getResourceName(), null);
 	}
 	
 	public PriceSpec(String name){
@@ -92,7 +92,7 @@ public class PriceSpec {
 		if(name != null && !name.equalsIgnoreCase("")){
 			this.name = name;
 		}else{
-			this.name = ResourceNameEnum.OFFERING.getResourceName();
+			this.name = ResourceNameEnum.PRICESPEC.getResourceName();
 		}
 		this.setLocalName(this.name);
 	}
@@ -195,7 +195,7 @@ public class PriceSpec {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException
+	protected void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource ps = null;
 		
@@ -251,7 +251,7 @@ public class PriceSpec {
 	 * @param   model   Model where the resource is located.
 	 * @return  A PriceSpec object populated with its information extracted from the Semantic Model.
 	 */
-	public static PriceSpec readFromModel(Resource resource,Model model)
+	protected static PriceSpec readFromModel(Resource resource,Model model)
 	{
 		PriceSpec ps = null;
 		

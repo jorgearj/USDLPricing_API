@@ -4,24 +4,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import usdl.constants.enums.FOAFEnum;
-import usdl.constants.enums.Prefixes;
+import usdl.constants.enums.GREnum;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.ResourceNameEnum;
 import usdl.constants.enums.USDLCoreEnum;
+import usdl.constants.properties.PricingAPIProperties;
+import usdl.servicemodel.validations.LinkedUSDLValidator;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
+
+import exceptions.ErrorEnum;
+import exceptions.InvalidLinkedUSDLModelException;
 
 public class CloudProvider {
 	private String name;
 	private String comment;
 	private String homepage;
 	private List<Service> providedServices;
+	private String localName = null;
+	private String namespace = null;
+	private final String resourceType = ResourceNameEnum.OFFERING.getResourceType();
 
 	
-	public CloudProvider() {
-		super();
+	public CloudProvider(){
+		this(ResourceNameEnum.CLOUDPROVIDER.getResourceName(), null);
+	}
+	
+	public CloudProvider(String name){
+		this(name, null);
+	}
+	
+	public CloudProvider(String name, String nameSpace) {
 		providedServices = new ArrayList<Service>();
+		this.setName(name);
+		this.namespace = nameSpace;
 	}
 	
 	public CloudProvider(CloudProvider source) {//copy constructor
@@ -50,7 +69,12 @@ public class CloudProvider {
 
 
 	public void setName(String name) {
-		this.name = name;
+		if(name != null && !name.equalsIgnoreCase("")){
+			this.name = name;
+		}else{
+			this.name = ResourceNameEnum.CLOUDPROVIDER.getResourceName();
+		}
+		this.setLocalName(this.name);
 	}
 
 
@@ -83,6 +107,22 @@ public class CloudProvider {
 	public void setProvidedServices(List<Service> providedServices) {
 		this.providedServices = providedServices;
 	}
+	
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName.replaceAll(" ", "_");
+	}
+
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
 
 
 	@Override
@@ -98,30 +138,29 @@ public class CloudProvider {
 	 * @param   model   Model where the resource is located.
 	 * @return  A CloudProvider object populated with its information extracted from the Semantic Model.
 	 */
-	public static CloudProvider readFromModel(Resource resource, Model model){
+	protected static CloudProvider readFromModel(Resource resource, Model model){
 		
-		CloudProvider provider = new CloudProvider();
+		CloudProvider provider = null;
+		if(resource.getLocalName() != null && resource.getNameSpace() != null){
+			
+			provider = new CloudProvider(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());
 		
 		
-		if(resource.hasProperty(FOAFEnum.NAME.getProperty(model)))
-			provider.setName(resource.getProperty(FOAFEnum.NAME.getProperty(model)).getString());
-		else{
-			if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
-				provider.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
-			else
-			{
-				if(resource.getLocalName() != null)
-					provider.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
+			if(resource.hasProperty(FOAFEnum.NAME.getProperty(model)))
+				provider.setName(resource.getProperty(FOAFEnum.NAME.getProperty(model)).getString());
+			else{
+				if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+					provider.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 			}
+			
+			if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+				provider.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
+			
+			//TODO: Problema a ler os links das homepages: com.hp.hpl.jena.rdf.model.LiteralRequiredException:
+			/*if(resource.hasProperty(FOAFEnum.HOMEPAGE.getProperty(model)))
+				provider.setHomepage(resource.getProperty(FOAFEnum.HOMEPAGE.getProperty(model)).getLiteral().toString());
+			*/
 		}
-		
-		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
-			provider.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
-		
-		//TODO: Problema a ler os links das homepages: com.hp.hpl.jena.rdf.model.LiteralRequiredException:
-		/*if(resource.hasProperty(FOAFEnum.HOMEPAGE.getProperty(model)))
-			provider.setHomepage(resource.getProperty(FOAFEnum.HOMEPAGE.getProperty(model)).getLiteral().toString());
-		*/
 		return provider;
 	}
 	
@@ -129,27 +168,45 @@ public class CloudProvider {
 	 * Creates a Resource representation of the CloudProvider instance and writes it into the passed model.
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void writeToModel(Resource owner,Model model,String baseURI)
-	{
+	protected void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException{
 		
 		Resource provider = null;
 		
-		if(this.name != null)
-		{
-			provider =model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") + "_TIME" +System.nanoTime());
-			provider.addProperty(FOAFEnum.NAME.getProperty(model),model.createLiteral(this.name.replaceAll(" ", "_")));
-		}
-		else
-		{
-			provider =model.createResource(baseURI+ "#BusinessEntity"+ "_" +System.nanoTime());
+		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
+			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+				this.namespace = baseURI;
+			else //use the default baseURI
+				this.namespace = PricingAPIProperties.defaultBaseURI;
 		}
 		
-		provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.GR.getPrefix() + "BusinessEntity"));//rdf type
-		
-		
-		owner.addProperty(USDLCoreEnum.HAS_PROVIDER.getProperty(model), provider);
+		if(this.localName != null){
+			LinkedUSDLValidator validator = new LinkedUSDLValidator();
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+			provider = model.createResource(this.namespace + this.localName);
+			if(this.name != null){
+				provider.addProperty(FOAFEnum.NAME.getProperty(model),model.createLiteral(this.name));
+			}
+			
+			provider.addProperty(RDFEnum.RDF_TYPE.getProperty(model), GREnum.BUSINESS_ENTITY.getResource(model));//rdf type
+			
+			
+			owner.addProperty(USDLCoreEnum.HAS_PROVIDER.getProperty(model), provider);
+		}
 	}
+		
+		protected void validate() throws InvalidLinkedUSDLModelException{
+			
+			this.validateSelfData();
+
+		}
+		
+		private void validateSelfData() throws InvalidLinkedUSDLModelException{
+			if(this.getName() == null || this.getName().equalsIgnoreCase("")){
+				throw new InvalidLinkedUSDLModelException(ErrorEnum.MISSING_RESOURCE_DATA, new String[]{this.name, "name"});
+			}
+		}
 
 	
 }
