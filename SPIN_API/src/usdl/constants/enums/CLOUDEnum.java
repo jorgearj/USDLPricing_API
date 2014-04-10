@@ -124,6 +124,14 @@ public enum CLOUDEnum {
 	}
 	
 	/**
+	 * Return the string of the enumerator element. 
+	 * @return   A String of the property with its prefix.
+	 */
+	public String getConceptString(){
+		return Prefixes.CLOUD.getName() + ":" + concept;
+	}
+	
+	/**
 	 * Return a ready to use Jena Resource 
 	 * @param   model  Semantic model where the concept is located.
 	 * @return   A Jena Resource.

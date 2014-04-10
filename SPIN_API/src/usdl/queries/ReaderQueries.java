@@ -1,6 +1,9 @@
 package usdl.queries;
 
+
+
 import usdl.constants.enums.RDFEnum;
+
 import usdl.constants.enums.USDLCoreEnum;
 
 public class ReaderQueries {
@@ -10,11 +13,12 @@ public class ReaderQueries {
 		query = query +
 				" SELECT REDUCED ?"+variableName +
 				" WHERE { " +
-					" ?"+variableName+" "+RDFEnum.RDF_TYPE.getPropertyString()+" "+USDLCoreEnum.OFFERING.getPropertyString()+" . " +
+					" ?"+variableName+" "+RDFEnum.RDF_TYPE.getPropertyString()+" "+USDLCoreEnum.OFFERING.getPropertyString()+" . " + 
 				" }";
 		
 		return query;
 	}
+	
 	
 	public static String readAllServices(){
 		String query = "";
