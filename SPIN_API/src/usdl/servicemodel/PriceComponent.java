@@ -2,14 +2,23 @@ package usdl.servicemodel;
 
 
 import java.util.ArrayList;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
+import java.util.List;
+
 import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.ResourceNameEnum;
 import usdl.constants.enums.USDLPriceEnum;
-import usdl.servicemodel.PriceSpec;
+import usdl.constants.properties.PricingAPIProperties;
+import usdl.servicemodel.validations.LinkedUSDLValidator;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+
+import exceptions.ErrorEnum;
+import exceptions.InvalidLinkedUSDLModelException;
 
 /**
  * The PriceComponent class represents an instance of a PriceComponent resource of the LinkedUSDL Pricing model. 
@@ -26,10 +35,22 @@ public class PriceComponent {
 	private PriceFunction priceFunction = null;
 	private ArrayList<QuantitativeValue> metrics = null;
 	private String comment = null;
+	private String localName = null;
+	private String namespace = null;
+	private final String resourceType = ResourceNameEnum.PRICECOMPONENT.getResourceType();
 	
-	public PriceComponent() {
-		super();
+	
+	public PriceComponent(){
+		this(ResourceNameEnum.OFFERING.getResourceName(), null);
+	}
+	
+	public PriceComponent(String name){
+		this(name, null);
+	}
+	public PriceComponent(String name, String nameSpace) {
 		metrics = new ArrayList<QuantitativeValue>();
+		this.setName(name);
+		this.namespace = nameSpace;
 	}
 	
 	public PriceComponent(PriceComponent source) {//copy construct
@@ -65,7 +86,12 @@ public class PriceComponent {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if(name != null && !name.equalsIgnoreCase("")){
+			this.name = name;
+		}else{
+			this.name = ResourceNameEnum.PRICECOMPONENT.getResourceName();
+		}
+		this.setLocalName(this.name);
 	}
 
 	public boolean isDeduction() {
@@ -124,6 +150,22 @@ public class PriceComponent {
 		this.comment = comment;
 	}
 
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName.replaceAll(" ", "_");
+	}
+
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+	
 	@Override
 	public String toString() {
 		return "PriceComponent [name=" + name + ", isDeduction=" + isDeduction
@@ -166,25 +208,34 @@ public class PriceComponent {
 	 * Creates a Resource representation of the PriceComponent instance and writes it into the passed model.
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void writeToModel(Resource owner, Model model,String baseURI)
+	protected void writeToModel(Resource owner, Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource pc = null;
-		if(name != null)
-		{
-			pc = model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") + "_TIME" + System.nanoTime());
-			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
-			pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
-		}
-		else
-		{
-			pc = model.createResource(baseURI +"#" + "PriceComponent" + "_TIME" + System.nanoTime());
-			pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PriceComponent"));//rdf type
+		
+		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
+			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+				this.namespace = baseURI;
+			else //use the default baseURI
+				this.namespace = PricingAPIProperties.defaultBaseURI;
 		}
 		
-		if(pc != null)
-		{
-			if(comment != null)
+		if(this.localName != null){
+			LinkedUSDLValidator validator = new LinkedUSDLValidator();
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+			pc = model.createResource(this.namespace + this.localName);
+			
+			if(this.isDeduction)
+				pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLPriceEnum.DEDUCTION.getResource(model));
+			else{
+				pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLPriceEnum.PRICE_COMPONENT.getResource(model));//rdf type
+			}
+			
+			if(this.name != null)
+				pc.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+			
+			if(this.comment != null)
 				pc.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
 			
 			if(this.componentCap != null)
@@ -204,10 +255,6 @@ public class PriceComponent {
 				metric.writeToModel(pc,model,2,baseURI);
 			}
 				
-			
-			if(this.isDeduction)
-				pc.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "Deduction"));
-			
 			owner.addProperty(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model), pc);//link the Price Component with the Price Plan
 		}
 	}
@@ -219,71 +266,118 @@ public class PriceComponent {
 	 * @param   model   Model where the resource is located.
 	 * @return  A PriceComponent object populated with its information extracted from the Semantic Model.
 	 */
-	public static PriceComponent readFromModel(Resource resource,Model model)
+	protected static PriceComponent readFromModel(Resource resource,Model model)
 	{
-		PriceComponent pc = new PriceComponent();
-		//populate the PricePlan
-
-		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
-			pc.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
-		
-		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)))//if the resource has a pricecap
-		{
-			Resource pricecap = resource.getProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)).getResource();
-			pc.setComponentCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price comp
-		}
-		
-		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)))//if the resource has a pricefloor
-		{
-			Resource pricefloor = resource.getProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)).getResource();
-			pc.setComponentFloor((PriceSpec.readFromModel(pricefloor,model)));//read it and add it to the price comp
-		}
-		
-		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE.getProperty(model)))//if the resource has a price
-		{
-			Resource price = resource.getProperty(USDLPriceEnum.HAS_PRICE.getProperty(model)).getResource();
-			pc.setPrice(PriceSpec.readFromModel(price,model));//read it and add it to the price plan
-		}
-		
-		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
-			pc.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
-		else
-		{
-			if(resource.getLocalName() != null)
-				pc.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
-		}
-		
-		if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)) || resource.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)))
-		{
-			if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model)))
-			{
-				if(resource.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals("Deduction"))
-					pc.setDeduction(true);
-			}
-			else if(resource.hasProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)))
-			{
-				if(resource.getProperty(RDFSEnum.SUB_CLASS_OF.getProperty(model)).getResource().getLocalName().equals("Deduction"))
-					pc.setDeduction(true);
-			}
-		}
+		PriceComponent pc = null;
+		if(resource.getLocalName() != null && resource.getNameSpace() != null){
+			pc = new PriceComponent(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());
+			//populate the PriceComponent
+	
+			//if this condition is not verified the name is already defined to be the resource localname
+			if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+				pc.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
 			
-		if(resource.hasProperty(USDLPriceEnum.HAS_METRICS.getProperty(model)))
-		{
-			//get metrics
-			StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_METRICS.getProperty(model));
-			while (iter.hasNext()) {//while there's price metrics  left
-				Resource metric = iter.next().getObject().asResource();
-				pc.addMetric(QuantitativeValue.readFromModel(metric,model));
-			}
-		}
-		
-		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model)))//if it has a function
-		{
-			Resource function = resource.getProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model)).getResource();//fetch the resource
-			pc.setPriceFunction(PriceFunction.readFromModel(function,model));//and read it
-		}
+			if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+				pc.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
 			
-		
+			if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)))//if the resource has a pricecap
+			{
+				Resource pricecap = resource.getProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)).getResource();
+				PriceSpec priceCap = PriceSpec.readFromModel(pricecap,model);
+				if(priceCap != null){
+					pc.setComponentCap(priceCap);//read it and add it to the price comp
+				}
+			}
+			
+			if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)))//if the resource has a pricefloor
+			{
+				Resource pricefloor = resource.getProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)).getResource();
+				PriceSpec priceFloor = PriceSpec.readFromModel(pricefloor,model);
+				if(priceFloor != null){
+					pc.setComponentFloor(priceFloor);//read it and add it to the price comp
+				}
+			}
+			
+			if(resource.hasProperty(USDLPriceEnum.HAS_PRICE.getProperty(model)))//if the resource has a price
+			{
+				Resource price = resource.getProperty(USDLPriceEnum.HAS_PRICE.getProperty(model)).getResource();
+				PriceSpec compPrice = PriceSpec.readFromModel(price,model);
+				if(compPrice != null){
+					pc.setPrice(compPrice);//read it and add it to the price plan
+				}
+			}
+			
+			if(resource.hasProperty(RDFEnum.RDF_TYPE.getProperty(model))){
+				if(resource.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getURI().equals(USDLPriceEnum.DEDUCTION.getResource(model).getURI())){
+					pc.setDeduction(true);
+				}else{
+					pc.setDeduction(false);
+				}
+			}
+				
+			if(resource.hasProperty(USDLPriceEnum.HAS_METRICS.getProperty(model)))
+			{
+				//get metrics
+				StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_METRICS.getProperty(model));
+				while (iter.hasNext()) {//while there's price metrics  left
+					Resource metric = iter.next().getObject().asResource();
+					QuantitativeValue compMetric = QuantitativeValue.readFromModel(metric,model);
+					if(compMetric != null){
+						pc.addMetric(compMetric);
+					}
+				}
+			}
+			
+			if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model)))//if it has a function
+			{
+				Resource function = resource.getProperty(USDLPriceEnum.HAS_PRICE_FUNCTION.getProperty(model)).getResource();//fetch the resource
+				PriceFunction priceFunction = PriceFunction.readFromModel(function,model);
+				if(priceFunction != null){
+					pc.setPriceFunction(priceFunction);//and read it
+				}
+			}
+				
+		}	
 		return pc;
+	}
+	
+	protected void validate() throws InvalidLinkedUSDLModelException{
+		
+		this.validateSelfData();
+		
+		if(this.price == null && this.priceFunction == null){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.COMPONENT_WITHOUT_PRICE, this.name);
+		}else{
+			if(this.price != null){
+				this.price.validate();
+			}
+			if(this.priceFunction != null){
+//				this.priceFunction.validate();
+			}
+		}
+		
+		if(this.componentCap != null){
+			this.componentCap.validate();
+		}
+		if(this.componentFloor != null){
+			this.componentFloor.validate();
+		}
+		
+		if(this.getMetrics().size() > 0){
+			for(QuantitativeValue metric : this.getMetrics()){
+				if(metric != null){
+//					metric.validate();
+				}else{
+					throw new InvalidLinkedUSDLModelException(ErrorEnum.NULL_RESOURCE, new String[]{this.getName(), ResourceNameEnum.QUANTVALUE.getResourceType()});
+				}
+			}
+		}
+		
+	}
+	
+	private void validateSelfData() throws InvalidLinkedUSDLModelException{
+		if(this.getName() == null || this.getName().equalsIgnoreCase("")){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.MISSING_RESOURCE_DATA, new String[]{this.name, "name"});
+		}
 	}
 }

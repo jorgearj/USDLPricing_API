@@ -1,17 +1,26 @@
 package usdl.servicemodel;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.topbraid.spin.arq.ARQFactory;
+
+import usdl.constants.enums.RDFEnum;
+import usdl.constants.enums.RDFSEnum;
+import usdl.constants.enums.ResourceNameEnum;
+import usdl.constants.enums.USDLPriceEnum;
+import usdl.constants.properties.PricingAPIProperties;
+import usdl.servicemodel.validations.LinkedUSDLValidator;
+
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-import usdl.constants.enums.Prefixes;
-import usdl.constants.enums.RDFEnum;
-import usdl.constants.enums.RDFSEnum;
-import usdl.constants.enums.USDLPriceEnum;
-import usdl.servicemodel.PriceSpec;
+
+import exceptions.ErrorEnum;
+import exceptions.InvalidLinkedUSDLModelException;
 
 
 /**
@@ -24,43 +33,56 @@ public class PricePlan {
 	private String name = null;
 	private PriceSpec priceCap = null;
 	private PriceSpec priceFloor = null;
-	private ArrayList<PriceComponent> priceComponents = null;
-	private String comment = null;
-	//private List<Offering> offerings;//needed? NO
+	private List<PriceComponent> priceComponents = null;
+	private String comment;
+	private String localName = null;
+	private String namespace = null;
+	private final String resourceType = ResourceNameEnum.PRICEPLAN.getResourceType();
+
+	public PricePlan(){
+		this(ResourceNameEnum.PRICEPLAN.getResourceName(), null);
+	}
 	
-	
-	
-	public PricePlan() {
+	public PricePlan(String name){
+		this(name, null);
+	}
+	public PricePlan(String name, String nameSpace) {
 		super();
 		priceComponents = new ArrayList<PriceComponent>();
+		this.setName(name);
+		this.namespace = nameSpace;
 	}
 	
 	public PricePlan(PricePlan source) {//copy construct
 		super();
 		priceComponents = new ArrayList<PriceComponent>();
-		
+
 		if(source.getName() != null)
 			this.setName(source.getName());
-		
+
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
-		
+
 		if(source.getPriceCap() != null)
 			this.setPriceCap(new PriceSpec(source.getPriceCap()));
-		
+
 		if(source.getPriceFloor() != null)
 			this.setPriceFloor(new PriceSpec(source.getPriceFloor()));
-		
+
 		for(PriceComponent pc : source.getPriceComponents())
 			this.addPriceComponent(new PriceComponent(pc));
 	}
-	
 	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		if(name != null && !name.equalsIgnoreCase("")){
+			this.name = name;
+		}else{
+			this.name = ResourceNameEnum.PRICEPLAN.getResourceName();
+		}
+		this.setLocalName(this.name);
 	}
 	public PriceSpec getPriceCap() {
 		return priceCap;
@@ -74,7 +96,7 @@ public class PricePlan {
 	public void setPriceFloor(PriceSpec priceFloor) {
 		this.priceFloor = priceFloor;
 	}
-	public ArrayList<PriceComponent> getPriceComponents() {
+	public List<PriceComponent> getPriceComponents() {
 		return priceComponents;
 	}
 	public void setPriceComponents(ArrayList<PriceComponent> priceComponents) {
@@ -85,6 +107,21 @@ public class PricePlan {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName.replaceAll(" ", "_");
+	}
+
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
 	}
 	@Override
 	public String toString() {
@@ -117,7 +154,8 @@ public class PricePlan {
 	 * Calculates the price value of the Price Plan.  The price value is the sum of each its Price Components.
 	 * @return  A PriceSpec instance that contains the price value of the Price Plan.
 	 */
-	public Double calculatePrice(Model model)
+	//TODO: review the calculation process
+	public String calculatePrice(Model model)
 	{
 		//sum each of the price components price value
 		String finalprice = "";
@@ -207,7 +245,7 @@ public class PricePlan {
 				finalvalue = this.getPriceFloor().getValue();
 		}
 				
-		return finalvalue;
+		return finalprice;
 	}
 	
 	/**
@@ -216,41 +254,49 @@ public class PricePlan {
 	 * @param   model   Model where the resource is located.
 	 * @return  A PricePlan object populated with its information extracted from the Semantic Model.
 	 */
-	public static PricePlan readFromModel(Resource resource, Model model)
+	protected static PricePlan readFromModel(Resource resource, Model model)
 	{
-		PricePlan pp = new PricePlan();
-		
-		//populate the PricePlan
-		if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
-			pp.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
-		else
-		{
-			if(resource.getLocalName() != null)
-				pp.setName(resource.getLocalName().replaceAll("_TIME\\d+",""));
-		}
-		
-		if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
-			pp.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
-		
-		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)))//if the resource has a pricecap
-		{
-			Resource pricecap = resource.getProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)).getResource();
-			pp.setPriceCap(PriceSpec.readFromModel(pricecap,model));//read it and add it to the price plan
-		}
-		
-		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)))//if the resource has a price floor
-		{
-			Resource pricefloor = resource.getProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)).getResource();
-			pp.setPriceFloor(PriceSpec.readFromModel(pricefloor,model));//read it and add it to the price plan
-		}
-		 
-		if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model)))//if the price plan has components
-		{
-			//get PriceComponents
-			StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model));
-			while (iter.hasNext()) {//while there's price components left
-				Resource pricecomp = iter.next().getObject().asResource();
-				pp.addPriceComponent(PriceComponent.readFromModel(pricecomp,model));//read it and add it to the price plan
+		PricePlan pp = null;
+		if(resource.getLocalName() != null && resource.getNameSpace() != null){
+			
+			pp = new PricePlan(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());
+			
+			//populate the PricePlan
+			if(resource.hasProperty(RDFSEnum.LABEL.getProperty(model)))
+				pp.setName(resource.getProperty(RDFSEnum.LABEL.getProperty(model)).getString());
+
+			if(resource.hasProperty(RDFSEnum.COMMENT.getProperty(model)))
+				pp.setComment(resource.getProperty(RDFSEnum.COMMENT.getProperty(model)).getString());
+			
+			if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)))//if the resource has a pricecap
+			{
+				Resource pricecap = resource.getProperty(USDLPriceEnum.HAS_PRICE_CAP.getProperty(model)).getResource();
+				PriceSpec priceCap = PriceSpec.readFromModel(pricecap,model);
+				if(priceCap != null){
+					pp.setPriceCap(priceCap);//read it and add it to the price plan
+				}
+			}
+			
+			if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)))//if the resource has a price floor
+			{
+				Resource pricefloor = resource.getProperty(USDLPriceEnum.HAS_PRICE_FLOOR.getProperty(model)).getResource();
+				PriceSpec priceFloor = PriceSpec.readFromModel(pricefloor,model);
+				if(priceFloor != null){
+					pp.setPriceFloor(priceFloor);//read it and add it to the price plan
+				}
+			}
+			 
+			if(resource.hasProperty(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model)))//if the price plan has components
+			{
+				//get PriceComponents
+				StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_PRICE_COMPONENT.getProperty(model));
+				while (iter.hasNext()) {//while there's price components left
+					Resource pricecomp = iter.next().getObject().asResource();
+					PriceComponent priceComp = PriceComponent.readFromModel(pricecomp,model);
+					if(priceComp != null){
+						pp.addPriceComponent(priceComp);//read it and add it to the price plan
+					}
+				}
 			}
 		}
 		
@@ -261,41 +307,88 @@ public class PricePlan {
 	 * Creates a Resource representation of the PricePlan instance and writes it into the passed model.
 	 * @param   owner    Resource that is linked to this object.
 	 * @param   model    Model to where the object is to be written on.
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void writeToModel(Resource owner,Model model,String baseURI)
+	protected void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
-				Resource pp = null;
-				if(this.name != null)
+		Resource pp = null;
+		
+		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
+			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+				this.namespace = baseURI;
+			else //use the default baseURI
+				this.namespace = PricingAPIProperties.defaultBaseURI;
+		}
+		
+		if(this.localName != null){
+			LinkedUSDLValidator validator = new LinkedUSDLValidator();
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+			pp = model.createResource(this.namespace + this.localName);
+			
+			pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name
+			
+			pp.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLPriceEnum.PRICE_PLAN.getResource(model));//rdf type
+			
+			if(this.comment != null)
+				pp.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
+			
+			if(this.priceCap != null)
+			{
+				priceCap.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
+			}
+			
+			if(this.priceFloor != null)
+			{
+				priceFloor.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
+			}
+			
+			if(!priceComponents.isEmpty())
+			{
+				for(PriceComponent pc : priceComponents)
 				{
-					pp = model.createResource(baseURI +"#"  + this.name.replaceAll(" ", "_") + "_TIME" +System.nanoTime());
-					pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name.replaceAll(" ", "_")));//label name
+					pc.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
 				}
-				else 
-					pp = model.createResource(baseURI +"#"  + "PricePlan" + "_TIME" +System.nanoTime());
-				
-				pp.addProperty(RDFEnum.RDF_TYPE.getProperty(model), model.createResource(Prefixes.USDL_PRICE.getPrefix() + "PricePlan"));//rdf type
-				
-				if(this.comment != null)
-					pp.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
-				
-				if(priceCap != null)
-				{
-					priceCap.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
+			}
+			
+			owner.addProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model), pp);//establish a connection between the owner of the PricePlan and the created PricePlan, wich will probably be an instance of the ServiceOffering object
+		}
+		
+		
+	}
+	
+	protected void validate() throws InvalidLinkedUSDLModelException{
+		boolean hasOnePriceComponent = false;
+		
+		this.validateSelfData();
+		
+		if(this.priceComponents.size() > 0){
+			for(PriceComponent priceComp : this.priceComponents){
+				if(priceComp != null){
+					priceComp.validate();
+					hasOnePriceComponent = true;
+				}else{
+					throw new InvalidLinkedUSDLModelException(ErrorEnum.NULL_RESOURCE, new String[]{this.getName(), ResourceNameEnum.PRICEPLAN.getResourceType()});
 				}
-				
-				if(priceFloor != null)
-				{
-					priceFloor.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
-				}
-				
-				if(!priceComponents.isEmpty())
-				{
-					for(PriceComponent pc : priceComponents)
-					{
-						pc.writeToModel(pp,model,baseURI);//we need to pass pp in order to establish a connection between the resource PricePlan and the resource priceCap
-					}
-				}
-				
-				owner.addProperty(USDLPriceEnum.HAS_PRICE_PLAN.getProperty(model), pp);//establish a connection between the owner of the PricePlan and the created PricePlan, wich will probably be an instance of the ServiceOffering object
+			}
+		}else{
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.PRICEPLAN_WITHOUT_COMPONENTS, this.getName());
+		}
+		
+		if(!hasOnePriceComponent){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.PRICEPLAN_WITHOUT_COMPONENTS, this.getName());
+		}
+		
+		if(this.priceCap != null){
+			this.priceCap.validate();
+		}
+		if(this.priceFloor != null){
+			this.priceFloor.validate();
+		}
+	}
+	
+	private void validateSelfData() throws InvalidLinkedUSDLModelException{
+		if(this.getName() == null || this.getName().equalsIgnoreCase("")){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.MISSING_RESOURCE_DATA, new String[]{this.name, "name"});
+		}
 	}
 }
