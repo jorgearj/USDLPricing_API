@@ -42,21 +42,20 @@ public class QualitativeValue extends Value {
 		this.setName(name);
 		this.setNamespace(nameSpace);
 	}
-	
+
 	public QualitativeValue(QualitativeValue source)  {//copy constructor
-		
+
 		if(source.getName() != null)
 			this.setName(source.getName());
-		
+
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
-		
+
 		if(source.getTypes().size() > 0)
 		{
 			for(String s : source.getTypes())
 				this.addType(s);
 		}
-		
 		if(source.getHasValue() != null)
 			this.setHasLabel(source.getHasValue());
     }

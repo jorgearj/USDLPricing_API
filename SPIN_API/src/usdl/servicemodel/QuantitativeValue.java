@@ -50,7 +50,6 @@ public class QuantitativeValue extends Value {
 
 		if(source.getName() != null)
 			this.setName(source.getName());
-
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
 
@@ -59,6 +58,7 @@ public class QuantitativeValue extends Value {
 			for(String s : source.getTypes())
 				this.addType(s);
 		}
+
 		if(source.getMaxValue() >= 0)
 			this.setMaxValue(source.getMaxValue());
 

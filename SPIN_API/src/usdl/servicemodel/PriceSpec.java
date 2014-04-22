@@ -241,6 +241,7 @@ public class PriceSpec {
 			
 			owner.addProperty(GREnum.HAS_PRICE_SPECIFICATION.getProperty(model), ps);
 		}
+		
 	}
 	
 	/**
