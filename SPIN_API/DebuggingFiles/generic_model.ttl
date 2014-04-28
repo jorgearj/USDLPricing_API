@@ -1,0 +1,116 @@
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix legal: <http://www.linked-usdl.org/ns/usdl-legal#> .
+@prefix :      <http://PricingAPIGenericModelExample.com#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix sp:    <http://spinrdf.org/sp#> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix price: <http://www.linked-usdl.org/ns/usdl-price#> .
+@prefix spl:   <http://spinrdf.org/spl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix spin:  <http://spinrdf.org/spin#> .
+@prefix cloud: <http://rdfs.genssiz.org/CloudTaxonomy#> .
+@prefix core:  <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix gr:    <http://purl.org/goodrelations/v1#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+
+:serv1mcost  a          price:Constant ;
+        rdfs:comment    "Constant variable of the function1. Specifies the monthly cost of the VM instance." ;
+        rdfs:label      "serv1mcost" ;
+        price:hasValue  :QuantitativeValue_TIME214124329300745 .
+
+:QuantitativeValue_TIME214124278998173
+        a             cloud:Availability , gr:QuantitativeValue ;
+        rdfs:comment  "Feature that specifies the availability of the service" ;
+        gr:hasValue   "99.0"^^xsd:double .
+
+:QuantitativeValue_TIME214124329300745
+        a            gr:QuantitativeValue ;
+        gr:hasValue  "160.0"^^xsd:double .
+
+:PricePlan1_TIME214124280052291
+        a                        price:PricePlan ;
+        rdfs:comment             "PricePlan of the offering1" ;
+        rdfs:label               "PricePlan1" ;
+        price:hasPriceComponent  :PriceComponent1_TIME214124280136962 .
+
+:QuantitativeValue_TIME214124279982159
+        a             cloud:Windows , gr:QualitativeValue ;
+        rdfs:comment  "Feature that specifies the OS of the  service" ;
+        rdfs:label    "Windows" .
+
+:QuantitativeValue_TIME214124279805118
+        a             cloud:MemorySize , gr:QuantitativeValue ;
+        rdfs:comment  "Feature that specifies the RAM size of the service" ;
+        gr:hasValue   "6.0"^^xsd:double .
+
+:PriceComponent1_TIME214124280136962
+        a                       price:PriceComponent ;
+        rdfs:comment            "PriceComponent of the PricePlan1" ;
+        rdfs:label              "PriceComponent1" ;
+        price:hasPriceFunction  :PriceFunction1_TIME214124286225613 .
+
+:PriceFunction1_TIME214124286225613
+        a                  spin:Function ;
+        rdfs:comment       "Price Function to calculate the price of the PriceComponent1, which in turn will give us the price of the Price Plan. The price of the PricePlan corresponds to the fee that is charged to the customer in exchange for its usage. The price model adopted by the service1 is a fully bundled recurring pre-paid vm access model, where the user pays a fixed fee per month for a pre-defined (by the user) quantity of resources. " ;
+        rdfs:label         "PriceFunction1" ;
+        spin:body          [ a                   sp:Select ;
+                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
+                             sp:where            ( [ sp:object     [ sp:varName  "serv1mcost_instance"^^xsd:string ] ;
+                                                     sp:predicate  price:hasValue ;
+                                                     sp:subject    :serv1mcost
+                                                   ] [ sp:object     [ sp:varName  "serv1mcost_value"^^xsd:string ] ;
+                                                       sp:predicate  gr:hasValue ;
+                                                       sp:subject    [ sp:varName  "serv1mcost_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "serv1nmonths_instance"^^xsd:string ] ;
+                                                         sp:predicate  price:hasValue ;
+                                                         sp:subject    :serv1nmonths
+                                                       ] [ sp:object     [ sp:varName  "serv1nmonths_value"^^xsd:string ] ;
+                                                           sp:predicate  gr:hasValue ;
+                                                           sp:subject    [ sp:varName  "serv1nmonths_instance"^^xsd:string ]
+                                                         ] [ a              sp:Bind ;
+                                                             sp:expression  [ a        sp:mul ;
+                                                                              sp:arg1  [ sp:varName  "serv1mcost_value"^^xsd:string ] ;
+                                                                              sp:arg2  [ sp:varName  "serv1nmonths_value"^^xsd:string ]
+                                                                            ] ;
+                                                             sp:variable    [ sp:varName  "result"^^xsd:string ]
+                                                           ] )
+                           ] ;
+        price:hasVariable  :serv1mcost , :serv1nmonths .
+
+:QuantitativeValue_TIME214124279762782
+        a             cloud:DiskSize , gr:QuantitativeValue ;
+        rdfs:comment  "Feature that specifies the disk size of the service" ;
+        gr:hasValue   "400.0"^^xsd:double .
+
+:Offering1_TIME214124277178591
+        a                   core:ServiceOffering ;
+        rdfs:comment        "Offering that includes the serv1" ;
+        rdfs:label          "Offering1" ;
+        core:includes       :Service1_TIME214124278405473 ;
+        price:hasPricePlan  :PricePlan1_TIME214124280052291 .
+
+:serv1nmonths  a      price:Usage ;
+        rdfs:comment  "Usage variable of the function1. Represents the number of months the user will be renting this service" ;
+        rdfs:label    "serv1nmonths" .
+
+:QuantitativeValue_TIME214124279945810
+        a             cloud:Location , gr:QualitativeValue ;
+        rdfs:comment  "Feature that specifies the location of the  service" ;
+        rdfs:label    "Europe" .
+
+:Service1_TIME214124278405473
+        a             core:Service ;
+        rdfs:comment  "This is the first imaginary service." ;
+        rdfs:label    "Service1" ;
+        gr:qualitativeProductOrServiceProperty
+                :QuantitativeValue_TIME214124279982159 , :QuantitativeValue_TIME214124279945810 , :QuantitativeValue_TIME214124279862849 ;
+        gr:quantitativeProductOrServiceProperty
+                :QuantitativeValue_TIME214124279805118 , :QuantitativeValue_TIME214124279762782 , :QuantitativeValue_TIME214124278998173 .
+
+:QuantitativeValue_TIME214124279862849
+        a             cloud:Performance , gr:QualitativeValue ;
+        rdfs:comment  "Feature that specifies the performance of the service" ;
+        rdfs:label    "High" .

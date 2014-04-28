@@ -1,0 +1,298 @@
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix legal: <http://www.linked-usdl.org/ns/usdl-legal#> .
+@prefix :      <http://PricingAPIArsysOfferings.com#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix sp:    <http://spinrdf.org/sp#> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix price: <http://www.linked-usdl.org/ns/usdl-price#> .
+@prefix spl:   <http://spinrdf.org/spl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix spin:  <http://spinrdf.org/spin#> .
+@prefix cloud: <http://rdfs.genssiz.org/CloudTaxonomy#> .
+@prefix core:  <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix gr:    <http://purl.org/goodrelations/v1#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+
+:PriceComponent_TIME128641141747550
+        a                       price:PriceComponent ;
+        rdfs:comment            "PriceComponent2_b of the PricePlan2" ;
+        price:hasPriceFunction  :PriceFunction_TIME128641146121408 .
+
+:windowswebprice  a     price:Constant ;
+        rdfs:comment    "price of the Windows Server R2 2008 Web Ed. OS per month" ;
+        rdfs:label      "windowswebprice" ;
+        price:hasValue  :QuantitativeValue_TIME128641158626331 .
+
+:PriceComponent_TIME128641153366412
+        a                       price:PriceComponent ;
+        rdfs:comment            "PriceComponen3_b of the PricePlan3" ;
+        price:hasPriceFunction  :PriceFunction_TIME128641157195462 .
+
+:PriceComponent_TIME128640735829756
+        a                       price:PriceComponent ;
+        rdfs:comment            "PriceComponent1 of the PricePlan1" ;
+        price:hasPriceFunction  :PriceFunction_TIME128640744075428 .
+
+:PricePlan3_TIME128641147822115
+        a                        price:PricePlan ;
+        rdfs:comment             "PricePlan of the Service3" ;
+        rdfs:label               "PricePlan3" ;
+        price:hasPriceComponent  :PriceComponent_TIME128641153366412 , :PriceComponent_TIME128641147852050 .
+
+:QuantitativeValue_TIME128641095316148
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "EUR" ;
+        gr:hasValue              "125.0"^^xsd:double .
+
+:PriceFunction_TIME128641157195462
+        a                  spin:Function ;
+        rdfs:comment       "PriceFunction of the PriceComponent3_b" ;
+        spin:body          [ a                   sp:Select ;
+                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
+                             sp:where            ( [ sp:object     [ sp:varName  "windowswebprice_instance"^^xsd:string ] ;
+                                                     sp:predicate  price:hasValue ;
+                                                     sp:subject    :windowswebprice
+                                                   ] [ sp:object     [ sp:varName  "windowswebprice_value"^^xsd:string ] ;
+                                                       sp:predicate  gr:hasValue ;
+                                                       sp:subject    [ sp:varName  "windowswebprice_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "windowswebs2monthsb_instance"^^xsd:string ] ;
+                                                         sp:predicate  price:hasValue ;
+                                                         sp:subject    :windowswebs2monthsb
+                                                       ] [ sp:object     [ sp:varName  "windowswebs2monthsb_value"^^xsd:string ] ;
+                                                           sp:predicate  gr:hasValue ;
+                                                           sp:subject    [ sp:varName  "windowswebs2monthsb_instance"^^xsd:string ]
+                                                         ] [ a              sp:Bind ;
+                                                             sp:expression  [ a        sp:mul ;
+                                                                              sp:arg1  [ sp:varName  "windowswebprice_value"^^xsd:string ] ;
+                                                                              sp:arg2  [ sp:varName  "windowswebs2monthsb_value"^^xsd:string ]
+                                                                            ] ;
+                                                             sp:variable    [ sp:varName  "result"^^xsd:string ]
+                                                           ] )
+                           ] ;
+        price:hasVariable  :windowswebprice , :windowswebs2monthsb .
+
+:REDHATServerS2_TIME128641132334005
+        a                   core:ServiceOffering ;
+        rdfs:comment        "Offering of the Service 2 (ServerS2)" ;
+        rdfs:label          "REDHATServerS2" ;
+        core:includes       :ServerS2_TIME128641132406703 ;
+        price:hasPricePlan  :PricePlan2_TIME128641132468710 .
+
+:QuantitativeValue_TIME128641141682549
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "EUR" ;
+        gr:hasValue              "125.0"^^xsd:double .
+
+:standards2  a          price:Constant ;
+        rdfs:comment    "price of the VM per month" ;
+        rdfs:label      "standards2" ;
+        price:hasValue  :QuantitativeValue_TIME128641095316148 .
+
+:standards2months  a  price:Usage ;
+        rdfs:comment  "Number of months that you'll be using the VM." ;
+        rdfs:label    "standards2months" .
+
+:QuantitativeValue_TIME128641153300984
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "EUR" ;
+        gr:hasValue              "125.0"^^xsd:double .
+
+:CentOSServerS2_TIME128640678230221
+        a                   core:ServiceOffering ;
+        rdfs:comment        "Basic Offering of the Service 1 (ServerS2)" ;
+        rdfs:label          "CentOSServerS2" ;
+        core:includes       :ServerS2_TIME128640735072841 ;
+        price:hasPricePlan  :PricePlan1_TIME128640735750216 .
+
+:windowswebs2monthsb  a  price:Usage ;
+        rdfs:comment  "Number of months that you'll be using the VM." ;
+        rdfs:label    "windowswebs2monthsb" .
+
+:ServerS2_TIME128640735072841
+        a           core:Service ;
+        rdfs:label  "ServerS2" .
+
+:ServerS2_TIME128641132406703
+        a           core:Service ;
+        rdfs:label  "ServerS2" .
+
+:PriceFunction_TIME128641151587020
+        a                  spin:Function ;
+        rdfs:comment       "PriceFunction of the PriceComponent3" ;
+        spin:body          [ a                   sp:Select ;
+                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
+                             sp:where            ( [ sp:object     [ sp:varName  "windowswebs2_instance"^^xsd:string ] ;
+                                                     sp:predicate  price:hasValue ;
+                                                     sp:subject    :windowswebs2
+                                                   ] [ sp:object     [ sp:varName  "windowswebs2_value"^^xsd:string ] ;
+                                                       sp:predicate  gr:hasValue ;
+                                                       sp:subject    [ sp:varName  "windowswebs2_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "windowswebs2months_instance"^^xsd:string ] ;
+                                                         sp:predicate  price:hasValue ;
+                                                         sp:subject    :windowswebs2months
+                                                       ] [ sp:object     [ sp:varName  "windowswebs2months_value"^^xsd:string ] ;
+                                                           sp:predicate  gr:hasValue ;
+                                                           sp:subject    [ sp:varName  "windowswebs2months_instance"^^xsd:string ]
+                                                         ] [ a              sp:Bind ;
+                                                             sp:expression  [ a        sp:mul ;
+                                                                              sp:arg1  [ sp:varName  "windowswebs2_value"^^xsd:string ] ;
+                                                                              sp:arg2  [ sp:varName  "windowswebs2months_value"^^xsd:string ]
+                                                                            ] ;
+                                                             sp:variable    [ sp:varName  "result"^^xsd:string ]
+                                                           ] )
+                           ] ;
+        price:hasVariable  :windowswebs2 , :windowswebs2months .
+
+:redhats2  a            price:Constant ;
+        rdfs:comment    "price of the VM per month" ;
+        rdfs:label      "redhats2" ;
+        price:hasValue  :QuantitativeValue_TIME128641141682549 .
+
+:QuantitativeValue_TIME128641158626331
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "EUR" ;
+        gr:hasValue              "15.0"^^xsd:double .
+
+:PriceComponent_TIME128641132516178
+        a                       price:PriceComponent ;
+        rdfs:comment            "PriceComponent2 of the PricePlan2" ;
+        price:hasPriceFunction  :PriceFunction_TIME128641139429337 .
+
+:redhatprice  a         price:Constant ;
+        rdfs:comment    "price of the Red Hat Enterprise OS per month" ;
+        rdfs:label      "redhatprice" ;
+        price:hasValue  :QuantitativeValue_TIME128641147693397 .
+
+:PriceFunction_TIME128641146121408
+        a                  spin:Function ;
+        rdfs:comment       "PriceFunction of the PriceComponent2_b" ;
+        spin:body          [ a                   sp:Select ;
+                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
+                             sp:where            ( [ sp:object     [ sp:varName  "redhatprice_instance"^^xsd:string ] ;
+                                                     sp:predicate  price:hasValue ;
+                                                     sp:subject    :redhatprice
+                                                   ] [ sp:object     [ sp:varName  "redhatprice_value"^^xsd:string ] ;
+                                                       sp:predicate  gr:hasValue ;
+                                                       sp:subject    [ sp:varName  "redhatprice_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "redhats2monthsb_instance"^^xsd:string ] ;
+                                                         sp:predicate  price:hasValue ;
+                                                         sp:subject    :redhats2monthsb
+                                                       ] [ sp:object     [ sp:varName  "redhats2monthsb_value"^^xsd:string ] ;
+                                                           sp:predicate  gr:hasValue ;
+                                                           sp:subject    [ sp:varName  "redhats2monthsb_instance"^^xsd:string ]
+                                                         ] [ a              sp:Bind ;
+                                                             sp:expression  [ a        sp:mul ;
+                                                                              sp:arg1  [ sp:varName  "redhatprice_value"^^xsd:string ] ;
+                                                                              sp:arg2  [ sp:varName  "redhats2monthsb_value"^^xsd:string ]
+                                                                            ] ;
+                                                             sp:variable    [ sp:varName  "result"^^xsd:string ]
+                                                           ] )
+                           ] ;
+        price:hasVariable  :redhatprice , :redhats2monthsb .
+
+:QuantitativeValue_TIME128641147693397
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "EUR" ;
+        gr:hasValue              "25.0"^^xsd:double .
+
+:PricePlan2_TIME128641132468710
+        a                        price:PricePlan ;
+        rdfs:comment             "PricePlan of the Service2" ;
+        rdfs:label               "PricePlan2" ;
+        price:hasPriceComponent  :PriceComponent_TIME128641141747550 , :PriceComponent_TIME128641132516178 .
+
+:Windows2008WEBServerS2_TIME128641147748989
+        a                   core:ServiceOffering ;
+        rdfs:comment        "Offering of the Service 3 (ServerS2)" ;
+        rdfs:label          "Windows2008WEBServerS2" ;
+        core:includes       :ServerS2_TIME128641147786194 ;
+        price:hasPricePlan  :PricePlan3_TIME128641147822115 .
+
+:windowswebs2months  a  price:Usage ;
+        rdfs:comment  "Number of months that you'll be using the VM." ;
+        rdfs:label    "windowswebs2months" .
+
+:PriceComponent_TIME128641147852050
+        a                       price:PriceComponent ;
+        rdfs:comment            "PriceComponent3 of the PricePlan3" ;
+        price:hasPriceFunction  :PriceFunction_TIME128641151587020 .
+
+:PricePlan1_TIME128640735750216
+        a                        price:PricePlan ;
+        rdfs:comment             "PricePlan of the Service1" ;
+        rdfs:label               "PricePlan1" ;
+        price:hasPriceComponent  :PriceComponent_TIME128640735829756 .
+
+:ServerS2_TIME128641147786194
+        a           core:Service ;
+        rdfs:label  "ServerS2" .
+
+:redhats2monthsb  a   price:Usage ;
+        rdfs:comment  "Number of months that you'll be using the VM." ;
+        rdfs:label    "redhats2monthsb" .
+
+:redhats2months  a    price:Usage ;
+        rdfs:comment  "Number of months that you'll be using the VM." ;
+        rdfs:label    "redhats2months" .
+
+:PriceFunction_TIME128640744075428
+        a                  spin:Function ;
+        rdfs:comment       "PriceFunction of the PriceComponent1" ;
+        spin:body          [ a                   sp:Select ;
+                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
+                             sp:where            ( [ sp:object     [ sp:varName  "standards2_instance"^^xsd:string ] ;
+                                                     sp:predicate  price:hasValue ;
+                                                     sp:subject    :standards2
+                                                   ] [ sp:object     [ sp:varName  "standards2_value"^^xsd:string ] ;
+                                                       sp:predicate  gr:hasValue ;
+                                                       sp:subject    [ sp:varName  "standards2_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "standards2months_instance"^^xsd:string ] ;
+                                                         sp:predicate  price:hasValue ;
+                                                         sp:subject    :standards2months
+                                                       ] [ sp:object     [ sp:varName  "standards2months_value"^^xsd:string ] ;
+                                                           sp:predicate  gr:hasValue ;
+                                                           sp:subject    [ sp:varName  "standards2months_instance"^^xsd:string ]
+                                                         ] [ a              sp:Bind ;
+                                                             sp:expression  [ a        sp:mul ;
+                                                                              sp:arg1  [ sp:varName  "standards2_value"^^xsd:string ] ;
+                                                                              sp:arg2  [ sp:varName  "standards2months_value"^^xsd:string ]
+                                                                            ] ;
+                                                             sp:variable    [ sp:varName  "result"^^xsd:string ]
+                                                           ] )
+                           ] ;
+        price:hasVariable  :standards2 , :standards2months .
+
+:PriceFunction_TIME128641139429337
+        a                  spin:Function ;
+        rdfs:comment       "PriceFunction of the PriceComponent2" ;
+        spin:body          [ a                   sp:Select ;
+                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
+                             sp:where            ( [ sp:object     [ sp:varName  "redhats2_instance"^^xsd:string ] ;
+                                                     sp:predicate  price:hasValue ;
+                                                     sp:subject    :redhats2
+                                                   ] [ sp:object     [ sp:varName  "redhats2_value"^^xsd:string ] ;
+                                                       sp:predicate  gr:hasValue ;
+                                                       sp:subject    [ sp:varName  "redhats2_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "redhats2months_instance"^^xsd:string ] ;
+                                                         sp:predicate  price:hasValue ;
+                                                         sp:subject    :redhats2months
+                                                       ] [ sp:object     [ sp:varName  "redhats2months_value"^^xsd:string ] ;
+                                                           sp:predicate  gr:hasValue ;
+                                                           sp:subject    [ sp:varName  "redhats2months_instance"^^xsd:string ]
+                                                         ] [ a              sp:Bind ;
+                                                             sp:expression  [ a        sp:mul ;
+                                                                              sp:arg1  [ sp:varName  "redhats2_value"^^xsd:string ] ;
+                                                                              sp:arg2  [ sp:varName  "redhats2months_value"^^xsd:string ]
+                                                                            ] ;
+                                                             sp:variable    [ sp:varName  "result"^^xsd:string ]
+                                                           ] )
+                           ] ;
+        price:hasVariable  :redhats2 , :redhats2months .
+
+:windowswebs2  a        price:Constant ;
+        rdfs:comment    "price of the VM per month" ;
+        rdfs:label      "windowswebs2" ;
+        price:hasValue  :QuantitativeValue_TIME128641153300984 .
