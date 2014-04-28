@@ -15,13 +15,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import usdl.constants.properties.PricingAPIProperties;
 import usdl.servicemodel.validations.LinkedUSDLValidator;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
 
-import exceptions.ErrorMessagesEnum;
+import exceptions.ErrorEnum;
 import exceptions.InvalidLinkedUSDLModelException;
 import exceptions.ReadModelException;
 
@@ -33,16 +35,16 @@ import exceptions.ReadModelException;
  */
 public class LinkedUSDLModelFactory {
 	
-	
-	private static final String defaultBaseURI = "http://rdfs.genssiz.org/PricingAPI";
-	
+	protected LinkedUSDLModelFactory(){
+		
+	}
 	
 	/**
 	 * Creates an empty LinkedUSDLModel instance. 
 	 * @return  An initialized LinkedUSDLModel object.
 	 */
 	public static LinkedUSDLModel createEmptyModel(){
-		return new LinkedUSDLModel(defaultBaseURI);
+		return new LinkedUSDLModel(PricingAPIProperties.defaultBaseURI);
 	}
 	
 	/**
@@ -66,7 +68,22 @@ public class LinkedUSDLModelFactory {
 	 * @throws ReadModelException 
 	 */
 	public static LinkedUSDLModel createFromModel(String path) throws InvalidLinkedUSDLModelException, IOException, ReadModelException{
-		return LinkedUSDLModelFactory.createFromModel(path, defaultBaseURI);
+		return LinkedUSDLModelFactory.createFromModel(path, PricingAPIProperties.defaultBaseURI, true);
+	}
+	
+	/**
+	 * Creates a LinkedUSDLModel instance based on an already existing Linked USDL model. 
+	 * The existing model is read from the file path that can either be to a single file (TTL or RDF) or to a folder containing any number of these file types.
+	 * Note that all files with file extensions: ttl and rdf will be imported. The imported model validation or not depends on the parameter validation.  
+	 * @param   path   The file path from where to import the Linked USDL model
+	 * @param   validation  enable/disable linked USDL model validation
+	 * @return  An initialized LinkedUSDLModel object already populated with all elements read.
+	 * @throws InvalidLinkedUSDLModelException 
+	 * @throws IOException 
+	 * @throws ReadModelException 
+	 */
+	public static LinkedUSDLModel createFromModel(String path, boolean validation) throws InvalidLinkedUSDLModelException, IOException, ReadModelException{
+		return LinkedUSDLModelFactory.createFromModel(path, PricingAPIProperties.defaultBaseURI, true);
 	}
 	
 	/**
@@ -75,15 +92,29 @@ public class LinkedUSDLModelFactory {
 	 * Note that all files with file extensions: ttl and rdf will be imported and validated as a whole for Linked USDL compliance.  
 	 * @param   path   The file path from where to import the Linked USDL model
 	 * @param   baseURI   the base URI to use in the model
+	 * @param   validation  enable/disable linked USDL model validation
 	 * @return  An initialized LinkedUSDLModel object already populated with all elements read.
 	 * @throws InvalidLinkedUSDLModelException 
 	 * @throws IOException 
 	 * @throws ReadModelException 
 	 */
-	public static LinkedUSDLModel createFromModel(String path, String baseURI) throws InvalidLinkedUSDLModelException, IOException, ReadModelException{
-		LinkedUSDLModel linkedUSDL = new LinkedUSDLModel(baseURI);
+	public static LinkedUSDLModel createFromModel(String path, String baseURI, boolean validation) throws InvalidLinkedUSDLModelException, IOException, ReadModelException{
 		
+	
 		Model model = new LinkedUSDLModelFactory().importModel(path);
+		
+//		//checks of the imported model already has a baseURI to use.
+//	    String uri = model.getNsPrefixURI("");
+//		if(uri != null){
+//			System.out.println("HAS BASE URI");
+//			baseURI = uri;
+//		}else{
+//			model.setNsPrefix("", baseURI);
+//		}
+		
+		LinkedUSDLModel linkedUSDL = new LinkedUSDLModel(baseURI);
+		System.out.println("BASE URI: " + baseURI);
+		
 		
 		//TESTS		
 //		System.out.println("Prefixes after importing model");
@@ -93,8 +124,11 @@ public class LinkedUSDLModelFactory {
 //	        System.out.println("        - "+ pairs.getKey() + " = " + pairs.getValue());
 //	    }
 		
-		//validates the model against the Linked USDL specification
-		LinkedUSDLValidator.validateModel(model);
+		if(validation){
+			//validates the model against the Linked USDL specification
+			LinkedUSDLValidator validator = new LinkedUSDLValidator();
+			validator.validateModel(model);
+		}
 		linkedUSDL.readModel(model);
 		return linkedUSDL;
 	}
@@ -137,14 +171,14 @@ public class LinkedUSDLModelFactory {
 		return model;
 	}
 	
-	private Model readFile(String file, String lang){
+	private Model readFile(String file, String lang) throws ReadModelException{
 		// create an empty model
 		Model model = ModelFactory.createDefaultModel();
 
 		// use the FileManager to find the input file
 		InputStream in = FileManager.get().open( file );
 		if (in == null) {
-		    throw new IllegalArgumentException("ERROR: File: " + file + " not found");
+			throw new ReadModelException(ErrorEnum.FILE_NOT_FOUND.getMessage());
 		}
 		// read the RDF/XML file
 		model.read(in, "", lang);
@@ -218,8 +252,7 @@ public class LinkedUSDLModelFactory {
 		        
 		    }
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
-			throw new ReadModelException(ErrorMessagesEnum.NO_BASE_URI.getMessage(), e);
+			throw new ReadModelException(ErrorEnum.NO_BASE_URI.getMessage(), e);
 		}
 		
 		return result;
@@ -236,18 +269,6 @@ public class LinkedUSDLModelFactory {
 	    }
 		
 		return model;
-	}
-	
-	//only for testing---to remove from this class
-	private static void write(Model model, String path, String format) throws IOException {
-		File outputFile = new File(path);
-		if (!outputFile.exists()) {
-        	outputFile.createNewFile();        	 
-        }
-
-		FileOutputStream out = new FileOutputStream(outputFile);
-		model.write(out, format);
-		out.close();
 	}
 
 }

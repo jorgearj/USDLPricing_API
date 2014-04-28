@@ -14,6 +14,7 @@ import org.topbraid.spin.system.SPINModuleRegistry;
 import org.topbraid.spin.util.JenaUtil;
 
 import usdl.constants.enums.Prefixes;
+import usdl.constants.enums.ResourceNameEnum;
 import usdl.queries.ReaderQueries;
 import usdl.servicemodel.validations.LinkedUSDLValidator;
 
@@ -25,11 +26,12 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 
+import exceptions.ErrorEnum;
 import exceptions.InvalidLinkedUSDLModelException;
 
 public class LinkedUSDLModel {
-	private ArrayList<Service> services;
-	private ArrayList<Offering> offerings;
+	private List<Service> services;
+	private List<Offering> offerings;
 	private String baseURI;
 	private Map<String,String> prefixes; // inverted prefixes map KEY = URI, VALUE = prefix name
 	
@@ -37,31 +39,39 @@ public class LinkedUSDLModel {
 		super();
 		this.services = new ArrayList<Service>();
 		this.offerings = new ArrayList<Offering>();
-		this.prefixes = new HashMap<String, String>();
 		this.baseURI = baseURI;
+		this.prefixes = this.defaultPrefixes();
 		// Initialize system functions and templates
 		SPINModuleRegistry.get().init();
 		
 	}
 
-
-	public ArrayList<Service> getServices() {
+	
+	public List<Service> getServices() {
 		return services;
 	}
 
 
-	public void setServices(ArrayList<Service> services) {
+	public void setServices(List<Service> services) {
 		this.services = services;
 	}
 
 
-	public ArrayList<Offering> getOfferings() {
+	public List<Offering> getOfferings() {
 		return offerings;
 	}
 
 
-	public void setOfferings(ArrayList<Offering> offerings) {
+	public void setOfferings(List<Offering> offerings) {
 		this.offerings = offerings;
+	}
+	
+	public void addOffering(Offering off){
+		this.offerings.add(off);
+	}
+	
+	public void addService(Service serv){
+		this.services.add(serv);
 	}
 
 	public String getBaseURI() {
@@ -97,8 +107,9 @@ public class LinkedUSDLModel {
 	/**
 	 * Imports an RDF model and maps it to java objects populating the LinkedUSDLModel structure  
 	 * @param   model   The model to read from
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public void readModel(Model model){
+	public void readModel(Model model) throws InvalidLinkedUSDLModelException{
 		System.out.println("READING FROM MODEL");
 		this.setPrefixes(this.processPrefixes(model));
 		
@@ -107,8 +118,8 @@ public class LinkedUSDLModel {
 	}
 	
 	
-	private ArrayList<Offering> readAllOfferings(Model model){
-		ArrayList<Offering> offeringsList = new ArrayList<>();
+	private List<Offering> readAllOfferings(Model model) throws InvalidLinkedUSDLModelException{
+		List<Offering> offeringsList = new ArrayList<>();
 		String variableName = "offering";
 		
 		String queryString = ReaderQueries.readAllOfferings(variableName);
@@ -121,8 +132,9 @@ public class LinkedUSDLModel {
 		while(results.hasNext()){
 			QuerySolution row = results.next();
 			Offering offering = Offering.readFromModel(row.getResource(variableName), model);
-//			System.out.println(offering.toString());
-			offeringsList.add(offering);
+			if(offering != null){
+				offeringsList.add(offering);
+			}
 		}
 		
 		exec.close();
@@ -130,8 +142,8 @@ public class LinkedUSDLModel {
 		return offeringsList;
 	}
 	
-	private ArrayList<Service> readAllServices(Model model){
-		ArrayList<Service> servicesList = new ArrayList<>();
+	private List<Service> readAllServices(Model model){
+		List<Service> servicesList = new ArrayList<>();
 		
 		return servicesList;
 	}
@@ -139,46 +151,36 @@ public class LinkedUSDLModel {
 	/**
 	 * Creates a Jena Model representation of the LinkedUSDLModel.  
 	 * @param   baseURI   The string representing the baseURI to use in the resulting file. defaults to null.
+	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	public Model WriteToModel()
+	public Model WriteToModel() throws InvalidLinkedUSDLModelException
 	{
 		// Create main model
 		Model model = JenaUtil.createDefaultModel();
 	    
-		this.addPrefixes(model);
-		model.setNsPrefix("", this.baseURI + "#");
-		
+		model = this.setModelPrefixes(model);
+//		model.setNsPrefix("", this.baseURI + "#");
 		for(Offering of : this.offerings)
 			of.writeToModel(model,this.baseURI);
 		
 		return model;
 	}
 	
-	public Model addPrefixes(Model model)
-	{
-		model.setNsPrefix(	"price",Prefixes.USDL_PRICE.getPrefix() );
-		model.setNsPrefix(	"core",Prefixes.USDL_CORE.getPrefix() );
-		model.setNsPrefix(	"legal",Prefixes.USDL_LEGAL.getPrefix() );
-		model.setNsPrefix(	"rdf",Prefixes.RDF.getPrefix() );
-		model.setNsPrefix(	"owl",Prefixes.OWL.getPrefix() );
-		model.setNsPrefix(	"dc",Prefixes.DC.getPrefix() );
-		model.setNsPrefix(	"xsd",Prefixes.XSD.getPrefix() );
-		model.setNsPrefix(	"vann",Prefixes.VANN.getPrefix() );
-		model.setNsPrefix(	"foaf",Prefixes.FOAF.getPrefix() );
-		model.setNsPrefix(	"rdfs",Prefixes.RDFS.getPrefix() );
-		model.setNsPrefix(	"gr",Prefixes.GR.getPrefix() );
-		model.setNsPrefix(	"skos",Prefixes.SKOS.getPrefix() );
-		model.setNsPrefix(	"sp",Prefixes.SP.getPrefix() );
-		model.setNsPrefix(	"spl",Prefixes.SPL.getPrefix() );
-		model.setNsPrefix(	"spin",Prefixes.SPIN.getPrefix() );
-		model.setNsPrefix(	"cloud",Prefixes.CLOUD.getPrefix() );
+	private Model setModelPrefixes(Model model){
 
-		
+		Iterator<Entry<String, String>> it = this.prefixes.entrySet().iterator();
+		while (it.hasNext()) {
+	        Map.Entry<String, String> pairs = (Map.Entry<String, String>)it.next();
+	        String key = (String)pairs.getKey(); //URI
+	        String value = (String)pairs.getValue(); //preffix name
+	        model.setNsPrefix(value, key);
+	    }
 		return model;
 	}
-
+	
+	
 	/**
-	 * Exports the LinkedUSDLModel to an RDF file.  
+	 * Exports the LinkedUSDLModel to an RDF file. Note that the model will always be validated. 
 	 * @param   path   The path where the final file will be stored
 	 * @param   format	the RDFFormat to use 
 	 * @throws InvalidLinkedUSDLModelException 
@@ -186,9 +188,61 @@ public class LinkedUSDLModel {
 	 */
 	public void writeModelToFile(String path, String format) throws InvalidLinkedUSDLModelException, IOException
 	{
-		Model model = this.WriteToModel();
-		LinkedUSDLValidator.validateModel(model);
-		this.write(model, path, format);
+		this.writeModelToFile(path, format, true);
+	}
+	
+	/**
+	 * Exports the LinkedUSDLModel to an RDF file. In case of <code>validation</code> set to false no validation will be performed. Do this at your own risk. 
+	 * @param   path   The path where the final file will be stored
+	 * @param   format	the RDFFormat to use 
+	 * @param   validation  enable/disable linked USDL model validation
+	 * @throws InvalidLinkedUSDLModelException 
+	 * @throws IOException 
+	 */
+	public void writeModelToFile(String path, String format, boolean validation) throws InvalidLinkedUSDLModelException, IOException
+	{
+		Model model;
+		
+		if(validation){
+			this.validateModel();
+			
+			model = this.WriteToModel();
+		
+			LinkedUSDLValidator validator = new LinkedUSDLValidator();
+			validator.validateModel(model);
+			this.write(model, path, format);
+		}else{
+			model = this.WriteToModel();
+			this.write(model, path, format);
+		}
+		
+	}
+	
+	/**
+	 * Checks the current Linked USDL model instance validity. Throws any exception captured during the validation process.
+	 * These Exceptions should be caught by the invoker.
+	 * @throws InvalidLinkedUSDLModelException 
+	 */
+	public void validateModel() throws InvalidLinkedUSDLModelException{
+		boolean hasOneValidOffering = false;
+		
+		if(this.getOfferings().size() > 0){
+			for(Offering off : this.getOfferings()){
+				if(off != null){
+					off.validate();
+					hasOneValidOffering = true;
+				}else{
+					throw new InvalidLinkedUSDLModelException(ErrorEnum.NULL_RESOURCE, new String[]{"Root", ResourceNameEnum.OFFERING.getResourceType()});
+				}
+			}
+		}else{
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.NO_OFFERINGS_FOUND);
+		}
+		
+		if(!hasOneValidOffering){
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.NO_OFFERINGS_FOUND);
+		}
+		
 	}
 	
 	private void write(Model model, String path, String format) throws IOException {
@@ -202,7 +256,8 @@ public class LinkedUSDLModel {
 		out.close();
 	}
 	
-	private Map<String, String> processPrefixes(Model model){
+	
+	private Map<String, String> defaultPrefixes(){
 		Map<String, String> result = new HashMap<String, String>();
 		
 		//adicionar o baseURI
@@ -212,6 +267,14 @@ public class LinkedUSDLModel {
 			result.put(p.getPrefix(), p.getName());
 		}
 		
+		return result;
+	}
+	
+	private Map<String, String> processPrefixes(Model model){
+		Map<String, String> result = new HashMap<String, String>();
+		
+		
+		result = this.defaultPrefixes();
 		
 		Iterator<Entry<String,String>> it = model.getNsPrefixMap().entrySet().iterator();
 	    while (it.hasNext()) {

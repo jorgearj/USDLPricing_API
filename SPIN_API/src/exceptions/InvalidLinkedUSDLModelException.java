@@ -2,16 +2,24 @@ package exceptions;
 
 public class InvalidLinkedUSDLModelException extends Exception{
 	
-	public InvalidLinkedUSDLModelException(){
-		
+	private ErrorEnum errorCode;
+	private String[] errorArguments;
+	
+	public InvalidLinkedUSDLModelException(ErrorEnum error){
+		super(error.getMessage());
+		errorCode = error;
 	}
 	
-	public InvalidLinkedUSDLModelException(String message){
-		super(message);
+	public InvalidLinkedUSDLModelException(ErrorEnum error, String... args){
+		super(error.getMessage(args));
+		errorCode = error;
+		errorArguments = args;
 	}
 
-	public InvalidLinkedUSDLModelException(String message, Throwable cause){
-		super(message, cause);
+	public InvalidLinkedUSDLModelException(ErrorEnum error, Throwable cause, String... args){
+		super(error.getMessage(args), cause);
+		errorCode = error;
+		errorArguments = args;
 	}	
 
 }

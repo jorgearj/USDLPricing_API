@@ -1,0 +1,680 @@
+@prefix legal: <http://www.linked-usdl.org/ns/usdl-legal#> .
+@prefix :      <http://rdfs.genssiz.org/PricingAPI#> .
+@prefix heroku: <http://rdfs.genssiz.org/heroku#> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix heroku_vocabulary: <http://tutorial.topbraid.com/heroku_vocabulary#> .
+@prefix org:   <http://www.w3.org/ns/org#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix sarest: <http://www.knoesis.org/research/srl/standards/sa-rest/#> .
+@prefix spl:   <http://spinrdf.org/spl#> .
+@prefix usdk:  <http://www.linked-usdl.org/ns/usdl#> .
+@prefix ctag:  <http://commontag.org/ns#> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix spin:  <http://spinrdf.org/spin#> .
+@prefix sla:   <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix dctypes: <http://purl.org/dc/dcmitype/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix sp:    <http://spinrdf.org/sp#> .
+@prefix wl:    <http://www.wsmo.org/ns/wsmo-lite#> .
+@prefix sawsdl: <http://www.w3.org/ns/sawsdl#> .
+@prefix cloudtaxonomy: <http://rdfs.genssiz.org/CloudTaxonomy#> .
+@prefix msm:   <http://cms-wg.sti2.org/ns/minimal-service-model#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix gn:    <http://www.geonames.org/ontology#> .
+@prefix pf:    <http://jena.hpl.hp.com/ARQ/property#> .
+@prefix price: <http://www.linked-usdl.org/ns/usdl-price#> .
+@prefix http:  <http://www.w3.org/2011/http#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix core:  <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> .
+@prefix language: <http://www.lingvoj.org/lang/> .
+@prefix gr:    <http://purl.org/goodrelations/v1#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+
+<http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784525627000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Followers are read-only asynchronous replicas of a database. Followers stay up-to-date with changes to your database and can be queried. Traditionally, setting-up and maintaining replication is a difficult and specialized task. But with followers, it just works. Followers provide horizontal scalability by distributing database read traffic. They are also perfect for real-time analytics  use them to make expensive queries against up-to-date data without affecting application speed and availability." .
+
+:Service_Model_Heroku_Dynos_TIME1396722784504574000
+        a           core:Service ;
+        rdfs:label  "Service_Model_Heroku_Dynos" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Complete_API_CLI_for_App_Management_TIME1396722784506559000> , <http://rdfs.genssiz.org/PricingAPI##Secure_Hardened_and_Tuned_Runtime_TIME1396722784507056000> , <http://rdfs.genssiz.org/PricingAPI##Fast_And_Fault-Tolerant_HTTP_Routing_TIME1396722784506762000> , <http://rdfs.genssiz.org/PricingAPI##Technical_Support_TIME1396722784504843000> , <http://rdfs.genssiz.org/PricingAPI##Platform-Wide_Monitoring_24x7_TIME1396722784506915000> , <http://rdfs.genssiz.org/PricingAPI##Open_and_Standard_Stacks_No_Lock-in_TIME1396722784507350000> , <http://rdfs.genssiz.org/PricingAPI##Instant_Deployment_And_Scalling_TIME1396722784507195000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Dynos_Availability_TIME1396722784504710000> .
+
+<http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784521233000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "Databases on Heroku Postgres can be used from anywhere and with any Postgres client. Apps can connect to Heroku Postgres from Heroku, Google App Engine, Microsoft Azure, Cloud Foundry, EC2, or from your local computer. PostgreSQL is supported by most modern programming languages - including Perl, Python, Ruby, Scala, Go, Tcl, C/C++, Java, .Net, and Javascript. It is even available via ODBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784525359000>
+        a           rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Production Database" .
+
+<http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784503668000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Forking a database is just like forking source code. It creates a perfect, byte-for-byte clone of your database with a single command. Do you have new schema migrations that you need to test? Simply fork your production database and run the new migrations against the fork. Load testing? Fork your database and run your testing environment against it. Forking databases lets you work with your production schema and data without risk or hassle. And when you are done, simply throw the fork away." .
+
+<http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784524128000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "When we share information on the Internet, we do so by sharing URLs. We send URLs for locations, books, videos, and even source code. Until now there hasnt been a convenient way to share data inside a database. Dataclips is that mechanism to easily share data within your organization. Dataclips are available on all Heroku Postgres dedicated and starter databases. Use standard SQL to create data clips.No authentication required for easy sharing. Data clips are protected via a 128-bit URL hash. Query your database within a read-only transaction, so your data is safe from alteration. Downloadable in many formats including JSON, Excel, CSV, YAML. Easily exportable to Google spreadsheets." .
+
+<http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784518826000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Reliability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "PAround the clock, Heroku Postgres performs a battery of health checks on every database in operation. These checks ensure that the database is online and working properly. You can sleep well, knowing that if a problem is detected, our 24/7 on-call team is immediately dispatched and our automated recovery software can have you back online in minutes, even in the event of catastrophic hardware failure." .
+
+<http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784523100000>
+        a           rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Production Database" .
+
+<http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784515374000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "OpenSource database" .
+
+:Service_Heroku_Ronin_Databases_TIME1396722784524554000
+        a              core:Service ;
+        rdfs:label     "Service_Heroku_Ronin_Databases" ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Ronin_Cache_TIME1396722784526504000> ;
+        core:includes  :Service_model_Heroku_Databases_TIME1396722784524697000 .
+
+<http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784520981000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Followers are read-only asynchronous replicas of a database. Followers stay up-to-date with changes to your database and can be queried. Traditionally, setting-up and maintaining replication is a difficult and specialized task. But with followers, it just works. Followers provide horizontal scalability by distributing database read traffic. They are also perfect for real-time analytics  use them to make expensive queries against up-to-date data without affecting application speed and availability." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784502104000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784503858000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "OpenSource database" .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Baku_Cache_TIME1396722784504268000>
+        a                        cloudtaxonomy:CacheSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "34.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784511826000>
+        a           rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Production Database" .
+
+<http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784509448000>
+        a           cloudtaxonomy:CommandLine , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Connecting an application to Heroku Postgres is simple. The service automatically generates configuration and connection strings for databases for a variety of languages, command line tools, and application frameworks. There include PSQL, pg_restore, Ruby on Rails (ActiveRecord), Ruby Sequel, Ruby Datamapper, PHP, Django, and JDBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784508306000>
+        a                        cloudtaxonomy:StorageCapacity , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1024.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784520712000>
+        a           rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Production Database" .
+
+<http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784517000000>
+        a           cloudtaxonomy:CommandLine , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Connecting an application to Heroku Postgres is simple. The service automatically generates configuration and connection strings for databases for a variety of languages, command line tools, and application frameworks. There include PSQL, pg_restore, Ruby on Rails (ActiveRecord), Ruby Sequel, Ruby Datamapper, PHP, Django, and JDBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784522795000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "direct psql access" .
+
+<http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784526078000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Forking a database is just like forking source code. It creates a perfect, byte-for-byte clone of your database with a single command. Do you have new schema migrations that you need to test? Simply fork your production database and run the new migrations against the fork. Load testing? Fork your database and run your testing environment against it. Forking databases lets you work with your production schema and data without risk or hassle. And when you are done, simply throw the fork away." .
+
+heroku:Offering_Heroku_Ronin_Database
+        a              core:ServiceOffering ;
+        rdfs:label     "Offering Heroku Ronin Databases" ;
+        core:includes  :Service_Heroku_Ronin_Databases_TIME1396722784524554000 .
+
+<http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784519305000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "When we share information on the Internet, we do so by sharing URLs. We send URLs for locations, books, videos, and even source code. Until now there hasnt been a convenient way to share data inside a database. Dataclips is that mechanism to easily share data within your organization. Dataclips are available on all Heroku Postgres dedicated and starter databases. Use standard SQL to create data clips.No authentication required for easy sharing. Data clips are protected via a 128-bit URL hash. Query your database within a read-only transaction, so your data is safe from alteration. Downloadable in many formats including JSON, Excel, CSV, YAML. Easily exportable to Google spreadsheets." .
+
+<http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784510134000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Forking a database is just like forking source code. It creates a perfect, byte-for-byte clone of your database with a single command. Do you have new schema migrations that you need to test? Simply fork your production database and run the new migrations against the fork. Load testing? Fork your database and run your testing environment against it. Forking databases lets you work with your production schema and data without risk or hassle. And when you are done, simply throw the fork away." .
+
+<http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784516713000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Durability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Continuous Protection keeps data safe on Heroku Postgres. Every change to your data is written to write-ahead logs, which are shipped to multi-datacenter, high-durability storage. In the unlikely event of unrecoverable hardware failure, these logs can be automatically 'replayed' to recover the database to within seconds of its last known state." .
+
+<http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784503120000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Followers are read-only asynchronous replicas of a database. Followers stay up-to-date with changes to your database and can be queried. Traditionally, setting-up and maintaining replication is a difficult and specialized task. But with followers, it just works. Followers provide horizontal scalability by distributing database read traffic. They are also perfect for real-time analytics  use them to make expensive queries against up-to-date data without affecting application speed and availability." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784520241000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Ronin_Cache_TIME1396722784526504000>
+        a                        cloudtaxonomy:CacheSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1.7000000476837158"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784516291000>
+        a                        cloudtaxonomy:StorageCapacity , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1024.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784523992000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "OpenSource database" .
+
+<http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784521683000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "OpenSource database" .
+
+<http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784516556000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "direct psql access" .
+
+heroku:Offering_Heroku_Ika_Database
+        a              core:ServiceOffering ;
+        rdfs:label     "Offering Heroku Ika Databases" ;
+        core:includes  :Service_Heroku_Ika_Databases_TIME1396722784522271000 .
+
+:Service_Heroku_Mecha_Databases_TIME1396722784510940000
+        a              core:Service ;
+        rdfs:label     "Service_Heroku_Mecha_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Redundancy_TIME1396722784513316000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Mecha_Cache_TIME1396722784513119000> ;
+        core:includes  :Service_model_Heroku_Databases_TIME1396722784511086000 .
+
+<http://rdfs.genssiz.org/PricingAPI##Platform-Wide_Monitoring_24x7_TIME1396722784506915000>
+        a           cloudtaxonomy:Monitoring , skos:Concept , rdfs:Class , gr:QualitativeValue ;
+        rdfs:label  "monitoring everytime" .
+
+<http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784523357000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Followers are read-only asynchronous replicas of a database. Followers stay up-to-date with changes to your database and can be queried. Traditionally, setting-up and maintaining replication is a difficult and specialized task. But with followers, it just works. Followers provide horizontal scalability by distributing database read traffic. They are also perfect for real-time analytics  use them to make expensive queries against up-to-date data without affecting application speed and availability." .
+
+heroku:Offering_Heroku_Zilla_Database
+        a              core:ServiceOffering ;
+        rdfs:comment   "An offering of Heroku Zilla Databases" ;
+        rdfs:label     "Offering Heroku Zilla Databases" ;
+        core:includes  :Service_Heroku_Zilla_Databases_TIME1396722784519821000 .
+
+heroku:Offering_Heroku_Kappa_Database
+        a              core:ServiceOffering ;
+        rdfs:label     "Offering Heroku Kappa Databases" ;
+        core:includes  :Service_Heroku_Kappa_Databases_TIME1396722784515985000 .
+
+:Service_Heroku_Zilla_Databases_TIME1396722784519821000
+        a              core:Service ;
+        rdfs:label     "Service_Heroku_Zilla_Databases" ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Zilla_Cache_TIME1396722784521980000> ;
+        core:includes  :Service_model_Heroku_Databases_TIME1396722784519961000 .
+
+<http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784520406000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "direct psql access" .
+
+<http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784522942000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Durability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Continuous Protection keeps data safe on Heroku Postgres. Every change to your data is written to write-ahead logs, which are shipped to multi-datacenter, high-durability storage. In the unlikely event of unrecoverable hardware failure, these logs can be automatically 'replayed' to recover the database to within seconds of its last known state." .
+
+:Service_Heroku_BAKU_Databases_TIME1396722784501371000
+        a              core:Service ;
+        rdfs:label     "Service_Heroku_BAKU_Databases" ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Baku_Cache_TIME1396722784504268000> ;
+        core:includes  :Service_model_Heroku_Databases_TIME1396722784501620000 .
+
+<http://rdfs.genssiz.org/PricingAPI##Redundancy_TIME1396722784513316000>
+        a       gr:QualitativeValue .
+
+<http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784515521000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "When we share information on the Internet, we do so by sharing URLs. We send URLs for locations, books, videos, and even source code. Until now there hasnt been a convenient way to share data inside a database. Dataclips is that mechanism to easily share data within your organization. Dataclips are available on all Heroku Postgres dedicated and starter databases. Use standard SQL to create data clips.No authentication required for easy sharing. Data clips are protected via a 128-bit URL hash. Query your database within a read-only transaction, so your data is safe from alteration. Downloadable in many formats including JSON, Excel, CSV, YAML. Easily exportable to Google spreadsheets." .
+
+<http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784502823000>
+        a           rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Production Database" .
+
+<http://rdfs.genssiz.org/PricingAPI##Instant_Deployment_And_Scalling_TIME1396722784507195000>
+        a           cloudtaxonomy:Scalability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Instant deployment and scalling" .
+
+<http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784525060000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "direct psql access" .
+
+<http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784512323000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "Databases on Heroku Postgres can be used from anywhere and with any Postgres client. Apps can connect to Heroku Postgres from Heroku, Google App Engine, Microsoft Azure, Cloud Foundry, EC2, or from your local computer. PostgreSQL is supported by most modern programming languages - including Perl, Python, Ruby, Scala, Go, Tcl, C/C++, Java, .Net, and Javascript. It is even available via ODBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784504020000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "When we share information on the Internet, we do so by sharing URLs. We send URLs for locations, books, videos, and even source code. Until now there hasnt been a convenient way to share data inside a database. Dataclips is that mechanism to easily share data within your organization. Dataclips are available on all Heroku Postgres dedicated and starter databases. Use standard SQL to create data clips.No authentication required for easy sharing. Data clips are protected via a 128-bit URL hash. Query your database within a read-only transaction, so your data is safe from alteration. Downloadable in many formats including JSON, Excel, CSV, YAML. Easily exportable to Google spreadsheets." .
+
+<http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784509965000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Reliability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "PAround the clock, Heroku Postgres performs a battery of health checks on every database in operation. These checks ensure that the database is online and working properly. You can sleep well, knowing that if a problem is detected, our 24/7 on-call team is immediately dispatched and our automated recovery software can have you back online in minutes, even in the event of catastrophic hardware failure." .
+
+:Service_model_Heroku_Databases_TIME1396722784507825000
+        a           core:Service ;
+        rdfs:label  "Service_model_Heroku_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784509965000> , <http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784510291000> , <http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784509044000> , <http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784508871000> , <http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784509448000> , <http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784510485000> , <http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784510134000> , <http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784509223000> , <http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784509777000> , <http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784509613000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784508306000> , <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784508480000> .
+
+<http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784521542000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Forking a database is just like forking source code. It creates a perfect, byte-for-byte clone of your database with a single command. Do you have new schema migrations that you need to test? Simply fork your production database and run the new migrations against the fork. Load testing? Fork your database and run your testing environment against it. Forking databases lets you work with your production schema and data without risk or hassle. And when you are done, simply throw the fork away." .
+
+<http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784514201000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Durability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Continuous Protection keeps data safe on Heroku Postgres. Every change to your data is written to write-ahead logs, which are shipped to multi-datacenter, high-durability storage. In the unlikely event of unrecoverable hardware failure, these logs can be automatically 'replayed' to recover the database to within seconds of its last known state." .
+
+:Service_Heroku_Kappa_Databases_TIME1396722784515985000
+        a              core:Service ;
+        rdfs:label     "Service_Heroku_Kappa_Databases" ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Kappa_Cache_TIME1396722784519497000> ;
+        core:includes  :Service_model_Heroku_Databases_TIME1396722784516163000 .
+
+<http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784509613000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Followers are read-only asynchronous replicas of a database. Followers stay up-to-date with changes to your database and can be queried. Traditionally, setting-up and maintaining replication is a difficult and specialized task. But with followers, it just works. Followers provide horizontal scalability by distributing database read traffic. They are also perfect for real-time analytics  use them to make expensive queries against up-to-date data without affecting application speed and availability." .
+
+<http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784502274000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "direct psql access" .
+
+<http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784510291000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "OpenSource database" .
+
+<http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784526217000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "OpenSource database" .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784513933000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784512499000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Reliability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "PAround the clock, Heroku Postgres performs a battery of health checks on every database in operation. These checks ensure that the database is online and working properly. You can sleep well, knowing that if a problem is detected, our 24/7 on-call team is immediately dispatched and our automated recovery software can have you back online in minutes, even in the event of catastrophic hardware failure." .
+
+:Service_model_Heroku_Databases_TIME1396722784501620000
+        a           core:Service ;
+        rdfs:label  "Service_model_Heroku_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784503466000> , <http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784503120000> , <http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784503283000> , <http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784503668000> , <http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784502274000> , <http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784504020000> , <http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784502963000> , <http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784502823000> , <http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784502640000> , <http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784503858000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784501785000> , <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784502104000> .
+
+:Service_model_Heroku_Databases_TIME1396722784524697000
+        a           core:Service ;
+        rdfs:label  "Service_model_Heroku_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784525359000> , <http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784525627000> , <http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784525923000> , <http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784525764000> , <http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784525060000> , <http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784526217000> , <http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784525484000> , <http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784526078000> , <http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784525199000> , <http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784526352000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784524814000> , <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784524947000> .
+
+<http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784502963000>
+        a           cloudtaxonomy:CommandLine , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Connecting an application to Heroku Postgres is simple. The service automatically generates configuration and connection strings for databases for a variety of languages, command line tools, and application frameworks. There include PSQL, pg_restore, Ruby on Rails (ActiveRecord), Ruby Sequel, Ruby Datamapper, PHP, Django, and JDBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Fugu_Cache_TIME1396722784510649000>
+        a                        cloudtaxonomy:CacheSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "3.75"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784509044000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Durability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Continuous Protection keeps data safe on Heroku Postgres. Every change to your data is written to write-ahead logs, which are shipped to multi-datacenter, high-durability storage. In the unlikely event of unrecoverable hardware failure, these logs can be automatically 'replayed' to recover the database to within seconds of its last known state." .
+
+heroku:Offering_Heroku_Crane_Database
+        a              core:ServiceOffering ;
+        rdfs:label     "Offering Heroku Crane Databases" ;
+        core:includes  :Service_Heroku_Crane_Databases_TIME1396722784513515000 .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784511359000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784503283000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "Databases on Heroku Postgres can be used from anywhere and with any Postgres client. Apps can connect to Heroku Postgres from Heroku, Google App Engine, Microsoft Azure, Cloud Foundry, EC2, or from your local computer. PostgreSQL is supported by most modern programming languages - including Perl, Python, Ruby, Scala, Go, Tcl, C/C++, Java, .Net, and Javascript. It is even available via ODBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784523850000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Forking a database is just like forking source code. It creates a perfect, byte-for-byte clone of your database with a single command. Do you have new schema migrations that you need to test? Simply fork your production database and run the new migrations against the fork. Load testing? Fork your database and run your testing environment against it. Forking databases lets you work with your production schema and data without risk or hassle. And when you are done, simply throw the fork away." .
+
+<http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784512663000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Forking a database is just like forking source code. It creates a perfect, byte-for-byte clone of your database with a single command. Do you have new schema migrations that you need to test? Simply fork your production database and run the new migrations against the fork. Load testing? Fork your database and run your testing environment against it. Forking databases lets you work with your production schema and data without risk or hassle. And when you are done, simply throw the fork away." .
+
+<http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784509223000>
+        a           rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Production Database" .
+
+<http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784514580000>
+        a           cloudtaxonomy:CommandLine , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Connecting an application to Heroku Postgres is simple. The service automatically generates configuration and connection strings for databases for a variety of languages, command line tools, and application frameworks. There include PSQL, pg_restore, Ruby on Rails (ActiveRecord), Ruby Sequel, Ruby Datamapper, PHP, Django, and JDBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784511632000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Durability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Continuous Protection keeps data safe on Heroku Postgres. Every change to your data is written to write-ahead logs, which are shipped to multi-datacenter, high-durability storage. In the unlikely event of unrecoverable hardware failure, these logs can be automatically 'replayed' to recover the database to within seconds of its last known state." .
+
+<http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784508871000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "direct psql access" .
+
+:Service_model_Heroku_Databases_TIME1396722784513661000
+        a           core:Service ;
+        rdfs:label  "Service_model_Heroku_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784514201000> , <http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784515080000> , <http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784515236000> , <http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784514745000> , <http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784514898000> , <http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784515521000> , <http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784514058000> , <http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784515374000> , <http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784514407000> , <http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784514580000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784513933000> , <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784513787000> .
+
+<http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784514407000>
+        a           rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Production Database" .
+
+<http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784509777000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "Databases on Heroku Postgres can be used from anywhere and with any Postgres client. Apps can connect to Heroku Postgres from Heroku, Google App Engine, Microsoft Azure, Cloud Foundry, EC2, or from your local computer. PostgreSQL is supported by most modern programming languages - including Perl, Python, Ruby, Scala, Go, Tcl, C/C++, Java, .Net, and Javascript. It is even available via ODBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Mecha_Cache_TIME1396722784513119000>
+        a                        cloudtaxonomy:CacheSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "68.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784523676000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Reliability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "PAround the clock, Heroku Postgres performs a battery of health checks on every database in operation. These checks ensure that the database is online and working properly. You can sleep well, knowing that if a problem is detected, our 24/7 on-call team is immediately dispatched and our automated recovery software can have you back online in minutes, even in the event of catastrophic hardware failure." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Crane_Cache_TIME1396722784515692000>
+        a                        cloudtaxonomy:CacheSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "4L" ;
+        gr:hasValue              "0.38999998569488525"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784526352000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "When we share information on the Internet, we do so by sharing URLs. We send URLs for locations, books, videos, and even source code. Until now there hasnt been a convenient way to share data inside a database. Dataclips is that mechanism to easily share data within your organization. Dataclips are available on all Heroku Postgres dedicated and starter databases. Use standard SQL to create data clips.No authentication required for easy sharing. Data clips are protected via a 128-bit URL hash. Query your database within a read-only transaction, so your data is safe from alteration. Downloadable in many formats including JSON, Excel, CSV, YAML. Easily exportable to Google spreadsheets." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784524947000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784523224000>
+        a           cloudtaxonomy:CommandLine , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Connecting an application to Heroku Postgres is simple. The service automatically generates configuration and connection strings for databases for a variety of languages, command line tools, and application frameworks. There include PSQL, pg_restore, Ruby on Rails (ActiveRecord), Ruby Sequel, Ruby Datamapper, PHP, Django, and JDBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784511483000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "direct psql access" .
+
+:Service_Heroku_Crane_Databases_TIME1396722784513515000
+        a              core:Service ;
+        rdfs:label     "Service_Heroku_Crane_Databases" ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Crane_Cache_TIME1396722784515692000> ;
+        core:includes  :Service_model_Heroku_Databases_TIME1396722784513661000 .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Dynos_Availability_TIME1396722784504710000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784525484000>
+        a           cloudtaxonomy:CommandLine , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Connecting an application to Heroku Postgres is simple. The service automatically generates configuration and connection strings for databases for a variety of languages, command line tools, and application frameworks. There include PSQL, pg_restore, Ruby on Rails (ActiveRecord), Ruby Sequel, Ruby Datamapper, PHP, Django, and JDBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784512811000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "OpenSource database" .
+
+<http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784520838000>
+        a           cloudtaxonomy:CommandLine , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Connecting an application to Heroku Postgres is simple. The service automatically generates configuration and connection strings for databases for a variety of languages, command line tools, and application frameworks. There include PSQL, pg_restore, Ruby on Rails (ActiveRecord), Ruby Sequel, Ruby Datamapper, PHP, Django, and JDBC." .
+
+heroku:Offering_Heroku_Mecha_Database
+        a              core:ServiceOffering ;
+        rdfs:label     "Offering Heroku Mecha Databases" ;
+        core:includes  :Service_Heroku_Mecha_Databases_TIME1396722784510940000 .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784513787000>
+        a                        cloudtaxonomy:StorageCapacity , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1024.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784502640000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Durability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Continuous Protection keeps data safe on Heroku Postgres. Every change to your data is written to write-ahead logs, which are shipped to multi-datacenter, high-durability storage. In the unlikely event of unrecoverable hardware failure, these logs can be automatically 'replayed' to recover the database to within seconds of its last known state." .
+
+:Service_model_Heroku_Databases_TIME1396722784519961000
+        a           core:Service ;
+        rdfs:label  "Service_model_Heroku_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784520712000> , <http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784521233000> , <http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784521384000> , <http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784520838000> , <http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784521542000> , <http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784520981000> , <http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784521823000> , <http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784520406000> , <http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784521683000> , <http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784520555000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784520241000> , <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784520091000> .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Kappa_Cache_TIME1396722784519497000>
+        a                        cloudtaxonomy:CacheSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "4L" ;
+        gr:hasValue              "0.781000018119812"^^xsd:double .
+
+:Service_model_Heroku_Databases_TIME1396722784511086000
+        a           core:Service ;
+        rdfs:label  "Service_model_Heroku_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784512323000> , <http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784512957000> , <http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784511977000> , <http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784512663000> , <http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784512173000> , <http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784511632000> , <http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784512499000> , <http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784511483000> , <http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784512811000> , <http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784511826000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784511359000> , <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784511214000> .
+
+<http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784516876000>
+        a           rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Production Database" .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784524814000>
+        a                        cloudtaxonomy:StorageCapacity , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1024.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784522535000>
+        a                        cloudtaxonomy:StorageCapacity , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1024.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784522675000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+heroku:Offering_Heroku_Fugu_Database
+        a              core:ServiceOffering ;
+        rdfs:label     "Offering Heroku Fugu Databases" ;
+        core:includes  :Service_Heroku_Fugu_Databases_TIME1396722784507678000 .
+
+<http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784525923000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Reliability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "PAround the clock, Heroku Postgres performs a battery of health checks on every database in operation. These checks ensure that the database is online and working properly. You can sleep well, knowing that if a problem is detected, our 24/7 on-call team is immediately dispatched and our automated recovery software can have you back online in minutes, even in the event of catastrophic hardware failure." .
+
+heroku:Offering_Heroku_Dynos
+        a              core:ServiceOffering ;
+        rdfs:label     "offering Heroku Dynos" ;
+        core:includes  :Service_Model_Heroku_Dynos_TIME1396722784504574000 .
+
+:Service_Heroku_Fugu_Databases_TIME1396722784507678000
+        a              core:Service ;
+        rdfs:label     "Service_Heroku_Fugu_Databases" ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Fugu_Cache_TIME1396722784510649000> ;
+        core:includes  :Service_model_Heroku_Databases_TIME1396722784507825000 .
+
+<http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784521384000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Reliability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "PAround the clock, Heroku Postgres performs a battery of health checks on every database in operation. These checks ensure that the database is online and working properly. You can sleep well, knowing that if a problem is detected, our 24/7 on-call team is immediately dispatched and our automated recovery software can have you back online in minutes, even in the event of catastrophic hardware failure." .
+
+<http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784523496000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "Databases on Heroku Postgres can be used from anywhere and with any Postgres client. Apps can connect to Heroku Postgres from Heroku, Google App Engine, Microsoft Azure, Cloud Foundry, EC2, or from your local computer. PostgreSQL is supported by most modern programming languages - including Perl, Python, Ruby, Scala, Go, Tcl, C/C++, Java, .Net, and Javascript. It is even available via ODBC." .
+
+:Service_model_Heroku_Databases_TIME1396722784516163000
+        a           core:Service ;
+        rdfs:label  "Service_model_Heroku_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784517000000> , <http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784516713000> , <http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784519158000> , <http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784518507000> , <http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784516876000> , <http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784516556000> , <http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784519305000> , <http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784519008000> , <http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784518662000> , <http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784518826000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784516433000> , <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784516291000> .
+
+<http://rdfs.genssiz.org/PricingAPI##Open_and_Standard_Stacks_No_Lock-in_TIME1396722784507350000>
+        a           cloudtaxonomy:OpenSource , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "No data lock-in, the service is based in open standards" .
+
+<http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784514745000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Followers are read-only asynchronous replicas of a database. Followers stay up-to-date with changes to your database and can be queried. Traditionally, setting-up and maintaining replication is a difficult and specialized task. But with followers, it just works. Followers provide horizontal scalability by distributing database read traffic. They are also perfect for real-time analytics  use them to make expensive queries against up-to-date data without affecting application speed and availability." .
+
+<http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784525764000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "Databases on Heroku Postgres can be used from anywhere and with any Postgres client. Apps can connect to Heroku Postgres from Heroku, Google App Engine, Microsoft Azure, Cloud Foundry, EC2, or from your local computer. PostgreSQL is supported by most modern programming languages - including Perl, Python, Ruby, Scala, Go, Tcl, C/C++, Java, .Net, and Javascript. It is even available via ODBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Fast_And_Fault-Tolerant_HTTP_Routing_TIME1396722784506762000>
+        a           cloudtaxonomy:NetworkFunctionalProperty , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "the HTTP routing is fault tolerant" .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784508480000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Secure_Hardened_and_Tuned_Runtime_TIME1396722784507056000>
+        a           cloudtaxonomy:Security , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Secure Hardened and Tuned Runtime" .
+
+<http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784512173000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Followers are read-only asynchronous replicas of a database. Followers stay up-to-date with changes to your database and can be queried. Traditionally, setting-up and maintaining replication is a difficult and specialized task. But with followers, it just works. Followers provide horizontal scalability by distributing database read traffic. They are also perfect for real-time analytics  use them to make expensive queries against up-to-date data without affecting application speed and availability." .
+
+<http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784503466000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Reliability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "PAround the clock, Heroku Postgres performs a battery of health checks on every database in operation. These checks ensure that the database is online and working properly. You can sleep well, knowing that if a problem is detected, our 24/7 on-call team is immediately dispatched and our automated recovery software can have you back online in minutes, even in the event of catastrophic hardware failure." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Zilla_Cache_TIME1396722784521980000>
+        a                        cloudtaxonomy:CacheSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "17.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784515236000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Forking a database is just like forking source code. It creates a perfect, byte-for-byte clone of your database with a single command. Do you have new schema migrations that you need to test? Simply fork your production database and run the new migrations against the fork. Load testing? Fork your database and run your testing environment against it. Forking databases lets you work with your production schema and data without risk or hassle. And when you are done, simply throw the fork away." .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784516433000>
+        a            cloudtaxonomy:Availability , gr:QuantitativeValue ;
+        gr:hasValue  "99.94999694824219"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784510485000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "When we share information on the Internet, we do so by sharing URLs. We send URLs for locations, books, videos, and even source code. Until now there hasnt been a convenient way to share data inside a database. Dataclips is that mechanism to easily share data within your organization. Dataclips are available on all Heroku Postgres dedicated and starter databases. Use standard SQL to create data clips.No authentication required for easy sharing. Data clips are protected via a 128-bit URL hash. Query your database within a read-only transaction, so your data is safe from alteration. Downloadable in many formats including JSON, Excel, CSV, YAML. Easily exportable to Google spreadsheets." .
+
+<http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784519008000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Forking a database is just like forking source code. It creates a perfect, byte-for-byte clone of your database with a single command. Do you have new schema migrations that you need to test? Simply fork your production database and run the new migrations against the fork. Load testing? Fork your database and run your testing environment against it. Forking databases lets you work with your production schema and data without risk or hassle. And when you are done, simply throw the fork away." .
+
+<http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784512957000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "When we share information on the Internet, we do so by sharing URLs. We send URLs for locations, books, videos, and even source code. Until now there hasnt been a convenient way to share data inside a database. Dataclips is that mechanism to easily share data within your organization. Dataclips are available on all Heroku Postgres dedicated and starter databases. Use standard SQL to create data clips.No authentication required for easy sharing. Data clips are protected via a 128-bit URL hash. Query your database within a read-only transaction, so your data is safe from alteration. Downloadable in many formats including JSON, Excel, CSV, YAML. Easily exportable to Google spreadsheets." .
+
+:Service_Heroku_Ika_Databases_TIME1396722784522271000
+        a              core:Service ;
+        rdfs:label     "Service_Heroku_Ika_Databases" ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Ika_Cache_TIME1396722784524284000> ;
+        core:includes  :Service_model_Heroku_Databases_TIME1396722784522412000 .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784520091000>
+        a                        cloudtaxonomy:StorageCapacity , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1024.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784518662000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "Databases on Heroku Postgres can be used from anywhere and with any Postgres client. Apps can connect to Heroku Postgres from Heroku, Google App Engine, Microsoft Azure, Cloud Foundry, EC2, or from your local computer. PostgreSQL is supported by most modern programming languages - including Perl, Python, Ruby, Scala, Go, Tcl, C/C++, Java, .Net, and Javascript. It is even available via ODBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784511977000>
+        a           cloudtaxonomy:CommandLine , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Connecting an application to Heroku Postgres is simple. The service automatically generates configuration and connection strings for databases for a variety of languages, command line tools, and application frameworks. There include PSQL, pg_restore, Ruby on Rails (ActiveRecord), Ruby Sequel, Ruby Datamapper, PHP, Django, and JDBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784519158000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "OpenSource database" .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Ika_Cache_TIME1396722784524284000>
+        a                        cloudtaxonomy:CacheSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "7.5"^^xsd:double .
+
+:Service_model_Heroku_Databases_TIME1396722784522412000
+        a           core:Service ;
+        rdfs:label  "Service_model_Heroku_Databases" ;
+        gr:qualitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##Fork_TIME1396722784523850000> , <http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784523496000> , <http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784524128000> , <http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784523676000> , <http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784523357000> , <http://rdfs.genssiz.org/PricingAPI##Configuration_Strings_TIME1396722784523224000> , <http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784522942000> , <http://rdfs.genssiz.org/PricingAPI##PostgreSQL_TIME1396722784523992000> , <http://rdfs.genssiz.org/PricingAPI##Production_Database_TIME1396722784523100000> , <http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784522795000> ;
+        gr:quantitativeProductOrServiceProperty
+                <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784522535000> , <http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Availability_TIME1396722784522675000> .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784501785000>
+        a                        cloudtaxonomy:StorageCapacity , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1024.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##resource_Heroku_Database_Disk_Storage_TIME1396722784511214000>
+        a                        cloudtaxonomy:StorageCapacity , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "1024.0"^^xsd:double .
+
+<http://rdfs.genssiz.org/PricingAPI##Technical_Support_TIME1396722784504843000>
+        a           cloudtaxonomy:Support_24_7 , cloudtaxonomy:SupportTeam , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Technical Support" .
+
+<http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784520555000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Durability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Continuous Protection keeps data safe on Heroku Postgres. Every change to your data is written to write-ahead logs, which are shipped to multi-datacenter, high-durability storage. In the unlikely event of unrecoverable hardware failure, these logs can be automatically 'replayed' to recover the database to within seconds of its last known state." .
+
+<http://rdfs.genssiz.org/PricingAPI##Data_Clips_TIME1396722784521823000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "When we share information on the Internet, we do so by sharing URLs. We send URLs for locations, books, videos, and even source code. Until now there hasnt been a convenient way to share data inside a database. Dataclips is that mechanism to easily share data within your organization. Dataclips are available on all Heroku Postgres dedicated and starter databases. Use standard SQL to create data clips.No authentication required for easy sharing. Data clips are protected via a 128-bit URL hash. Query your database within a read-only transaction, so your data is safe from alteration. Downloadable in many formats including JSON, Excel, CSV, YAML. Easily exportable to Google spreadsheets." .
+
+<http://rdfs.genssiz.org/PricingAPI##Follow_TIME1396722784518507000>
+        a           cloudtaxonomy:Replication , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Followers are read-only asynchronous replicas of a database. Followers stay up-to-date with changes to your database and can be queried. Traditionally, setting-up and maintaining replication is a difficult and specialized task. But with followers, it just works. Followers provide horizontal scalability by distributing database read traffic. They are also perfect for real-time analytics  use them to make expensive queries against up-to-date data without affecting application speed and availability." .
+
+<http://rdfs.genssiz.org/PricingAPI##Automatic_Health_Checks_TIME1396722784515080000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Reliability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "PAround the clock, Heroku Postgres performs a battery of health checks on every database in operation. These checks ensure that the database is online and working properly. You can sleep well, knowing that if a problem is detected, our 24/7 on-call team is immediately dispatched and our automated recovery software can have you back online in minutes, even in the event of catastrophic hardware failure." .
+
+<http://rdfs.genssiz.org/PricingAPI##Multi_Ingress_TIME1396722784514898000>
+        a           rdfs:Class , skos:Concept , cloudtaxonomy:Platform , gr:QualitativeValue ;
+        rdfs:label  "Databases on Heroku Postgres can be used from anywhere and with any Postgres client. Apps can connect to Heroku Postgres from Heroku, Google App Engine, Microsoft Azure, Cloud Foundry, EC2, or from your local computer. PostgreSQL is supported by most modern programming languages - including Perl, Python, Ruby, Scala, Go, Tcl, C/C++, Java, .Net, and Javascript. It is even available via ODBC." .
+
+<http://rdfs.genssiz.org/PricingAPI##Direct_Psql_Access_TIME1396722784514058000>
+        a           cloudtaxonomy:Interface , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "direct psql access" .
+
+<http://rdfs.genssiz.org/PricingAPI##Complete_API_CLI_for_App_Management_TIME1396722784506559000>
+        a           cloudtaxonomy:API , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "It is possible to control and manage the app with an API or command line instructions" .
+
+<http://rdfs.genssiz.org/PricingAPI##Continuos_Protection_TIME1396722784525199000>
+        a           cloudtaxonomy:Backup_Recovery , cloudtaxonomy:Durability , rdfs:Class , skos:Concept , gr:QualitativeValue ;
+        rdfs:label  "Continuous Protection keeps data safe on Heroku Postgres. Every change to your data is written to write-ahead logs, which are shipped to multi-datacenter, high-durability storage. In the unlikely event of unrecoverable hardware failure, these logs can be automatically 'replayed' to recover the database to within seconds of its last known state." .
+
+heroku:Offering_Heroku_Baku_Database
+        a              core:ServiceOffering ;
+        rdfs:label     "Offering Heroku Baku Databases" ;
+        core:includes  :Service_Heroku_BAKU_Databases_TIME1396722784501371000 .

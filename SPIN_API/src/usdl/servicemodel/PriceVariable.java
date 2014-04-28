@@ -5,10 +5,11 @@ public class PriceVariable {
 	private String name = null;
 	//Variable value, either Qualitative or Quantitative
 	private Value value = null;
-	
 	private String comment = null;
+	private String localName = null;
+	private String namespace = null;
 	
-	public PriceVariable() {
+	protected PriceVariable() {
 		super();
 	}
 
@@ -34,6 +35,22 @@ public class PriceVariable {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName.replaceAll(" ", "_");
+	}
+
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
 	}
 
 	@Override
