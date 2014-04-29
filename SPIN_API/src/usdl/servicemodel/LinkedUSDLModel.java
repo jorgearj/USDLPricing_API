@@ -171,7 +171,11 @@ public class LinkedUSDLModel {
 	}
 	
 	private Model setModelPrefixes(Model model){
-
+		
+		
+		if(this.prefixes.get("") == null)
+			this.prefixes.put(this.baseURI, "");
+		
 		Iterator<Entry<String, String>> it = this.prefixes.entrySet().iterator();
 		while (it.hasNext()) {
 	        Map.Entry<String, String> pairs = (Map.Entry<String, String>)it.next();

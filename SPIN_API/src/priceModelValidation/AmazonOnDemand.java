@@ -41,7 +41,19 @@ public class AmazonOnDemand {
 		
 		AmazonOnDemandOffering(jmodel);
 		
-		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandOfferings.com");
+//		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandOfferings.com");
+//		
+//		for (Offering of : jmodel.getOfferings())
+//		{
+//			for(PriceComponent pc : of.getPricePlan().getPriceComponents())
+//			{
+//				if(pc.getPriceFunction() != null)
+//				{
+//					for(Usage var : pc.getPriceFunction().getUsageVariables())
+//						System.out.println("UsageVar:   NAME:   "+var.getName() + "   LOCALNAME:   "+var.getLocalName());
+//				}
+//			}
+//		}
 		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
 		
 		File outputFile = new File("./DebuggingFiles/amazonOD.ttl");

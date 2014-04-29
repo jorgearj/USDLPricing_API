@@ -126,7 +126,7 @@ public class Usage extends PriceVariable {
 		
 		// Initialize system functions and templates
 		Resource var = null;
-		
+		System.out.println("Writing "+ this.getName() + " LocalName: " + this.getLocalName());
 		if(this.getNamespace() == null){ //no namespace defined for this resource, we need to define one
 			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
 				this.setNamespace(baseURI);
@@ -138,7 +138,7 @@ public class Usage extends PriceVariable {
 			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.getNamespace() + this.getLocalName()));
 			var = model.createResource(this.getNamespace() + this.getLocalName());
 			
-			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLPriceEnum.PROVIDER.getResource(model));
+			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLPriceEnum.USAGE.getResource(model));
 			
 			if(this.getName() != null)
 				var.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.getName()));
