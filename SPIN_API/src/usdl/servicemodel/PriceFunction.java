@@ -2,6 +2,7 @@ package usdl.servicemodel;
 
 
 import java.util.ArrayList;
+
 import org.topbraid.spin.arq.ARQ2SPIN;
 import org.topbraid.spin.arq.ARQFactory;
 import org.topbraid.spin.model.Function;
@@ -17,6 +18,7 @@ import usdl.constants.enums.USDLPriceEnum;
 import usdl.constants.properties.PricingAPIProperties;
 import usdl.servicemodel.validations.LinkedUSDLValidator;
 import FunctionParser.MathExp2SPARQL;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
@@ -42,6 +44,7 @@ public class PriceFunction {
 	private String comment = null;
 	private String localName = null;
 	private String namespace = null;
+	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.PRICEFUNCTION.getResourceType();
 	
 	
@@ -252,6 +255,9 @@ public class PriceFunction {
 //				if(this.getOldBaseURI() != null){
 //					this.setSPARQLFunction(this.getSPARQLFunction().replaceAll(this.getOldBaseURI(), this.namespace));
 //				}
+				if(this.getNamespace() != null)
+					this.setSPARQLFunction(this.getSPARQLFunction().replaceAll(this.getNamespace(), baseURI+"#"));
+				
 				com.hp.hpl.jena.query.Query arqQuery = ARQFactory.get().createQuery(model,this.getSPARQLFunction());
 				Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
 				func.addProperty(SPIN.body, spinQuery);

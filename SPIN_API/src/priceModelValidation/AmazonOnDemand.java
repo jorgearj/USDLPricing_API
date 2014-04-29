@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+import exceptions.InvalidLinkedUSDLModelException;
 import usdl.constants.enums.CLOUDEnum;
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.LinkedUSDLModelFactory;
@@ -32,7 +33,7 @@ import usdl.servicemodel.Usage;
 public class AmazonOnDemand {
 
 	
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws IOException, InvalidLinkedUSDLModelException
 	{
 		LinkedUSDLModel jmodel;
 
@@ -40,9 +41,9 @@ public class AmazonOnDemand {
 		
 		AmazonOnDemandOffering(jmodel);
 		
-		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandInstance.com");
+		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandOfferings.com");
 		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
-
+		
 		File outputFile = new File("./DebuggingFiles/amazonOD.ttl");
 		if (!outputFile.exists()) {
 			outputFile.createNewFile();

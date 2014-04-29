@@ -2,7 +2,6 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 
-import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -26,6 +25,7 @@ public class Offering {
 	private String comment = null;
 	private String localName = null;
 	private String namespace = null;
+	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.OFFERING.getResourceType();
 	
 	public Offering(){
@@ -124,7 +124,7 @@ public class Offering {
 	 * @return  An Offering object populated with its information extracted from the Semantic Model.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	protected static Offering readFromModel(Resource resource, Model model){
+	public static Offering readFromModel(Resource resource, Model model){
 		Offering offering = null;
 		
 		if(resource.getLocalName() != null && resource.getNameSpace() != null){
@@ -167,7 +167,7 @@ public class Offering {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	protected void writeToModel(Model model, String baseURI) throws InvalidLinkedUSDLModelException
+	public void writeToModel(Model model, String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource offering = null;
 		

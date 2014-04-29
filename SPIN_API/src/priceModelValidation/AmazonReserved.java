@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+import exceptions.InvalidLinkedUSDLModelException;
 import usdl.constants.enums.CLOUDEnum;
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.LinkedUSDLModelFactory;
@@ -32,7 +33,7 @@ import usdl.servicemodel.Usage;
 public class AmazonReserved {
 
 	
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws IOException, InvalidLinkedUSDLModelException
 	{
 		LinkedUSDLModel jmodel;
 

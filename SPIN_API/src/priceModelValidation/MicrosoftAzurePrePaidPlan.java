@@ -37,9 +37,11 @@ import usdl.servicemodel.Usage;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+import exceptions.InvalidLinkedUSDLModelException;
+
 public class MicrosoftAzurePrePaidPlan {
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InvalidLinkedUSDLModelException {
 		LinkedUSDLModel jmodel;
 
 		jmodel = LinkedUSDLModelFactory.createEmptyModel();

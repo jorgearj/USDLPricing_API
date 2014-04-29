@@ -26,6 +26,7 @@ import org.json.simple.parser.ParseException;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+import exceptions.InvalidLinkedUSDLModelException;
 import usdl.constants.enums.CLOUDEnum;
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.LinkedUSDLModelFactory;
@@ -43,7 +44,7 @@ import usdl.servicemodel.Usage;
 
 public class AmazonSpotInstaces {
 	private static String url = "http://aws-assets-pricing-prod.s3.amazonaws.com/pricing/ec2/spot.js";
-	public static void main(String[] args) throws MalformedURLException, IOException, ParseException
+	public static void main(String[] args) throws MalformedURLException, IOException, ParseException, InvalidLinkedUSDLModelException
 	{
 		LinkedUSDLModel jmodel;
 

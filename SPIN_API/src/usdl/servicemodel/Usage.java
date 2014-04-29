@@ -25,6 +25,7 @@ import exceptions.InvalidLinkedUSDLModelException;
  */
 public class Usage extends PriceVariable {
 	
+	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.USAGE.getResourceType();
 
 	public Usage(){

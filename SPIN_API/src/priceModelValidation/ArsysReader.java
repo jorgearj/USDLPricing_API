@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.LinkedUSDLModelFactory;

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+import exceptions.InvalidLinkedUSDLModelException;
 import usdl.constants.enums.CLOUDEnum;
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.LinkedUSDLModelFactory;
@@ -33,14 +34,15 @@ import usdl.servicemodel.Usage;
 
 
 public class Arsys {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InvalidLinkedUSDLModelException {
 		LinkedUSDLModel jmodel;
 
 		jmodel = LinkedUSDLModelFactory.createEmptyModel();
 		ArsysOffering(jmodel);
 	}
 
-	private static void ArsysOffering(LinkedUSDLModel jmodel) throws IOException {
+	@SuppressWarnings({ "unused", "unchecked" })
+	private static void ArsysOffering(LinkedUSDLModel jmodel) throws IOException, InvalidLinkedUSDLModelException {
 		//first, create the services 
 		Service s1 = new Service();
 

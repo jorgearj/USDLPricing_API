@@ -3,7 +3,6 @@ package usdl.servicemodel;
 import java.util.Date;
 
 import usdl.constants.enums.GREnum;
-import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -37,6 +36,7 @@ public class PriceSpec {
 	private String comment = null;//
 	private String localName = null;
 	private String namespace = null;
+	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.OFFERING.getResourceType();
 	
 

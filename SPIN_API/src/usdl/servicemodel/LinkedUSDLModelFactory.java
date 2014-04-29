@@ -1,7 +1,6 @@
 package usdl.servicemodel;
 
-import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileVisitResult;
@@ -103,14 +102,12 @@ public class LinkedUSDLModelFactory {
 	
 		Model model = new LinkedUSDLModelFactory().importModel(path);
 		
-//		//checks of the imported model already has a baseURI to use.
-//	    String uri = model.getNsPrefixURI("");
-//		if(uri != null){
-//			System.out.println("HAS BASE URI");
-//			baseURI = uri;
-//		}else{
-//			model.setNsPrefix("", baseURI);
-//		}
+		//checks of the imported model already has a baseURI to use.
+	    String uri = model.getNsPrefixURI("");
+		if(uri != null){
+			System.out.println("HAS BASE URI " + baseURI);
+			baseURI = uri+"#";
+		}
 		
 		LinkedUSDLModel linkedUSDL = new LinkedUSDLModel(baseURI);
 		System.out.println("BASE URI: " + baseURI);
@@ -124,12 +121,13 @@ public class LinkedUSDLModelFactory {
 //	        System.out.println("        - "+ pairs.getKey() + " = " + pairs.getValue());
 //	    }
 		
+		
+		linkedUSDL.readModel(model);
 		if(validation){
 			//validates the model against the Linked USDL specification
 			LinkedUSDLValidator validator = new LinkedUSDLValidator();
 			validator.validateModel(model);
 		}
-		linkedUSDL.readModel(model);
 		return linkedUSDL;
 	}
 	

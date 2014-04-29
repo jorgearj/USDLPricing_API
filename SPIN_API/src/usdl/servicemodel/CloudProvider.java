@@ -26,6 +26,7 @@ public class CloudProvider {
 	private List<Service> providedServices;
 	private String localName = null;
 	private String namespace = null;
+	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.OFFERING.getResourceType();
 
 	

@@ -2,9 +2,7 @@ package usdl.servicemodel;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
-import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -37,6 +35,7 @@ public class PriceComponent {
 	private String comment = null;
 	private String localName = null;
 	private String namespace = null;
+	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.PRICECOMPONENT.getResourceType();
 	
 	

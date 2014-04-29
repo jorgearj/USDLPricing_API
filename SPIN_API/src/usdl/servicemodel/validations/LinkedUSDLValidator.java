@@ -1,11 +1,10 @@
 package usdl.servicemodel.validations;
 
 import usdl.constants.properties.PricingAPIProperties;
-import usdl.servicemodel.LinkedUSDLModel;
-import usdl.servicemodel.Offering;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
 import exceptions.ErrorEnum;
 import exceptions.InvalidLinkedUSDLModelException;
@@ -42,7 +41,7 @@ public class LinkedUSDLValidator {
 	
 	public void checkDuplicateURI(Model model, Resource resource) throws InvalidLinkedUSDLModelException{
 		if(model.containsResource(resource))
-			throw new InvalidLinkedUSDLModelException(ErrorEnum.DUPLICATE_RESOURCE, new String[]{resource.getLocalName(), resource.getURI()});
+			throw new InvalidLinkedUSDLModelException(ErrorEnum.DUPLICATE_RESOURCE, new String[]{resource.getLocalName(), resource.getNameSpace()});
 	}
 	
 	private void checkCorePrefix(Model model) throws InvalidLinkedUSDLModelException{

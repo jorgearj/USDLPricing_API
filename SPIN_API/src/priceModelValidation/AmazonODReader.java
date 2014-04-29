@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.LinkedUSDLModelFactory;
 import usdl.servicemodel.Offering;
@@ -15,13 +16,16 @@ import usdl.servicemodel.PriceFunction;
 import usdl.servicemodel.PricePlan;
 import usdl.servicemodel.QuantitativeValue;
 import usdl.servicemodel.Usage;
+
 import com.hp.hpl.jena.rdf.model.Model;
+
 import exceptions.InvalidLinkedUSDLModelException;
 import exceptions.ReadModelException;
 
 public class AmazonODReader {
 	
 	
+	@SuppressWarnings("resource")
 	public static void main(String[] args)
 	{
 		LinkedUSDLModel jmodel;
@@ -69,9 +73,8 @@ public class AmazonODReader {
 				else
 					System.out.println("Offering with a null price plan");
 			}
-			jmodel.setBaseURI("http://PricingAPIAmazonRIInstance.com");
+			jmodel.setBaseURI("http://PricingAPIAmazonODInstance.com");
 			Model instance = jmodel.WriteToModel();//after we've done our changes in the jmodels, we transform them into a new Semantic model
-			
 			//write model to file
 			/*File outputFile = new File("your_directory/amazonRIInstance.ttl");
 			if (!outputFile.exists()) {

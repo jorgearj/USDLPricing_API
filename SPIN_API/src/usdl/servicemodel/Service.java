@@ -1,6 +1,7 @@
 package usdl.servicemodel;
 
 import java.util.ArrayList;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
@@ -8,7 +9,6 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import exceptions.ErrorEnum;
 import exceptions.InvalidLinkedUSDLModelException;
-
 import usdl.constants.enums.GREnum;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
@@ -28,6 +28,7 @@ public class Service{
 	private CloudProvider provider=null;
 	private String localName = null;
 	private String namespace = null;
+	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.SERVICE.getResourceType();
 	
 	public Service(){

@@ -1,7 +1,6 @@
 package usdl.servicemodel;
 
 import usdl.constants.enums.GREnum;
-import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -30,6 +29,7 @@ public class QuantitativeValue extends Value {
 	private double maxValue = -1;
 	private String unitOfMeasurement = null;
 	
+	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.QUANTVALUE.getResourceType();
 	
 	public QuantitativeValue(){
@@ -197,9 +197,9 @@ public class QuantitativeValue extends Value {
 				StmtIterator iter = resource.listProperties(RDFEnum.RDF_TYPE.getProperty(model));
 				while (iter.hasNext()) {
 					String uri = iter.next().getObject().asResource().getURI();
-					/*if(uri.toLowerCase().contains("quantitativevalue"))
+					if(uri.toLowerCase().contains("quantitativevalue"))
 						continue;
-					else*/
+					else
 					val.addType(uri);
 				}
 			}
