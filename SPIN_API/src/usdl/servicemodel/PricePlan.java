@@ -156,7 +156,7 @@ public class PricePlan {
 	 * @return  A PriceSpec instance that contains the price value of the Price Plan.
 	 */
 	//TODO: review the calculation process
-	public String calculatePrice(Model model)
+	public Double calculatePrice(Model model)
 	{
 		//sum each of the price components price value
 		String finalprice = "";
@@ -247,7 +247,7 @@ public class PricePlan {
 				finalvalue = this.getPriceFloor().getValue();
 		}
 				
-		return finalprice;
+		return finalvalue;
 	}
 	
 	/**
