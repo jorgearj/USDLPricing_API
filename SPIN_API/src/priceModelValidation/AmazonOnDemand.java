@@ -41,7 +41,7 @@ public class AmazonOnDemand {
 		
 		AmazonOnDemandOffering(jmodel);
 		
-//		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandOfferings.com");
+		
 //		
 //		for (Offering of : jmodel.getOfferings())
 //		{
@@ -54,6 +54,7 @@ public class AmazonOnDemand {
 //				}
 //			}
 //		}
+//		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandOfferings.com");
 		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
 		
 		File outputFile = new File("./DebuggingFiles/amazonOD.ttl");

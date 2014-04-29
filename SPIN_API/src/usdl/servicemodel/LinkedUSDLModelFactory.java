@@ -101,16 +101,15 @@ public class LinkedUSDLModelFactory {
 		
 	
 		Model model = new LinkedUSDLModelFactory().importModel(path);
-		
 		//checks of the imported model already has a baseURI to use.
 	    String uri = model.getNsPrefixURI("");
 		if(uri != null){
-			System.out.println("HAS BASE URI " + baseURI);
-			baseURI = uri+"#";
+			System.out.println("HAS BASE URI " + uri);
+			baseURI = uri;
 		}
 		
 		LinkedUSDLModel linkedUSDL = new LinkedUSDLModel(baseURI);
-		System.out.println("BASE URI: " + baseURI);
+//		System.out.println("BASE URI: " + baseURI);
 		
 		
 		//TESTS		
@@ -245,6 +244,7 @@ public class LinkedUSDLModelFactory {
 		        String key = (String)pairs.getKey();
 		        if(key.equalsIgnoreCase(""))
 		        	key = name;
+
 		        
 		        result.put((String)pairs.getValue(), key);
 		        

@@ -1,6 +1,7 @@
 package usdl.servicemodel;
 
 import usdl.constants.enums.GREnum;
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -26,7 +27,6 @@ import exceptions.InvalidLinkedUSDLModelException;
 public class QualitativeValue extends Value {
 	private String hasLabel = null;
 	
-	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.QUALVALUE.getResourceType();
 	
 	public QualitativeValue(){
@@ -46,7 +46,7 @@ public class QualitativeValue extends Value {
 	public QualitativeValue(QualitativeValue source)  {//copy constructor
 
 		if(source.getName() != null)
-			this.setName(source.getName());
+			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -90,19 +90,20 @@ public class QualitativeValue extends Value {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
+	@SuppressWarnings("null")
 	protected void writeToModel(Resource owner,Model model,int mode,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource qv = null;
 		
-		if(this.getNamespace() == null){ //no namespace defined for this resource, we need to define one
-			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-				this.setNamespace(baseURI);
-			else //use the default baseURI
-				this.setNamespace(PricingAPIProperties.defaultBaseURI);
-		}
+
+		if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+			this.setNamespace(baseURI);
+		else if(this.getNamespace() == null)  //use the default baseURI
+			this.setNamespace(PricingAPIProperties.defaultBaseURI);
+
 		if(this.getLocalName() != null){
 			LinkedUSDLValidator validator = new LinkedUSDLValidator();
-			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.getNamespace() + this.getLocalName()));
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.getNamespace() + this.getLocalName()),Prefixes.GR.getName()+":"+this.resourceType);
 			qv = model.createResource(this.getNamespace() + this.getLocalName());
 			
 			qv.addProperty(RDFEnum.RDF_TYPE.getProperty(model), GREnum.QUAL_VALUE.getResource(model));//rdf type

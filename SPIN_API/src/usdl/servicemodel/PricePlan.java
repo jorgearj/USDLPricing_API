@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.topbraid.spin.arq.ARQFactory;
 
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -37,7 +38,6 @@ public class PricePlan {
 	private String comment;
 	private String localName = null;
 	private String namespace = null;
-	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.PRICEPLAN.getResourceType();
 
 	public PricePlan(){
@@ -59,7 +59,7 @@ public class PricePlan {
 		priceComponents = new ArrayList<PriceComponent>();
 
 		if(source.getName() != null)
-			this.setName(source.getName());
+			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -156,7 +156,7 @@ public class PricePlan {
 	 * @return  A PriceSpec instance that contains the price value of the Price Plan.
 	 */
 	//TODO: review the calculation process
-	public Double calculatePrice(Model model)
+	public String calculatePrice(Model model)
 	{
 		//sum each of the price components price value
 		String finalprice = "";
@@ -170,6 +170,7 @@ public class PricePlan {
 				if (pc.getPriceFunction().getSPARQLFunction() != null) {
 					com.hp.hpl.jena.query.Query q = ARQFactory.get().createQuery(pc.getPriceFunction().getSPARQLFunction());
 					QueryExecution qexecc = ARQFactory.get().createQueryExecution(q, model);	
+					
 					ResultSet rsc = qexecc.execSelect();
 					//System.out.println(q.toString());
 					function_price = rsc.nextSolution().getLiteral("result").getDouble();// final result is store in the ?result variable of the query
@@ -246,7 +247,7 @@ public class PricePlan {
 				finalvalue = this.getPriceFloor().getValue();
 		}
 				
-		return finalvalue;
+		return finalprice;
 	}
 	
 	/**
@@ -310,20 +311,19 @@ public class PricePlan {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
+	@SuppressWarnings("null")
 	protected void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource pp = null;
-		
-		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
-			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-				this.namespace = baseURI;
-			else //use the default baseURI
-				this.namespace = PricingAPIProperties.defaultBaseURI;
-		}
+
+		if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+			this.namespace = baseURI;
+		else if(this.getNamespace() == null)  //use the default baseURI
+			this.namespace = PricingAPIProperties.defaultBaseURI;
 		
 		if(this.localName != null){
 			LinkedUSDLValidator validator = new LinkedUSDLValidator();
-			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName),Prefixes.USDL_PRICE.getName()+":"+this.resourceType);
 			pp = model.createResource(this.namespace + this.localName);
 			
 			pp.addProperty(RDFSEnum.LABEL.getProperty(model), model.createLiteral(this.name));//label name

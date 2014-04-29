@@ -73,7 +73,7 @@ public class VMWareVPCloudReader {
 								}
 								else
 								{
-									var.setValue(definedVariables.get(var.getName().replaceAll("TIME\\d+.*", "")).getValue());
+									var.setValue(  new QuantitativeValue((QuantitativeValue)definedVariables.get(var.getName().replaceAll("TIME\\d+.*", "")).getValue()));
 								}
 							}
 						}

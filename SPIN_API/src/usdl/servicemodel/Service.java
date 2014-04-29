@@ -10,6 +10,7 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import exceptions.ErrorEnum;
 import exceptions.InvalidLinkedUSDLModelException;
 import usdl.constants.enums.GREnum;
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -28,7 +29,6 @@ public class Service{
 	private CloudProvider provider=null;
 	private String localName = null;
 	private String namespace = null;
-	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.SERVICE.getResourceType();
 	
 	public Service(){
@@ -50,7 +50,7 @@ public class Service{
 	public Service(Service source)  {//copy constructor
 
 		if(source.getName() != null)
-			this.setName(source.getName());
+			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -282,20 +282,21 @@ public class Service{
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
+	@SuppressWarnings("null")
 	protected void writeToModel(Resource owner, Model model, String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource service = null;
 		
-		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
-			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-				this.namespace = baseURI;
-			else //use the default baseURI
-				this.namespace = PricingAPIProperties.defaultBaseURI;
-		}
+
+		if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+			this.namespace = baseURI;
+		else //use the default baseURI
+			this.namespace = PricingAPIProperties.defaultBaseURI;
+
 		
 		if(this.localName != null){
 			LinkedUSDLValidator validator = new LinkedUSDLValidator();
-			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName),Prefixes.USDL_CORE.getName()+":"+this.resourceType);
 			service = model.createResource(this.namespace + this.localName);
 			
 			service.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.SERVICE.getResource(model));//rdf type
@@ -305,13 +306,17 @@ public class Service{
 			if(this.comment != null)
 				service.addProperty(RDFSEnum.COMMENT.getProperty(model), model.createLiteral(this.comment)); // a comment
 			
-			if(!this.includes.isEmpty())
+			if(this.includes != null)
 			{
-				for(Service sv : includes)
+				if(!this.includes.isEmpty())
 				{
-					sv.writeToModel(service,model,baseURI);
+					for(Service sv : includes)
+					{
+						sv.writeToModel(service,model,baseURI);
+					}
 				}
 			}
+			
 			
 			if(!this.quantfeatures.isEmpty())
 			{

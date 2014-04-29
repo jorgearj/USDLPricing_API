@@ -1,54 +1,99 @@
-@prefix dc:    <http://purl.org/dc/elements/1.1/> .
 @prefix legal: <http://www.linked-usdl.org/ns/usdl-legal#> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
 @prefix :      <http://PricingAPICloudSigma6MRecurrentSubscription.com#> .
 @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix sp:    <http://spinrdf.org/sp#> .
 @prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix cloudtaxonomy: <http://rdfs.genssiz.org/CloudTaxonomy#> .
+@prefix org:   <http://www.w3.org/ns/org#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix pf:    <http://jena.hpl.hp.com/ARQ/property#> .
 @prefix price: <http://www.linked-usdl.org/ns/usdl-price#> .
 @prefix spl:   <http://spinrdf.org/spl#> .
+@prefix usdk:  <http://www.linked-usdl.org/ns/usdl#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
-@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix spin:  <http://spinrdf.org/spin#> .
-@prefix cloud: <http://rdfs.genssiz.org/CloudTaxonomy#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix core:  <http://www.linked-usdl.org/ns/usdl-core#> .
 @prefix gr:    <http://purl.org/goodrelations/v1#> .
 @prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
 
-:QuantitativeValue_TIME27596743506376
-        a                        gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "0.0715"^^xsd:double .
+:cpuspeedTIME26090344104883
+        a             price:Usage ;
+        rdfs:comment  "CPUSpeed you need." ;
+        rdfs:label    "cpuspeedTIME26090344104883" .
 
-:ram-pf_TIME27596702977786
-        a                  spin:Function ;
+:dataout-pf  a             spin:Function ;
+        rdfs:label         "dataout-pf" ;
+        spin:body          [ a                   sp:Select ;
+                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
+                             sp:where            ( [ sp:object     [ sp:varName  "gboutcostTIME26090345224858_instance"^^xsd:string ] ;
+                                                     sp:predicate  price:hasValue ;
+                                                     sp:subject    :gboutcostTIME26090345224858
+                                                   ] [ sp:object     [ sp:varName  "gboutcostTIME26090345224858_value"^^xsd:string ] ;
+                                                       sp:predicate  gr:hasValue ;
+                                                       sp:subject    [ sp:varName  "gboutcostTIME26090345224858_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "ngboutTIME26090345157292_instance"^^xsd:string ] ;
+                                                         sp:predicate  price:hasValue ;
+                                                         sp:subject    :ngboutTIME26090345157292
+                                                       ] [ sp:object     [ sp:varName  "ngboutTIME26090345157292_value"^^xsd:string ] ;
+                                                           sp:predicate  gr:hasValue ;
+                                                           sp:subject    [ sp:varName  "ngboutTIME26090345157292_instance"^^xsd:string ]
+                                                         ] [ a              sp:Bind ;
+                                                             sp:expression  [ a        sp:mul ;
+                                                                              sp:arg1  [ a        sp:mul ;
+                                                                                         sp:arg1  [ a        sp:mul ;
+                                                                                                    sp:arg1  [ sp:varName  "gboutcostTIME26090345224858_value"^^xsd:string ] ;
+                                                                                                    sp:arg2  [ sp:varName  "ngboutTIME26090345157292_value"^^xsd:string ]
+                                                                                                  ] ;
+                                                                                         sp:arg2  6
+                                                                                       ] ;
+                                                                              sp:arg2  [ a        sp:add ;
+                                                                                         sp:arg1  1 ;
+                                                                                         sp:arg2  [ a        sp:mul ;
+                                                                                                    sp:arg1  -1 ;
+                                                                                                    sp:arg2  0.1
+                                                                                                  ]
+                                                                                       ]
+                                                                            ] ;
+                                                             sp:variable    [ sp:varName  "result"^^xsd:string ]
+                                                           ] )
+                           ] ;
+        price:hasVariable  :gboutcostTIME26090345224858 , :ngboutTIME26090345157292 .
+
+:nstaticipTIME26090344852389
+        a             price:Usage ;
+        rdfs:comment  "Number of StaticIP you need." ;
+        rdfs:label    "nstaticipTIME26090344852389" .
+
+:ram-pf  a                 spin:Function ;
         rdfs:label         "ram-pf" ;
         spin:body          [ a                   sp:Select ;
                              sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
-                             sp:where            ( [ sp:object     [ sp:varName  "gbramTIME27596574816716_instance"^^xsd:string ] ;
+                             sp:where            ( [ sp:object     [ sp:varName  "gbramTIME26090343142705_instance"^^xsd:string ] ;
                                                      sp:predicate  price:hasValue ;
-                                                     sp:subject    :gbramTIME27596574816716
-                                                   ] [ sp:object     [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                     sp:subject    :gbramTIME26090343142705
+                                                   ] [ sp:object     [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                        sp:predicate  gr:hasValue ;
-                                                       sp:subject    [ sp:varName  "gbramTIME27596574816716_instance"^^xsd:string ]
-                                                     ] [ sp:object     [ sp:varName  "ramcostTIME27596574823130_instance"^^xsd:string ] ;
+                                                       sp:subject    [ sp:varName  "gbramTIME26090343142705_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "ramcostTIME26090343338134_instance"^^xsd:string ] ;
                                                          sp:predicate  price:hasValue ;
-                                                         sp:subject    :ramcostTIME27596574823130
-                                                       ] [ sp:object     [ sp:varName  "ramcostTIME27596574823130_value"^^xsd:string ] ;
+                                                         sp:subject    :ramcostTIME26090343338134
+                                                       ] [ sp:object     [ sp:varName  "ramcostTIME26090343338134_value"^^xsd:string ] ;
                                                            sp:predicate  gr:hasValue ;
-                                                           sp:subject    [ sp:varName  "ramcostTIME27596574823130_instance"^^xsd:string ]
+                                                           sp:subject    [ sp:varName  "ramcostTIME26090343338134_instance"^^xsd:string ]
                                                          ] [ a              sp:Bind ;
                                                              sp:expression  [ a        sp:if ;
                                                                               sp:arg1  [ a        sp:lt ;
-                                                                                         sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                         sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                          sp:arg2  50
                                                                                        ] ;
                                                                               sp:arg2  [ a        sp:mul ;
                                                                                          sp:arg1  [ a        sp:mul ;
                                                                                                     sp:arg1  [ a        sp:mul ;
-                                                                                                               sp:arg1  [ sp:varName  "ramcostTIME27596574823130_value"^^xsd:string ] ;
-                                                                                                               sp:arg2  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ]
+                                                                                                               sp:arg1  [ sp:varName  "ramcostTIME26090343338134_value"^^xsd:string ] ;
+                                                                                                               sp:arg2  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ]
                                                                                                              ] ;
                                                                                                     sp:arg2  4320
                                                                                                   ] ;
@@ -67,11 +112,11 @@
                                                                sp:expression  [ a        sp:if ;
                                                                                 sp:arg1  [ a        sp:and ;
                                                                                            sp:arg1  [ a        sp:ge ;
-                                                                                                      sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                      sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                       sp:arg2  50
                                                                                                     ] ;
                                                                                            sp:arg2  [ a        sp:lt ;
-                                                                                                      sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                      sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                       sp:arg2  100
                                                                                                     ]
                                                                                          ] ;
@@ -79,8 +124,8 @@
                                                                                            sp:arg1  [ a        sp:mul ;
                                                                                                       sp:arg1  [ a        sp:mul ;
                                                                                                                  sp:arg1  [ a        sp:mul ;
-                                                                                                                            sp:arg1  [ sp:varName  "ramcostTIME27596574823130_value"^^xsd:string ] ;
-                                                                                                                            sp:arg2  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ]
+                                                                                                                            sp:arg1  [ sp:varName  "ramcostTIME26090343338134_value"^^xsd:string ] ;
+                                                                                                                            sp:arg2  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ]
                                                                                                                           ] ;
                                                                                                                  sp:arg2  4320
                                                                                                                ] ;
@@ -107,11 +152,11 @@
                                                                  sp:expression  [ a        sp:if ;
                                                                                   sp:arg1  [ a        sp:and ;
                                                                                              sp:arg1  [ a        sp:ge ;
-                                                                                                        sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                        sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                         sp:arg2  100
                                                                                                       ] ;
                                                                                              sp:arg2  [ a        sp:lt ;
-                                                                                                        sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                        sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                         sp:arg2  500
                                                                                                       ]
                                                                                            ] ;
@@ -119,8 +164,8 @@
                                                                                              sp:arg1  [ a        sp:mul ;
                                                                                                         sp:arg1  [ a        sp:mul ;
                                                                                                                    sp:arg1  [ a        sp:mul ;
-                                                                                                                              sp:arg1  [ sp:varName  "ramcostTIME27596574823130_value"^^xsd:string ] ;
-                                                                                                                              sp:arg2  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ]
+                                                                                                                              sp:arg1  [ sp:varName  "ramcostTIME26090343338134_value"^^xsd:string ] ;
+                                                                                                                              sp:arg2  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ]
                                                                                                                             ] ;
                                                                                                                    sp:arg2  4320
                                                                                                                  ] ;
@@ -147,11 +192,11 @@
                                                                    sp:expression  [ a        sp:if ;
                                                                                     sp:arg1  [ a        sp:and ;
                                                                                                sp:arg1  [ a        sp:ge ;
-                                                                                                          sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                          sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                           sp:arg2  500
                                                                                                         ] ;
                                                                                                sp:arg2  [ a        sp:lt ;
-                                                                                                          sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                          sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                           sp:arg2  4000
                                                                                                         ]
                                                                                              ] ;
@@ -159,8 +204,8 @@
                                                                                                sp:arg1  [ a        sp:mul ;
                                                                                                           sp:arg1  [ a        sp:mul ;
                                                                                                                      sp:arg1  [ a        sp:mul ;
-                                                                                                                                sp:arg1  [ sp:varName  "ramcostTIME27596574823130_value"^^xsd:string ] ;
-                                                                                                                                sp:arg2  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ]
+                                                                                                                                sp:arg1  [ sp:varName  "ramcostTIME26090343338134_value"^^xsd:string ] ;
+                                                                                                                                sp:arg2  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ]
                                                                                                                               ] ;
                                                                                                                      sp:arg2  4320
                                                                                                                    ] ;
@@ -187,11 +232,11 @@
                                                                      sp:expression  [ a        sp:if ;
                                                                                       sp:arg1  [ a        sp:and ;
                                                                                                  sp:arg1  [ a        sp:ge ;
-                                                                                                            sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                            sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                             sp:arg2  4000
                                                                                                           ] ;
                                                                                                  sp:arg2  [ a        sp:lt ;
-                                                                                                            sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                            sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                             sp:arg2  10000
                                                                                                           ]
                                                                                                ] ;
@@ -199,8 +244,8 @@
                                                                                                  sp:arg1  [ a        sp:mul ;
                                                                                                             sp:arg1  [ a        sp:mul ;
                                                                                                                        sp:arg1  [ a        sp:mul ;
-                                                                                                                                  sp:arg1  [ sp:varName  "ramcostTIME27596574823130_value"^^xsd:string ] ;
-                                                                                                                                  sp:arg2  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ]
+                                                                                                                                  sp:arg1  [ sp:varName  "ramcostTIME26090343338134_value"^^xsd:string ] ;
+                                                                                                                                  sp:arg2  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ]
                                                                                                                                 ] ;
                                                                                                                        sp:arg2  4320
                                                                                                                      ] ;
@@ -226,15 +271,15 @@
                                                                    ] [ a              sp:Bind ;
                                                                        sp:expression  [ a        sp:if ;
                                                                                         sp:arg1  [ a        sp:ge ;
-                                                                                                   sp:arg1  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ] ;
+                                                                                                   sp:arg1  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ] ;
                                                                                                    sp:arg2  10000
                                                                                                  ] ;
                                                                                         sp:arg2  [ a        sp:mul ;
                                                                                                    sp:arg1  [ a        sp:mul ;
                                                                                                               sp:arg1  [ a        sp:mul ;
                                                                                                                          sp:arg1  [ a        sp:mul ;
-                                                                                                                                    sp:arg1  [ sp:varName  "ramcostTIME27596574823130_value"^^xsd:string ] ;
-                                                                                                                                    sp:arg2  [ sp:varName  "gbramTIME27596574816716_value"^^xsd:string ]
+                                                                                                                                    sp:arg1  [ sp:varName  "ramcostTIME26090343338134_value"^^xsd:string ] ;
+                                                                                                                                    sp:arg2  [ sp:varName  "gbramTIME26090343142705_value"^^xsd:string ]
                                                                                                                                   ] ;
                                                                                                                          sp:arg2  4320
                                                                                                                        ] ;
@@ -277,45 +322,65 @@
                                                                          sp:variable    [ sp:varName  "result"^^xsd:string ]
                                                                        ] )
                            ] ;
-        price:hasVariable  :ramcostTIME27596574823130 , :gbramTIME27596574816716 .
+        price:hasVariable  :ramcostTIME26090343338134 , :gbramTIME26090343142705 .
 
-:6MRecurrentSubscription_TIME27596576308303
-        a           core:Service ;
-        rdfs:label  "6MRecurrentSubscription" .
-
-:ramcostTIME27596574823130
-        a               price:Constant ;
-        rdfs:label      "ramcostTIME27596574823130" ;
-        price:hasValue  :QuantitativeValue_TIME27596714863447 .
-
-:QuantitativeValue_TIME27596738837895
+:QuantitativeValue_35
         a                        gr:QuantitativeValue ;
         gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "4.5"^^xsd:double .
+        gr:hasValue              "0.0229"^^xsd:double .
 
-:dataout-pf_TIME27596741996401
-        a                  spin:Function ;
-        rdfs:label         "dataout-pf" ;
+:ssdcostTIME26090341786247
+        a               price:Constant ;
+        rdfs:label      "ssdcostTIME26090341786247" ;
+        price:hasValue  :QuantitativeValue_30 .
+
+:pc4-staticipcost  a            price:PriceComponent ;
+        rdfs:comment            "Responsible for calculating the cost of the StaticIPs." ;
+        rdfs:label              "pc4-staticipcost" ;
+        price:hasPriceFunction  :staticip-pf .
+
+:pc2-ramcost  a                 price:PriceComponent ;
+        rdfs:comment            "Responsible for calculating the cost of the ram." ;
+        rdfs:label              "pc2-ramcost" ;
+        price:hasPriceFunction  :ram-pf .
+
+:QuantitativeValue_30
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "USD" ;
+        gr:hasValue              "0.22"^^xsd:double .
+
+:gboutcostTIME26090345224858
+        a               price:Constant ;
+        rdfs:label      "gboutcostTIME26090345224858" ;
+        price:hasValue  :QuantitativeValue_50 .
+
+:S16mSubs-O-PP  a                price:PricePlan ;
+        rdfs:comment             "PricePlan for CloudSigma's s1 6msubscription plan" ;
+        rdfs:label               "S16mSubs-O-PP" ;
+        price:hasPriceComponent  :pc5-DATAOUT , :pc4-staticipcost , :pc3-cpuspeedcost , :pc2-ramcost , :pc1-ssdcost .
+
+:staticip-pf  a            spin:Function ;
+        rdfs:label         "staticip-pf" ;
         spin:body          [ a                   sp:Select ;
                              sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
-                             sp:where            ( [ sp:object     [ sp:varName  "gboutcostTIME27596574898821_instance"^^xsd:string ] ;
+                             sp:where            ( [ sp:object     [ sp:varName  "staticipcostTIME26090344924231_instance"^^xsd:string ] ;
                                                      sp:predicate  price:hasValue ;
-                                                     sp:subject    :gboutcostTIME27596574898821
-                                                   ] [ sp:object     [ sp:varName  "gboutcostTIME27596574898821_value"^^xsd:string ] ;
+                                                     sp:subject    :staticipcostTIME26090344924231
+                                                   ] [ sp:object     [ sp:varName  "staticipcostTIME26090344924231_value"^^xsd:string ] ;
                                                        sp:predicate  gr:hasValue ;
-                                                       sp:subject    [ sp:varName  "gboutcostTIME27596574898821_instance"^^xsd:string ]
-                                                     ] [ sp:object     [ sp:varName  "ngboutTIME27596574893262_instance"^^xsd:string ] ;
+                                                       sp:subject    [ sp:varName  "staticipcostTIME26090344924231_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "nstaticipTIME26090344852389_instance"^^xsd:string ] ;
                                                          sp:predicate  price:hasValue ;
-                                                         sp:subject    :ngboutTIME27596574893262
-                                                       ] [ sp:object     [ sp:varName  "ngboutTIME27596574893262_value"^^xsd:string ] ;
+                                                         sp:subject    :nstaticipTIME26090344852389
+                                                       ] [ sp:object     [ sp:varName  "nstaticipTIME26090344852389_value"^^xsd:string ] ;
                                                            sp:predicate  gr:hasValue ;
-                                                           sp:subject    [ sp:varName  "ngboutTIME27596574893262_instance"^^xsd:string ]
+                                                           sp:subject    [ sp:varName  "nstaticipTIME26090344852389_instance"^^xsd:string ]
                                                          ] [ a              sp:Bind ;
                                                              sp:expression  [ a        sp:mul ;
                                                                               sp:arg1  [ a        sp:mul ;
                                                                                          sp:arg1  [ a        sp:mul ;
-                                                                                                    sp:arg1  [ sp:varName  "gboutcostTIME27596574898821_value"^^xsd:string ] ;
-                                                                                                    sp:arg2  [ sp:varName  "ngboutTIME27596574893262_value"^^xsd:string ]
+                                                                                                    sp:arg1  [ sp:varName  "staticipcostTIME26090344924231_value"^^xsd:string ] ;
+                                                                                                    sp:arg2  [ sp:varName  "nstaticipTIME26090344852389_value"^^xsd:string ]
                                                                                                   ] ;
                                                                                          sp:arg2  6
                                                                                        ] ;
@@ -330,48 +395,362 @@
                                                              sp:variable    [ sp:varName  "result"^^xsd:string ]
                                                            ] )
                            ] ;
-        price:hasVariable  :gboutcostTIME27596574898821 , :ngboutTIME27596574893262 .
+        price:hasVariable  :staticipcostTIME26090344924231 , :nstaticipTIME26090344852389 .
 
-:pc3-cpuspeedcost_TIME27596714947691
-        a                       price:PriceComponent ;
-        rdfs:comment            "Responsible for calculating the cost of the CPUSpeed." ;
-        rdfs:label              "pc3-cpuspeedcost" ;
-        price:hasPriceFunction  :cpuspeed-pf_TIME27596723560669 .
+:pc1-ssdcost  a                 price:PriceComponent ;
+        rdfs:comment            "Responsible for calculating the cost of the SSD hardware." ;
+        rdfs:label              "pc1-ssdcost" ;
+        price:hasPriceFunction  :ssd-pf .
 
-:S16MSubscription-Offering_TIME27596575041223
+:S16MSubscription-Offering
         a                   core:ServiceOffering ;
         rdfs:label          "S16MSubscription-Offering" ;
-        core:includes       :6MRecurrentSubscription_TIME27596576308303 ;
-        price:hasPricePlan  :S16mSubs-O-PP_TIME27596576942912 .
+        core:includes       :6MRecurrentSubscription ;
+        price:hasPricePlan  :S16mSubs-O-PP .
 
-:ssd-pf_TIME27596584867399
-        a                  spin:Function ;
-        rdfs:label         "ssd-pf" ;
+:gbdiskTIME26090334019544
+        a             price:Usage ;
+        rdfs:comment  "Number of GB that you need for the instance disk." ;
+        rdfs:label    "gbdiskTIME26090334019544" .
+
+:ramcostTIME26090343338134
+        a               price:Constant ;
+        rdfs:label      "ramcostTIME26090343338134" ;
+        price:hasValue  :QuantitativeValue_35 .
+
+:QuantitativeValue_50
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "USD" ;
+        gr:hasValue              "0.0715"^^xsd:double .
+
+:gbramTIME26090343142705
+        a             price:Usage ;
+        rdfs:comment  "Number of GB of RAM you need." ;
+        rdfs:label    "gbramTIME26090343142705" .
+
+:cpuspeedcostTIME26090344319556
+        a               price:Constant ;
+        rdfs:label      "cpuspeedcostTIME26090344319556" ;
+        price:hasValue  :QuantitativeValue_40 .
+
+:staticipcostTIME26090344924231
+        a               price:Constant ;
+        rdfs:label      "staticipcostTIME26090344924231" ;
+        price:hasValue  :QuantitativeValue_45 .
+
+:QuantitativeValue_45
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "USD" ;
+        gr:hasValue              "4.5"^^xsd:double .
+
+:pc5-DATAOUT  a                 price:PriceComponent ;
+        rdfs:comment            "Responsible for calculating the cost of the outgoing data transferral." ;
+        rdfs:label              "pc5-DATAOUT" ;
+        price:hasPriceFunction  :dataout-pf .
+
+:6MRecurrentSubscription
+        a           core:Service ;
+        rdfs:label  "6MRecurrentSubscription" .
+
+:ngboutTIME26090345157292
+        a             price:Usage ;
+        rdfs:comment  "Number of GB you expect to send out per month." ;
+        rdfs:label    "ngboutTIME26090345157292" .
+
+:cpuspeed-pf  a            spin:Function ;
+        rdfs:label         "cpuspeed-pf" ;
         spin:body          [ a                   sp:Select ;
                              sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
-                             sp:where            ( [ sp:object     [ sp:varName  "gbdiskTIME27596574220166_instance"^^xsd:string ] ;
+                             sp:where            ( [ sp:object     [ sp:varName  "cpuspeedTIME26090344104883_instance"^^xsd:string ] ;
                                                      sp:predicate  price:hasValue ;
-                                                     sp:subject    :gbdiskTIME27596574220166
-                                                   ] [ sp:object     [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                     sp:subject    :cpuspeedTIME26090344104883
+                                                   ] [ sp:object     [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
                                                        sp:predicate  gr:hasValue ;
-                                                       sp:subject    [ sp:varName  "gbdiskTIME27596574220166_instance"^^xsd:string ]
-                                                     ] [ sp:object     [ sp:varName  "ssdcostTIME27596574769676_instance"^^xsd:string ] ;
+                                                       sp:subject    [ sp:varName  "cpuspeedTIME26090344104883_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "cpuspeedcostTIME26090344319556_instance"^^xsd:string ] ;
                                                          sp:predicate  price:hasValue ;
-                                                         sp:subject    :ssdcostTIME27596574769676
-                                                       ] [ sp:object     [ sp:varName  "ssdcostTIME27596574769676_value"^^xsd:string ] ;
+                                                         sp:subject    :cpuspeedcostTIME26090344319556
+                                                       ] [ sp:object     [ sp:varName  "cpuspeedcostTIME26090344319556_value"^^xsd:string ] ;
                                                            sp:predicate  gr:hasValue ;
-                                                           sp:subject    [ sp:varName  "ssdcostTIME27596574769676_instance"^^xsd:string ]
+                                                           sp:subject    [ sp:varName  "cpuspeedcostTIME26090344319556_instance"^^xsd:string ]
                                                          ] [ a              sp:Bind ;
                                                              sp:expression  [ a        sp:if ;
                                                                               sp:arg1  [ a        sp:lt ;
-                                                                                         sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                         sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                         sp:arg2  50
+                                                                                       ] ;
+                                                                              sp:arg2  [ a        sp:mul ;
+                                                                                         sp:arg1  [ a        sp:mul ;
+                                                                                                    sp:arg1  [ a        sp:mul ;
+                                                                                                               sp:arg1  [ sp:varName  "cpuspeedcostTIME26090344319556_value"^^xsd:string ] ;
+                                                                                                               sp:arg2  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ]
+                                                                                                             ] ;
+                                                                                                    sp:arg2  4320
+                                                                                                  ] ;
+                                                                                         sp:arg2  [ a        sp:add ;
+                                                                                                    sp:arg1  1 ;
+                                                                                                    sp:arg2  [ a        sp:mul ;
+                                                                                                               sp:arg1  -1 ;
+                                                                                                               sp:arg2  0.1
+                                                                                                             ]
+                                                                                                  ]
+                                                                                       ] ;
+                                                                              sp:arg3  0
+                                                                            ] ;
+                                                             sp:variable    [ sp:varName  "result0"^^xsd:string ]
+                                                           ] [ a              sp:Bind ;
+                                                               sp:expression  [ a        sp:if ;
+                                                                                sp:arg1  [ a        sp:and ;
+                                                                                           sp:arg1  [ a        sp:ge ;
+                                                                                                      sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                      sp:arg2  50
+                                                                                                    ] ;
+                                                                                           sp:arg2  [ a        sp:lt ;
+                                                                                                      sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                      sp:arg2  100
+                                                                                                    ]
+                                                                                         ] ;
+                                                                                sp:arg2  [ a        sp:mul ;
+                                                                                           sp:arg1  [ a        sp:mul ;
+                                                                                                      sp:arg1  [ a        sp:mul ;
+                                                                                                                 sp:arg1  [ a        sp:mul ;
+                                                                                                                            sp:arg1  [ sp:varName  "cpuspeedcostTIME26090344319556_value"^^xsd:string ] ;
+                                                                                                                            sp:arg2  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ]
+                                                                                                                          ] ;
+                                                                                                                 sp:arg2  4320
+                                                                                                               ] ;
+                                                                                                      sp:arg2  [ a        sp:add ;
+                                                                                                                 sp:arg1  1 ;
+                                                                                                                 sp:arg2  [ a        sp:mul ;
+                                                                                                                            sp:arg1  -1 ;
+                                                                                                                            sp:arg2  0.075
+                                                                                                                          ]
+                                                                                                               ]
+                                                                                                    ] ;
+                                                                                           sp:arg2  [ a        sp:add ;
+                                                                                                      sp:arg1  1 ;
+                                                                                                      sp:arg2  [ a        sp:mul ;
+                                                                                                                 sp:arg1  -1 ;
+                                                                                                                 sp:arg2  0.1
+                                                                                                               ]
+                                                                                                    ]
+                                                                                         ] ;
+                                                                                sp:arg3  0
+                                                                              ] ;
+                                                               sp:variable    [ sp:varName  "result1"^^xsd:string ]
+                                                             ] [ a              sp:Bind ;
+                                                                 sp:expression  [ a        sp:if ;
+                                                                                  sp:arg1  [ a        sp:and ;
+                                                                                             sp:arg1  [ a        sp:ge ;
+                                                                                                        sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                        sp:arg2  100
+                                                                                                      ] ;
+                                                                                             sp:arg2  [ a        sp:lt ;
+                                                                                                        sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                        sp:arg2  500
+                                                                                                      ]
+                                                                                           ] ;
+                                                                                  sp:arg2  [ a        sp:mul ;
+                                                                                             sp:arg1  [ a        sp:mul ;
+                                                                                                        sp:arg1  [ a        sp:mul ;
+                                                                                                                   sp:arg1  [ a        sp:mul ;
+                                                                                                                              sp:arg1  [ sp:varName  "cpuspeedcostTIME26090344319556_value"^^xsd:string ] ;
+                                                                                                                              sp:arg2  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ]
+                                                                                                                            ] ;
+                                                                                                                   sp:arg2  4320
+                                                                                                                 ] ;
+                                                                                                        sp:arg2  [ a        sp:add ;
+                                                                                                                   sp:arg1  1 ;
+                                                                                                                   sp:arg2  [ a        sp:mul ;
+                                                                                                                              sp:arg1  -1 ;
+                                                                                                                              sp:arg2  0.125
+                                                                                                                            ]
+                                                                                                                 ]
+                                                                                                      ] ;
+                                                                                             sp:arg2  [ a        sp:add ;
+                                                                                                        sp:arg1  1 ;
+                                                                                                        sp:arg2  [ a        sp:mul ;
+                                                                                                                   sp:arg1  -1 ;
+                                                                                                                   sp:arg2  0.1
+                                                                                                                 ]
+                                                                                                      ]
+                                                                                           ] ;
+                                                                                  sp:arg3  0
+                                                                                ] ;
+                                                                 sp:variable    [ sp:varName  "result2"^^xsd:string ]
+                                                               ] [ a              sp:Bind ;
+                                                                   sp:expression  [ a        sp:if ;
+                                                                                    sp:arg1  [ a        sp:and ;
+                                                                                               sp:arg1  [ a        sp:ge ;
+                                                                                                          sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                          sp:arg2  500
+                                                                                                        ] ;
+                                                                                               sp:arg2  [ a        sp:lt ;
+                                                                                                          sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                          sp:arg2  4000
+                                                                                                        ]
+                                                                                             ] ;
+                                                                                    sp:arg2  [ a        sp:mul ;
+                                                                                               sp:arg1  [ a        sp:mul ;
+                                                                                                          sp:arg1  [ a        sp:mul ;
+                                                                                                                     sp:arg1  [ a        sp:mul ;
+                                                                                                                                sp:arg1  [ sp:varName  "cpuspeedcostTIME26090344319556_value"^^xsd:string ] ;
+                                                                                                                                sp:arg2  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ]
+                                                                                                                              ] ;
+                                                                                                                     sp:arg2  4320
+                                                                                                                   ] ;
+                                                                                                          sp:arg2  [ a        sp:add ;
+                                                                                                                     sp:arg1  1 ;
+                                                                                                                     sp:arg2  [ a        sp:mul ;
+                                                                                                                                sp:arg1  -1 ;
+                                                                                                                                sp:arg2  0.2
+                                                                                                                              ]
+                                                                                                                   ]
+                                                                                                        ] ;
+                                                                                               sp:arg2  [ a        sp:add ;
+                                                                                                          sp:arg1  1 ;
+                                                                                                          sp:arg2  [ a        sp:mul ;
+                                                                                                                     sp:arg1  -1 ;
+                                                                                                                     sp:arg2  0.1
+                                                                                                                   ]
+                                                                                                        ]
+                                                                                             ] ;
+                                                                                    sp:arg3  0
+                                                                                  ] ;
+                                                                   sp:variable    [ sp:varName  "result3"^^xsd:string ]
+                                                                 ] [ a              sp:Bind ;
+                                                                     sp:expression  [ a        sp:if ;
+                                                                                      sp:arg1  [ a        sp:and ;
+                                                                                                 sp:arg1  [ a        sp:ge ;
+                                                                                                            sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                            sp:arg2  4000
+                                                                                                          ] ;
+                                                                                                 sp:arg2  [ a        sp:lt ;
+                                                                                                            sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                            sp:arg2  10000
+                                                                                                          ]
+                                                                                               ] ;
+                                                                                      sp:arg2  [ a        sp:mul ;
+                                                                                                 sp:arg1  [ a        sp:mul ;
+                                                                                                            sp:arg1  [ a        sp:mul ;
+                                                                                                                       sp:arg1  [ a        sp:mul ;
+                                                                                                                                  sp:arg1  [ sp:varName  "cpuspeedcostTIME26090344319556_value"^^xsd:string ] ;
+                                                                                                                                  sp:arg2  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ]
+                                                                                                                                ] ;
+                                                                                                                       sp:arg2  4320
+                                                                                                                     ] ;
+                                                                                                            sp:arg2  [ a        sp:add ;
+                                                                                                                       sp:arg1  1 ;
+                                                                                                                       sp:arg2  [ a        sp:mul ;
+                                                                                                                                  sp:arg1  -1 ;
+                                                                                                                                  sp:arg2  0.3
+                                                                                                                                ]
+                                                                                                                     ]
+                                                                                                          ] ;
+                                                                                                 sp:arg2  [ a        sp:add ;
+                                                                                                            sp:arg1  1 ;
+                                                                                                            sp:arg2  [ a        sp:mul ;
+                                                                                                                       sp:arg1  -1 ;
+                                                                                                                       sp:arg2  0.1
+                                                                                                                     ]
+                                                                                                          ]
+                                                                                               ] ;
+                                                                                      sp:arg3  0
+                                                                                    ] ;
+                                                                     sp:variable    [ sp:varName  "result4"^^xsd:string ]
+                                                                   ] [ a              sp:Bind ;
+                                                                       sp:expression  [ a        sp:if ;
+                                                                                        sp:arg1  [ a        sp:ge ;
+                                                                                                   sp:arg1  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ] ;
+                                                                                                   sp:arg2  10000
+                                                                                                 ] ;
+                                                                                        sp:arg2  [ a        sp:mul ;
+                                                                                                   sp:arg1  [ a        sp:mul ;
+                                                                                                              sp:arg1  [ a        sp:mul ;
+                                                                                                                         sp:arg1  [ a        sp:mul ;
+                                                                                                                                    sp:arg1  [ sp:varName  "cpuspeedcostTIME26090344319556_value"^^xsd:string ] ;
+                                                                                                                                    sp:arg2  [ sp:varName  "cpuspeedTIME26090344104883_value"^^xsd:string ]
+                                                                                                                                  ] ;
+                                                                                                                         sp:arg2  4320
+                                                                                                                       ] ;
+                                                                                                              sp:arg2  [ a        sp:add ;
+                                                                                                                         sp:arg1  1 ;
+                                                                                                                         sp:arg2  [ a        sp:mul ;
+                                                                                                                                    sp:arg1  -1 ;
+                                                                                                                                    sp:arg2  0.425
+                                                                                                                                  ]
+                                                                                                                       ]
+                                                                                                            ] ;
+                                                                                                   sp:arg2  [ a        sp:add ;
+                                                                                                              sp:arg1  1 ;
+                                                                                                              sp:arg2  [ a        sp:mul ;
+                                                                                                                         sp:arg1  -1 ;
+                                                                                                                         sp:arg2  0.1
+                                                                                                                       ]
+                                                                                                            ]
+                                                                                                 ] ;
+                                                                                        sp:arg3  0
+                                                                                      ] ;
+                                                                       sp:variable    [ sp:varName  "result5"^^xsd:string ]
+                                                                     ] [ a              sp:Bind ;
+                                                                         sp:expression  [ a        sp:add ;
+                                                                                          sp:arg1  [ a        sp:add ;
+                                                                                                     sp:arg1  [ a        sp:add ;
+                                                                                                                sp:arg1  [ a        sp:add ;
+                                                                                                                           sp:arg1  [ a        sp:add ;
+                                                                                                                                      sp:arg1  [ sp:varName  "result5"^^xsd:string ] ;
+                                                                                                                                      sp:arg2  [ sp:varName  "result4"^^xsd:string ]
+                                                                                                                                    ] ;
+                                                                                                                           sp:arg2  [ sp:varName  "result3"^^xsd:string ]
+                                                                                                                         ] ;
+                                                                                                                sp:arg2  [ sp:varName  "result2"^^xsd:string ]
+                                                                                                              ] ;
+                                                                                                     sp:arg2  [ sp:varName  "result1"^^xsd:string ]
+                                                                                                   ] ;
+                                                                                          sp:arg2  [ sp:varName  "result0"^^xsd:string ]
+                                                                                        ] ;
+                                                                         sp:variable    [ sp:varName  "result"^^xsd:string ]
+                                                                       ] )
+                           ] ;
+        price:hasVariable  :cpuspeedcostTIME26090344319556 , :cpuspeedTIME26090344104883 .
+
+:QuantitativeValue_40
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "USD" ;
+        gr:hasValue              "0.0187"^^xsd:double .
+
+:pc3-cpuspeedcost  a            price:PriceComponent ;
+        rdfs:comment            "Responsible for calculating the cost of the CPUSpeed." ;
+        rdfs:label              "pc3-cpuspeedcost" ;
+        price:hasPriceFunction  :cpuspeed-pf .
+
+:ssd-pf  a                 spin:Function ;
+        rdfs:label         "ssd-pf" ;
+        spin:body          [ a                   sp:Select ;
+                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
+                             sp:where            ( [ sp:object     [ sp:varName  "gbdiskTIME26090334019544_instance"^^xsd:string ] ;
+                                                     sp:predicate  price:hasValue ;
+                                                     sp:subject    :gbdiskTIME26090334019544
+                                                   ] [ sp:object     [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
+                                                       sp:predicate  gr:hasValue ;
+                                                       sp:subject    [ sp:varName  "gbdiskTIME26090334019544_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "ssdcostTIME26090341786247_instance"^^xsd:string ] ;
+                                                         sp:predicate  price:hasValue ;
+                                                         sp:subject    :ssdcostTIME26090341786247
+                                                       ] [ sp:object     [ sp:varName  "ssdcostTIME26090341786247_value"^^xsd:string ] ;
+                                                           sp:predicate  gr:hasValue ;
+                                                           sp:subject    [ sp:varName  "ssdcostTIME26090341786247_instance"^^xsd:string ]
+                                                         ] [ a              sp:Bind ;
+                                                             sp:expression  [ a        sp:if ;
+                                                                              sp:arg1  [ a        sp:lt ;
+                                                                                         sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                          sp:arg2  15360
                                                                                        ] ;
                                                                               sp:arg2  [ a        sp:mul ;
                                                                                          sp:arg1  [ a        sp:mul ;
                                                                                                     sp:arg1  [ a        sp:mul ;
-                                                                                                               sp:arg1  [ sp:varName  "ssdcostTIME27596574769676_value"^^xsd:string ] ;
-                                                                                                               sp:arg2  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ]
+                                                                                                               sp:arg1  [ sp:varName  "ssdcostTIME26090341786247_value"^^xsd:string ] ;
+                                                                                                               sp:arg2  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ]
                                                                                                              ] ;
                                                                                                     sp:arg2  6
                                                                                                   ] ;
@@ -390,11 +769,11 @@
                                                                sp:expression  [ a        sp:if ;
                                                                                 sp:arg1  [ a        sp:and ;
                                                                                            sp:arg1  [ a        sp:ge ;
-                                                                                                      sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                      sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                       sp:arg2  15360
                                                                                                     ] ;
                                                                                            sp:arg2  [ a        sp:lt ;
-                                                                                                      sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                      sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                       sp:arg2  25600
                                                                                                     ]
                                                                                          ] ;
@@ -402,8 +781,8 @@
                                                                                            sp:arg1  [ a        sp:mul ;
                                                                                                       sp:arg1  [ a        sp:mul ;
                                                                                                                  sp:arg1  [ a        sp:mul ;
-                                                                                                                            sp:arg1  [ sp:varName  "ssdcostTIME27596574769676_value"^^xsd:string ] ;
-                                                                                                                            sp:arg2  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ]
+                                                                                                                            sp:arg1  [ sp:varName  "ssdcostTIME26090341786247_value"^^xsd:string ] ;
+                                                                                                                            sp:arg2  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ]
                                                                                                                           ] ;
                                                                                                                  sp:arg2  6
                                                                                                                ] ;
@@ -430,11 +809,11 @@
                                                                  sp:expression  [ a        sp:if ;
                                                                                   sp:arg1  [ a        sp:and ;
                                                                                              sp:arg1  [ a        sp:ge ;
-                                                                                                        sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                        sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                         sp:arg2  25600
                                                                                                       ] ;
                                                                                              sp:arg2  [ a        sp:lt ;
-                                                                                                        sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                        sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                         sp:arg2  51200
                                                                                                       ]
                                                                                            ] ;
@@ -442,8 +821,8 @@
                                                                                              sp:arg1  [ a        sp:mul ;
                                                                                                         sp:arg1  [ a        sp:mul ;
                                                                                                                    sp:arg1  [ a        sp:mul ;
-                                                                                                                              sp:arg1  [ sp:varName  "ssdcostTIME27596574769676_value"^^xsd:string ] ;
-                                                                                                                              sp:arg2  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ]
+                                                                                                                              sp:arg1  [ sp:varName  "ssdcostTIME26090341786247_value"^^xsd:string ] ;
+                                                                                                                              sp:arg2  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ]
                                                                                                                             ] ;
                                                                                                                    sp:arg2  6
                                                                                                                  ] ;
@@ -470,11 +849,11 @@
                                                                    sp:expression  [ a        sp:if ;
                                                                                     sp:arg1  [ a        sp:and ;
                                                                                                sp:arg1  [ a        sp:ge ;
-                                                                                                          sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                          sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                           sp:arg2  51200
                                                                                                         ] ;
                                                                                                sp:arg2  [ a        sp:lt ;
-                                                                                                          sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                          sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                           sp:arg2  256000
                                                                                                         ]
                                                                                              ] ;
@@ -482,8 +861,8 @@
                                                                                                sp:arg1  [ a        sp:mul ;
                                                                                                           sp:arg1  [ a        sp:mul ;
                                                                                                                      sp:arg1  [ a        sp:mul ;
-                                                                                                                                sp:arg1  [ sp:varName  "ssdcostTIME27596574769676_value"^^xsd:string ] ;
-                                                                                                                                sp:arg2  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ]
+                                                                                                                                sp:arg1  [ sp:varName  "ssdcostTIME26090341786247_value"^^xsd:string ] ;
+                                                                                                                                sp:arg2  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ]
                                                                                                                               ] ;
                                                                                                                      sp:arg2  6
                                                                                                                    ] ;
@@ -510,11 +889,11 @@
                                                                      sp:expression  [ a        sp:if ;
                                                                                       sp:arg1  [ a        sp:and ;
                                                                                                  sp:arg1  [ a        sp:ge ;
-                                                                                                            sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                            sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                             sp:arg2  256000
                                                                                                           ] ;
                                                                                                  sp:arg2  [ a        sp:lt ;
-                                                                                                            sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                            sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                             sp:arg2  1024000
                                                                                                           ]
                                                                                                ] ;
@@ -522,8 +901,8 @@
                                                                                                  sp:arg1  [ a        sp:mul ;
                                                                                                             sp:arg1  [ a        sp:mul ;
                                                                                                                        sp:arg1  [ a        sp:mul ;
-                                                                                                                                  sp:arg1  [ sp:varName  "ssdcostTIME27596574769676_value"^^xsd:string ] ;
-                                                                                                                                  sp:arg2  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ]
+                                                                                                                                  sp:arg1  [ sp:varName  "ssdcostTIME26090341786247_value"^^xsd:string ] ;
+                                                                                                                                  sp:arg2  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ]
                                                                                                                                 ] ;
                                                                                                                        sp:arg2  6
                                                                                                                      ] ;
@@ -549,15 +928,15 @@
                                                                    ] [ a              sp:Bind ;
                                                                        sp:expression  [ a        sp:if ;
                                                                                         sp:arg1  [ a        sp:ge ;
-                                                                                                   sp:arg1  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ] ;
+                                                                                                   sp:arg1  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ] ;
                                                                                                    sp:arg2  1024000
                                                                                                  ] ;
                                                                                         sp:arg2  [ a        sp:mul ;
                                                                                                    sp:arg1  [ a        sp:mul ;
                                                                                                               sp:arg1  [ a        sp:mul ;
                                                                                                                          sp:arg1  [ a        sp:mul ;
-                                                                                                                                    sp:arg1  [ sp:varName  "ssdcostTIME27596574769676_value"^^xsd:string ] ;
-                                                                                                                                    sp:arg2  [ sp:varName  "gbdiskTIME27596574220166_value"^^xsd:string ]
+                                                                                                                                    sp:arg1  [ sp:varName  "ssdcostTIME26090341786247_value"^^xsd:string ] ;
+                                                                                                                                    sp:arg2  [ sp:varName  "gbdiskTIME26090334019544_value"^^xsd:string ]
                                                                                                                                   ] ;
                                                                                                                          sp:arg2  6
                                                                                                                        ] ;
@@ -600,391 +979,4 @@
                                                                          sp:variable    [ sp:varName  "result"^^xsd:string ]
                                                                        ] )
                            ] ;
-        price:hasVariable  :ssdcostTIME27596574769676 , :gbdiskTIME27596574220166 .
-
-:nstaticipTIME27596574872308
-        a             price:Usage ;
-        rdfs:comment  "Number of StaticIP you need." ;
-        rdfs:label    "nstaticipTIME27596574872308" .
-
-:cpuspeedTIME27596574850926
-        a             price:Usage ;
-        rdfs:comment  "CPUSpeed you need." ;
-        rdfs:label    "cpuspeedTIME27596574850926" .
-
-:pc5-DATAOUT_TIME27596738896054
-        a                       price:PriceComponent ;
-        rdfs:comment            "Responsible for calculating the cost of the outgoing data transferral." ;
-        rdfs:label              "pc5-DATAOUT" ;
-        price:hasPriceFunction  :dataout-pf_TIME27596741996401 .
-
-:pc2-ramcost_TIME27596697706769
-        a                       price:PriceComponent ;
-        rdfs:comment            "Responsible for calculating the cost of the ram." ;
-        rdfs:label              "pc2-ramcost" ;
-        price:hasPriceFunction  :ram-pf_TIME27596702977786 .
-
-:QuantitativeValue_TIME27596733642569
-        a                        gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "0.0187"^^xsd:double .
-
-:gbdiskTIME27596574220166
-        a             price:Usage ;
-        rdfs:comment  "Number of GB that you need for the instance disk." ;
-        rdfs:label    "gbdiskTIME27596574220166" .
-
-:gboutcostTIME27596574898821
-        a               price:Constant ;
-        rdfs:label      "gboutcostTIME27596574898821" ;
-        price:hasValue  :QuantitativeValue_TIME27596743506376 .
-
-:pc1-ssdcost_TIME27596577028011
-        a                       price:PriceComponent ;
-        rdfs:comment            "Responsible for calculating the cost of the SSD hardware." ;
-        rdfs:label              "pc1-ssdcost" ;
-        price:hasPriceFunction  :ssd-pf_TIME27596584867399 .
-
-:ngboutTIME27596574893262
-        a             price:Usage ;
-        rdfs:comment  "Number of GB you expect to send out per month." ;
-        rdfs:label    "ngboutTIME27596574893262" .
-
-:staticip-pf_TIME27596736952457
-        a                  spin:Function ;
-        rdfs:label         "staticip-pf" ;
-        spin:body          [ a                   sp:Select ;
-                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
-                             sp:where            ( [ sp:object     [ sp:varName  "staticipcostTIME27596574877867_instance"^^xsd:string ] ;
-                                                     sp:predicate  price:hasValue ;
-                                                     sp:subject    :staticipcostTIME27596574877867
-                                                   ] [ sp:object     [ sp:varName  "staticipcostTIME27596574877867_value"^^xsd:string ] ;
-                                                       sp:predicate  gr:hasValue ;
-                                                       sp:subject    [ sp:varName  "staticipcostTIME27596574877867_instance"^^xsd:string ]
-                                                     ] [ sp:object     [ sp:varName  "nstaticipTIME27596574872308_instance"^^xsd:string ] ;
-                                                         sp:predicate  price:hasValue ;
-                                                         sp:subject    :nstaticipTIME27596574872308
-                                                       ] [ sp:object     [ sp:varName  "nstaticipTIME27596574872308_value"^^xsd:string ] ;
-                                                           sp:predicate  gr:hasValue ;
-                                                           sp:subject    [ sp:varName  "nstaticipTIME27596574872308_instance"^^xsd:string ]
-                                                         ] [ a              sp:Bind ;
-                                                             sp:expression  [ a        sp:mul ;
-                                                                              sp:arg1  [ a        sp:mul ;
-                                                                                         sp:arg1  [ a        sp:mul ;
-                                                                                                    sp:arg1  [ sp:varName  "staticipcostTIME27596574877867_value"^^xsd:string ] ;
-                                                                                                    sp:arg2  [ sp:varName  "nstaticipTIME27596574872308_value"^^xsd:string ]
-                                                                                                  ] ;
-                                                                                         sp:arg2  6
-                                                                                       ] ;
-                                                                              sp:arg2  [ a        sp:add ;
-                                                                                         sp:arg1  1 ;
-                                                                                         sp:arg2  [ a        sp:mul ;
-                                                                                                    sp:arg1  -1 ;
-                                                                                                    sp:arg2  0.1
-                                                                                                  ]
-                                                                                       ]
-                                                                            ] ;
-                                                             sp:variable    [ sp:varName  "result"^^xsd:string ]
-                                                           ] )
-                           ] ;
-        price:hasVariable  :staticipcostTIME27596574877867 , :nstaticipTIME27596574872308 .
-
-:pc4-staticipcost_TIME27596733707997
-        a                       price:PriceComponent ;
-        rdfs:comment            "Responsible for calculating the cost of the StaticIPs." ;
-        rdfs:label              "pc4-staticipcost" ;
-        price:hasPriceFunction  :staticip-pf_TIME27596736952457 .
-
-:QuantitativeValue_TIME27596714863447
-        a                        gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "0.0229"^^xsd:double .
-
-:QuantitativeValue_TIME27596691612129
-        a                        gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "0.22"^^xsd:double .
-
-:S16mSubs-O-PP_TIME27596576942912
-        a                        price:PricePlan ;
-        rdfs:comment             "PricePlan for CloudSigma's s1 6msubscription plan" ;
-        rdfs:label               "S16mSubs-O-PP" ;
-        price:hasPriceComponent  :pc5-DATAOUT_TIME27596738896054 , :pc4-staticipcost_TIME27596733707997 , :pc3-cpuspeedcost_TIME27596714947691 , :pc2-ramcost_TIME27596697706769 , :pc1-ssdcost_TIME27596577028011 .
-
-:staticipcostTIME27596574877867
-        a               price:Constant ;
-        rdfs:label      "staticipcostTIME27596574877867" ;
-        price:hasValue  :QuantitativeValue_TIME27596738837895 .
-
-:ssdcostTIME27596574769676
-        a               price:Constant ;
-        rdfs:label      "ssdcostTIME27596574769676" ;
-        price:hasValue  :QuantitativeValue_TIME27596691612129 .
-
-:cpuspeedcostTIME27596574856486
-        a               price:Constant ;
-        rdfs:label      "cpuspeedcostTIME27596574856486" ;
-        price:hasValue  :QuantitativeValue_TIME27596733642569 .
-
-:gbramTIME27596574816716
-        a             price:Usage ;
-        rdfs:comment  "Number of GB of RAM you need." ;
-        rdfs:label    "gbramTIME27596574816716" .
-
-:cpuspeed-pf_TIME27596723560669
-        a                  spin:Function ;
-        rdfs:label         "cpuspeed-pf" ;
-        spin:body          [ a                   sp:Select ;
-                             sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
-                             sp:where            ( [ sp:object     [ sp:varName  "cpuspeedTIME27596574850926_instance"^^xsd:string ] ;
-                                                     sp:predicate  price:hasValue ;
-                                                     sp:subject    :cpuspeedTIME27596574850926
-                                                   ] [ sp:object     [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                       sp:predicate  gr:hasValue ;
-                                                       sp:subject    [ sp:varName  "cpuspeedTIME27596574850926_instance"^^xsd:string ]
-                                                     ] [ sp:object     [ sp:varName  "cpuspeedcostTIME27596574856486_instance"^^xsd:string ] ;
-                                                         sp:predicate  price:hasValue ;
-                                                         sp:subject    :cpuspeedcostTIME27596574856486
-                                                       ] [ sp:object     [ sp:varName  "cpuspeedcostTIME27596574856486_value"^^xsd:string ] ;
-                                                           sp:predicate  gr:hasValue ;
-                                                           sp:subject    [ sp:varName  "cpuspeedcostTIME27596574856486_instance"^^xsd:string ]
-                                                         ] [ a              sp:Bind ;
-                                                             sp:expression  [ a        sp:if ;
-                                                                              sp:arg1  [ a        sp:lt ;
-                                                                                         sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                         sp:arg2  50
-                                                                                       ] ;
-                                                                              sp:arg2  [ a        sp:mul ;
-                                                                                         sp:arg1  [ a        sp:mul ;
-                                                                                                    sp:arg1  [ a        sp:mul ;
-                                                                                                               sp:arg1  [ sp:varName  "cpuspeedcostTIME27596574856486_value"^^xsd:string ] ;
-                                                                                                               sp:arg2  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ]
-                                                                                                             ] ;
-                                                                                                    sp:arg2  4320
-                                                                                                  ] ;
-                                                                                         sp:arg2  [ a        sp:add ;
-                                                                                                    sp:arg1  1 ;
-                                                                                                    sp:arg2  [ a        sp:mul ;
-                                                                                                               sp:arg1  -1 ;
-                                                                                                               sp:arg2  0.1
-                                                                                                             ]
-                                                                                                  ]
-                                                                                       ] ;
-                                                                              sp:arg3  0
-                                                                            ] ;
-                                                             sp:variable    [ sp:varName  "result0"^^xsd:string ]
-                                                           ] [ a              sp:Bind ;
-                                                               sp:expression  [ a        sp:if ;
-                                                                                sp:arg1  [ a        sp:and ;
-                                                                                           sp:arg1  [ a        sp:ge ;
-                                                                                                      sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                      sp:arg2  50
-                                                                                                    ] ;
-                                                                                           sp:arg2  [ a        sp:lt ;
-                                                                                                      sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                      sp:arg2  100
-                                                                                                    ]
-                                                                                         ] ;
-                                                                                sp:arg2  [ a        sp:mul ;
-                                                                                           sp:arg1  [ a        sp:mul ;
-                                                                                                      sp:arg1  [ a        sp:mul ;
-                                                                                                                 sp:arg1  [ a        sp:mul ;
-                                                                                                                            sp:arg1  [ sp:varName  "cpuspeedcostTIME27596574856486_value"^^xsd:string ] ;
-                                                                                                                            sp:arg2  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ]
-                                                                                                                          ] ;
-                                                                                                                 sp:arg2  4320
-                                                                                                               ] ;
-                                                                                                      sp:arg2  [ a        sp:add ;
-                                                                                                                 sp:arg1  1 ;
-                                                                                                                 sp:arg2  [ a        sp:mul ;
-                                                                                                                            sp:arg1  -1 ;
-                                                                                                                            sp:arg2  0.075
-                                                                                                                          ]
-                                                                                                               ]
-                                                                                                    ] ;
-                                                                                           sp:arg2  [ a        sp:add ;
-                                                                                                      sp:arg1  1 ;
-                                                                                                      sp:arg2  [ a        sp:mul ;
-                                                                                                                 sp:arg1  -1 ;
-                                                                                                                 sp:arg2  0.1
-                                                                                                               ]
-                                                                                                    ]
-                                                                                         ] ;
-                                                                                sp:arg3  0
-                                                                              ] ;
-                                                               sp:variable    [ sp:varName  "result1"^^xsd:string ]
-                                                             ] [ a              sp:Bind ;
-                                                                 sp:expression  [ a        sp:if ;
-                                                                                  sp:arg1  [ a        sp:and ;
-                                                                                             sp:arg1  [ a        sp:ge ;
-                                                                                                        sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                        sp:arg2  100
-                                                                                                      ] ;
-                                                                                             sp:arg2  [ a        sp:lt ;
-                                                                                                        sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                        sp:arg2  500
-                                                                                                      ]
-                                                                                           ] ;
-                                                                                  sp:arg2  [ a        sp:mul ;
-                                                                                             sp:arg1  [ a        sp:mul ;
-                                                                                                        sp:arg1  [ a        sp:mul ;
-                                                                                                                   sp:arg1  [ a        sp:mul ;
-                                                                                                                              sp:arg1  [ sp:varName  "cpuspeedcostTIME27596574856486_value"^^xsd:string ] ;
-                                                                                                                              sp:arg2  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ]
-                                                                                                                            ] ;
-                                                                                                                   sp:arg2  4320
-                                                                                                                 ] ;
-                                                                                                        sp:arg2  [ a        sp:add ;
-                                                                                                                   sp:arg1  1 ;
-                                                                                                                   sp:arg2  [ a        sp:mul ;
-                                                                                                                              sp:arg1  -1 ;
-                                                                                                                              sp:arg2  0.125
-                                                                                                                            ]
-                                                                                                                 ]
-                                                                                                      ] ;
-                                                                                             sp:arg2  [ a        sp:add ;
-                                                                                                        sp:arg1  1 ;
-                                                                                                        sp:arg2  [ a        sp:mul ;
-                                                                                                                   sp:arg1  -1 ;
-                                                                                                                   sp:arg2  0.1
-                                                                                                                 ]
-                                                                                                      ]
-                                                                                           ] ;
-                                                                                  sp:arg3  0
-                                                                                ] ;
-                                                                 sp:variable    [ sp:varName  "result2"^^xsd:string ]
-                                                               ] [ a              sp:Bind ;
-                                                                   sp:expression  [ a        sp:if ;
-                                                                                    sp:arg1  [ a        sp:and ;
-                                                                                               sp:arg1  [ a        sp:ge ;
-                                                                                                          sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                          sp:arg2  500
-                                                                                                        ] ;
-                                                                                               sp:arg2  [ a        sp:lt ;
-                                                                                                          sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                          sp:arg2  4000
-                                                                                                        ]
-                                                                                             ] ;
-                                                                                    sp:arg2  [ a        sp:mul ;
-                                                                                               sp:arg1  [ a        sp:mul ;
-                                                                                                          sp:arg1  [ a        sp:mul ;
-                                                                                                                     sp:arg1  [ a        sp:mul ;
-                                                                                                                                sp:arg1  [ sp:varName  "cpuspeedcostTIME27596574856486_value"^^xsd:string ] ;
-                                                                                                                                sp:arg2  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ]
-                                                                                                                              ] ;
-                                                                                                                     sp:arg2  4320
-                                                                                                                   ] ;
-                                                                                                          sp:arg2  [ a        sp:add ;
-                                                                                                                     sp:arg1  1 ;
-                                                                                                                     sp:arg2  [ a        sp:mul ;
-                                                                                                                                sp:arg1  -1 ;
-                                                                                                                                sp:arg2  0.2
-                                                                                                                              ]
-                                                                                                                   ]
-                                                                                                        ] ;
-                                                                                               sp:arg2  [ a        sp:add ;
-                                                                                                          sp:arg1  1 ;
-                                                                                                          sp:arg2  [ a        sp:mul ;
-                                                                                                                     sp:arg1  -1 ;
-                                                                                                                     sp:arg2  0.1
-                                                                                                                   ]
-                                                                                                        ]
-                                                                                             ] ;
-                                                                                    sp:arg3  0
-                                                                                  ] ;
-                                                                   sp:variable    [ sp:varName  "result3"^^xsd:string ]
-                                                                 ] [ a              sp:Bind ;
-                                                                     sp:expression  [ a        sp:if ;
-                                                                                      sp:arg1  [ a        sp:and ;
-                                                                                                 sp:arg1  [ a        sp:ge ;
-                                                                                                            sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                            sp:arg2  4000
-                                                                                                          ] ;
-                                                                                                 sp:arg2  [ a        sp:lt ;
-                                                                                                            sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                            sp:arg2  10000
-                                                                                                          ]
-                                                                                               ] ;
-                                                                                      sp:arg2  [ a        sp:mul ;
-                                                                                                 sp:arg1  [ a        sp:mul ;
-                                                                                                            sp:arg1  [ a        sp:mul ;
-                                                                                                                       sp:arg1  [ a        sp:mul ;
-                                                                                                                                  sp:arg1  [ sp:varName  "cpuspeedcostTIME27596574856486_value"^^xsd:string ] ;
-                                                                                                                                  sp:arg2  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ]
-                                                                                                                                ] ;
-                                                                                                                       sp:arg2  4320
-                                                                                                                     ] ;
-                                                                                                            sp:arg2  [ a        sp:add ;
-                                                                                                                       sp:arg1  1 ;
-                                                                                                                       sp:arg2  [ a        sp:mul ;
-                                                                                                                                  sp:arg1  -1 ;
-                                                                                                                                  sp:arg2  0.3
-                                                                                                                                ]
-                                                                                                                     ]
-                                                                                                          ] ;
-                                                                                                 sp:arg2  [ a        sp:add ;
-                                                                                                            sp:arg1  1 ;
-                                                                                                            sp:arg2  [ a        sp:mul ;
-                                                                                                                       sp:arg1  -1 ;
-                                                                                                                       sp:arg2  0.1
-                                                                                                                     ]
-                                                                                                          ]
-                                                                                               ] ;
-                                                                                      sp:arg3  0
-                                                                                    ] ;
-                                                                     sp:variable    [ sp:varName  "result4"^^xsd:string ]
-                                                                   ] [ a              sp:Bind ;
-                                                                       sp:expression  [ a        sp:if ;
-                                                                                        sp:arg1  [ a        sp:ge ;
-                                                                                                   sp:arg1  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ] ;
-                                                                                                   sp:arg2  10000
-                                                                                                 ] ;
-                                                                                        sp:arg2  [ a        sp:mul ;
-                                                                                                   sp:arg1  [ a        sp:mul ;
-                                                                                                              sp:arg1  [ a        sp:mul ;
-                                                                                                                         sp:arg1  [ a        sp:mul ;
-                                                                                                                                    sp:arg1  [ sp:varName  "cpuspeedcostTIME27596574856486_value"^^xsd:string ] ;
-                                                                                                                                    sp:arg2  [ sp:varName  "cpuspeedTIME27596574850926_value"^^xsd:string ]
-                                                                                                                                  ] ;
-                                                                                                                         sp:arg2  4320
-                                                                                                                       ] ;
-                                                                                                              sp:arg2  [ a        sp:add ;
-                                                                                                                         sp:arg1  1 ;
-                                                                                                                         sp:arg2  [ a        sp:mul ;
-                                                                                                                                    sp:arg1  -1 ;
-                                                                                                                                    sp:arg2  0.425
-                                                                                                                                  ]
-                                                                                                                       ]
-                                                                                                            ] ;
-                                                                                                   sp:arg2  [ a        sp:add ;
-                                                                                                              sp:arg1  1 ;
-                                                                                                              sp:arg2  [ a        sp:mul ;
-                                                                                                                         sp:arg1  -1 ;
-                                                                                                                         sp:arg2  0.1
-                                                                                                                       ]
-                                                                                                            ]
-                                                                                                 ] ;
-                                                                                        sp:arg3  0
-                                                                                      ] ;
-                                                                       sp:variable    [ sp:varName  "result5"^^xsd:string ]
-                                                                     ] [ a              sp:Bind ;
-                                                                         sp:expression  [ a        sp:add ;
-                                                                                          sp:arg1  [ a        sp:add ;
-                                                                                                     sp:arg1  [ a        sp:add ;
-                                                                                                                sp:arg1  [ a        sp:add ;
-                                                                                                                           sp:arg1  [ a        sp:add ;
-                                                                                                                                      sp:arg1  [ sp:varName  "result5"^^xsd:string ] ;
-                                                                                                                                      sp:arg2  [ sp:varName  "result4"^^xsd:string ]
-                                                                                                                                    ] ;
-                                                                                                                           sp:arg2  [ sp:varName  "result3"^^xsd:string ]
-                                                                                                                         ] ;
-                                                                                                                sp:arg2  [ sp:varName  "result2"^^xsd:string ]
-                                                                                                              ] ;
-                                                                                                     sp:arg2  [ sp:varName  "result1"^^xsd:string ]
-                                                                                                   ] ;
-                                                                                          sp:arg2  [ sp:varName  "result0"^^xsd:string ]
-                                                                                        ] ;
-                                                                         sp:variable    [ sp:varName  "result"^^xsd:string ]
-                                                                       ] )
-                           ] ;
-        price:hasVariable  :cpuspeedcostTIME27596574856486 , :cpuspeedTIME27596574850926 .
+        price:hasVariable  :ssdcostTIME26090341786247 , :gbdiskTIME26090334019544 .

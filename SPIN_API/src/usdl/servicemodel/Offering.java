@@ -2,6 +2,7 @@ package usdl.servicemodel;
 
 import java.util.ArrayList;
 
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -25,7 +26,6 @@ public class Offering {
 	private String comment = null;
 	private String localName = null;
 	private String namespace = null;
-	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.OFFERING.getResourceType();
 	
 	public Offering(){
@@ -46,7 +46,7 @@ public class Offering {
 		super();
 
 		if(source.getName() != null)
-			this.setName(source.getName());
+			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -167,20 +167,19 @@ public class Offering {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
+	@SuppressWarnings("null")
 	public void writeToModel(Model model, String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource offering = null;
 		
-		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
-			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-				this.namespace = baseURI;
-			else //use the default baseURI
-				this.namespace = PricingAPIProperties.defaultBaseURI;
-		}
+		if (baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURIargument is valid
+			this.namespace = baseURI;
+		else if(this.getNamespace() == null) 		// use the default baseURI
+			this.namespace = PricingAPIProperties.defaultBaseURI;
 		
 		if(this.localName != null){
 			LinkedUSDLValidator validator = new LinkedUSDLValidator();
-			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName),Prefixes.USDL_CORE.getName()+":"+this.resourceType);
 			offering = model.createResource(this.namespace + this.localName);
 			
 			offering.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLCoreEnum.OFFERING.getResource(model));//rdf type

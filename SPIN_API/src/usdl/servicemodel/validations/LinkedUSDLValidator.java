@@ -2,19 +2,13 @@ package usdl.servicemodel.validations;
 
 import usdl.constants.properties.PricingAPIProperties;
 import usdl.queries.ReaderQueries;
-import usdl.servicemodel.Offering;
-import usdl.servicemodel.Usage;
-
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-
 import exceptions.ErrorEnum;
 import exceptions.InvalidLinkedUSDLModelException;
 
@@ -48,27 +42,17 @@ public class LinkedUSDLValidator {
 		}
 	}
 	
-	public void checkDuplicateURI(Model model, Resource resource) throws InvalidLinkedUSDLModelException{
+	public void checkDuplicateURI(Model model, Resource resource,String classType) throws InvalidLinkedUSDLModelException{
 		
-		String variableName = "offering";
-		
-		String queryString = ReaderQueries.readAllUsageVariables(variableName);
-		System.out.println(queryString);
-		//System.out.println(queryString);
+
+		String queryString = ReaderQueries.findResource(resource.getNameSpace()+resource.getLocalName(), classType);
+//		System.out.println(queryString);
 		Query query = QueryFactory.create(queryString);
         QueryExecution exec = QueryExecutionFactory.create(query, model);
 		
 		ResultSet results = exec.execSelect();
-
-		while(results.hasNext()){
-			QuerySolution row = results.next();
-			Usage pv = Usage.readFromModel(row.getResource(variableName), model);
-			System.out.println(pv.getName() + " ----- " + pv.getLocalName());
-		}
 		
-		
-		
-		if(model.containsResource(resource))
+		if(results.hasNext())
 			throw new InvalidLinkedUSDLModelException(ErrorEnum.DUPLICATE_RESOURCE, new String[]{resource.getLocalName(), resource.getNameSpace()});
 	}
 	

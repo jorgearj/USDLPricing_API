@@ -11,6 +11,7 @@ import org.topbraid.spin.model.Select;
 import org.topbraid.spin.system.SPINModuleRegistry;
 import org.topbraid.spin.vocabulary.SPIN;
 
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -44,7 +45,6 @@ public class PriceFunction {
 	private String comment = null;
 	private String localName = null;
 	private String namespace = null;
-	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.PRICEFUNCTION.getResourceType();
 	
 	
@@ -71,7 +71,7 @@ public class PriceFunction {
 		constraints = new ArrayList<Constraint>();
 
 		if(source.getName() != null)
-			this.setName(source.getName());
+			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -221,20 +221,20 @@ public class PriceFunction {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
+	@SuppressWarnings("null")
 	protected void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		
 		Function func = null;
-		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
-			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-				this.namespace = baseURI;
-			else //use the default baseURI
-				this.namespace = PricingAPIProperties.defaultBaseURI;
-		}
+		String oldURI = this.namespace;
+		if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+			this.namespace = baseURI;
+		else if(this.getNamespace() == null)  //use the default baseURI
+			this.namespace = PricingAPIProperties.defaultBaseURI;
 		
 		if(this.localName != null){
 			LinkedUSDLValidator validator = new LinkedUSDLValidator();
-			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName),Prefixes.SPIN.getName()+":"+this.resourceType);
 			func = model.createResource(this.namespace + this.localName, SPIN.Function).as(Function.class);
 			
 			if(this.name != null){
@@ -256,7 +256,7 @@ public class PriceFunction {
 //					this.setSPARQLFunction(this.getSPARQLFunction().replaceAll(this.getOldBaseURI(), this.namespace));
 //				}
 				if(this.getNamespace() != null)
-					this.setSPARQLFunction(this.getSPARQLFunction().replaceAll(this.getNamespace(), baseURI+"#"));
+					this.setSPARQLFunction(this.getSPARQLFunction().replaceAll(oldURI, baseURI));
 				
 				com.hp.hpl.jena.query.Query arqQuery = ARQFactory.get().createQuery(model,this.getSPARQLFunction());
 				Query spinQuery = new ARQ2SPIN(model).createQuery(arqQuery, null);
@@ -312,9 +312,9 @@ public class PriceFunction {
 				StmtIterator iter = resource.listProperties(USDLPriceEnum.HAS_VARIABLE.getProperty(model));
 				while (iter.hasNext()) {//while there's price variables  left
 					Resource variable = iter.next().getObject().asResource();
-					if(variable.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals(USDLPriceEnum.USAGE.getResource(model).getURI()))
+					if(variable.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals(USDLPriceEnum.USAGE.getResource(model).getLocalName()))
 						pf.addUsageVariable(Usage.readFromModel(variable,model));
-					else if(variable.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals(USDLPriceEnum.PROVIDER.getResource(model).getURI()))
+					else if(variable.getProperty(RDFEnum.RDF_TYPE.getProperty(model)).getResource().getLocalName().equals(USDLPriceEnum.PROVIDER.getResource(model).getLocalName()))
 						pf.addProviderVariable(Provider.readFromModel(variable,model));
 				}
 			}

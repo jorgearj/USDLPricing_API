@@ -13,7 +13,9 @@ public class QueryUtils {
 				" PREFIX "+Prefixes.RDFS.getName()+": <"+Prefixes.RDFS.getPrefix()+"> " + 
 				" PREFIX "+Prefixes.GR.getName()+": <"+Prefixes.GR.getPrefix()+"> " +
 				" PREFIX "+Prefixes.XSD.getName()+": <"+Prefixes.XSD.getPrefix()+"> "+
-				" PREFIX "+Prefixes.CLOUD.getName()+": <"+ Prefixes.CLOUD.getPrefix()+">";
+				" PREFIX "+Prefixes.CLOUD.getName()+": <"+ Prefixes.CLOUD.getPrefix()+">" +
+				" PREFIX "+Prefixes.SPIN.getName()+": <"+ Prefixes.SPIN.getPrefix()+">";
+
 		
 		return query;		
 	}

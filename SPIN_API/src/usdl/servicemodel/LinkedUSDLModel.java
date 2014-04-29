@@ -81,10 +81,7 @@ public class LinkedUSDLModel {
 
 	public void setBaseURI(String baseURI) {
 		this.baseURI = baseURI + "#";
-		if(prefixes.get("") != null)
-			prefixes.put(this.baseURI, "");
-		else
-			prefixes.put(this.baseURI, "");
+		prefixes.put(this.baseURI, "");
 	}
 
 	protected Map<String, String> getPrefixes() {
@@ -146,6 +143,7 @@ public class LinkedUSDLModel {
 		return offeringsList;
 	}
 	
+	@SuppressWarnings("unused")
 	private List<Service> readAllServices(Model model){
 		List<Service> servicesList = new ArrayList<>();
 		
@@ -173,15 +171,14 @@ public class LinkedUSDLModel {
 	private Model setModelPrefixes(Model model){
 		
 		
-		if(this.prefixes.get("") == null)
-			this.prefixes.put(this.baseURI, "");
+		this.prefixes.put(this.baseURI, "");
 		
 		Iterator<Entry<String, String>> it = this.prefixes.entrySet().iterator();
 		while (it.hasNext()) {
 	        Map.Entry<String, String> pairs = (Map.Entry<String, String>)it.next();
 	        String key = (String)pairs.getKey(); //URI
 	        String value = (String)pairs.getValue(); //preffix name
-	        System.out.println(key + " -> " +value);
+//	        System.out.println(key + " -> " +value);
 	        model.setNsPrefix(value, key);
 	    }
 		return model;

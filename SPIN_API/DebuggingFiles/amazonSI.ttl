@@ -1,136 +1,139 @@
-@prefix dc:    <http://purl.org/dc/elements/1.1/> .
 @prefix legal: <http://www.linked-usdl.org/ns/usdl-legal#> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
 @prefix :      <http://PricingAPIAmazonSpotInstance.com#> .
 @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix sp:    <http://spinrdf.org/sp#> .
 @prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix cloudtaxonomy: <http://rdfs.genssiz.org/CloudTaxonomy#> .
+@prefix org:   <http://www.w3.org/ns/org#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix pf:    <http://jena.hpl.hp.com/ARQ/property#> .
 @prefix price: <http://www.linked-usdl.org/ns/usdl-price#> .
 @prefix spl:   <http://spinrdf.org/spl#> .
+@prefix usdk:  <http://www.linked-usdl.org/ns/usdl#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
-@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix spin:  <http://spinrdf.org/spin#> .
-@prefix cloud: <http://rdfs.genssiz.org/CloudTaxonomy#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix core:  <http://www.linked-usdl.org/ns/usdl-core#> .
 @prefix gr:    <http://purl.org/goodrelations/v1#> .
 @prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
 
-:NumberOfHoursTIME166247485531001
-        a             price:Usage ;
-        rdfs:comment  "The number of hours that you'll be using the instance." ;
-        rdfs:label    "NumberOfHoursTIME166247485531001" .
-
-:QuantitativeValue_TIME166247495803627
-        a                        cloud:DiskSize , gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "B86" ;
-        gr:hasValue              "80.0"^^xsd:double .
-
-:price40TIME166247486911404
-        a               price:Constant ;
-        rdfs:label      "price40TIME166247486911404" ;
-        price:hasValue  :QuantitativeValue_TIME166247891100422 .
-
-:QuantitativeValue_TIME166247495984943
-        a            cloud:DataINExternal , gr:QuantitativeValue ;
-        gr:hasValue  1.7976931348623157E308 .
-
-:CostPerHourTIME166247486838706
-        a               price:Constant ;
-        rdfs:label      "CostPerHourTIME166247486838706" ;
-        price:hasValue  :QuantitativeValue_TIME166247802562639 .
-
-:QualitativeValue_TIME166247496473301
-        a           cloud:Arch64bit , gr:QualitativeValue ;
-        rdfs:label  "64Bits" .
-
-:price350TIME166247486933213
-        a               price:Constant ;
-        rdfs:label      "price350TIME166247486933213" ;
-        price:hasValue  :QuantitativeValue_TIME166247891253515 .
-
-:HourlyPC-PPm3.xlarge-SI_TIME166247497659558
-        a                       price:PriceComponent ;
-        rdfs:label              "HourlyPC-PPm3.xlarge-SI" ;
-        price:hasPriceFunction  :m3.xlarge-SI-hourly_cost_TIME166247517222961 .
-
-:QuantitativeValue_TIME166247495644974
-        a                        cloud:MemorySize , gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "B86" ;
+:QuantitativeValue_4  a          cloudtaxonomy:MemorySize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
         gr:hasValue              "15.0"^^xsd:double .
 
-:QuantitativeValue_TIME166247891179534
+:QuantitativeValue_24
         a                        gr:QuantitativeValue ;
         gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "0.07"^^xsd:double .
+        gr:hasValue              "0.12"^^xsd:double .
 
-:QuantitativeValue_TIME166247496247511
-        a                        cloud:DataOUTExternal , gr:QuantitativeValue ;
-        gr:hasMaxValue           "358400.0"^^xsd:double ;
-        gr:hasUnitOfMeasurement  "E34" .
+:price350TIME23031353542783
+        a               price:Constant ;
+        rdfs:label      "price350TIME23031353542783" ;
+        price:hasValue  :QuantitativeValue_30 .
 
-:QuantitativeValue_TIME166247891253515
+:DataCostPC-PPm3.xlarge-OD
+        a                       price:PriceComponent ;
+        rdfs:label              "DataCostPC-PPm3.xlarge-OD" ;
+        price:hasPriceFunction  :m3.xlarge-SI-data_transferrals_cost .
+
+:QuantitativeValue_11
+        a            cloudtaxonomy:DataINExternal , gr:QuantitativeValue ;
+        gr:hasValue  1.7976931348623157E308 .
+
+:price10TIME23031353161760
+        a               price:Constant ;
+        rdfs:label      "price10TIME23031353161760" ;
+        price:hasValue  :QuantitativeValue_24 .
+
+:QualitativeValue_6  a  cloudtaxonomy:StorageType , gr:QuantitativeValue ;
+        rdfs:label  "SSD" .
+
+:QuantitativeValue_2  a  cloudtaxonomy:CPUCores , gr:QuantitativeValue ;
+        gr:hasValue  "4.0"^^xsd:double .
+
+:price100TIME23031353377288
+        a               price:Constant ;
+        rdfs:label      "price100TIME23031353377288" ;
+        price:hasValue  :QuantitativeValue_28 .
+
+:QuantitativeValue_30
         a                        gr:QuantitativeValue ;
         gr:hasUnitOfMeasurement  "USD" ;
         gr:hasValue              "0.05"^^xsd:double .
 
-:price10TIME166247486898575
-        a               price:Constant ;
-        rdfs:label      "price10TIME166247486898575" ;
-        price:hasValue  :QuantitativeValue_TIME166247890966145 .
+:QualitativeValue_1  a  cloudtaxonomy:Arch64bit , gr:QuantitativeValue ;
+        rdfs:label  "64Bits" .
 
-:QualitativeValue_TIME166247497036496
-        a           cloud:Unix , gr:QualitativeValue ;
+:QualitativeValue_9  a  cloudtaxonomy:Unix , gr:QuantitativeValue ;
         rdfs:label  "Linux" .
 
-:QualitativeValue_TIME166247496771790
-        a           cloud:StorageType , gr:QualitativeValue ;
-        rdfs:label  "SSD" .
+:m3.xlarge-SI-generalCurrentGen
+        a           core:Service ;
+        rdfs:label  "m3.xlarge-SI-generalCurrentGen" ;
+        gr:qualitativeProductOrServiceProperty
+                :QualitativeValue_1 , :QualitativeValue_9 , :QualitativeValue_6 , :QualitativeValue_7 ;
+        gr:quantitativeProductOrServiceProperty
+                :QuantitativeValue_3 , :QuantitativeValue_13 , :QuantitativeValue_12 , :QuantitativeValue_2 , :QuantitativeValue_5 , :QuantitativeValue_11 , :QuantitativeValue_4 .
 
-:QuantitativeValue_TIME166247495437144
-        a                        cloud:CPUSpeed , gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "ECU" ;
-        gr:hasValue              "13.0"^^xsd:double .
+:QuantitativeValue_5  a          cloudtaxonomy:DiskSize , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "E34" ;
+        gr:hasValue              "80.0"^^xsd:double .
 
-:m3.xlarge-SI-data_transferrals_cost_TIME166247822846605
+:QuantitativeValue_12
+        a            cloudtaxonomy:DataINInternal , gr:QuantitativeValue ;
+        gr:hasValue  1.7976931348623157E308 .
+
+:QuantitativeValue_20
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "USD" ;
+        gr:hasValue              "0.0575"^^xsd:double .
+
+:QuantitativeValue_28
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "USD" ;
+        gr:hasValue              "0.07"^^xsd:double .
+
+:m3.xlarge-SI-data_transferrals_cost
         a                  spin:Function ;
         rdfs:label         "m3.xlarge-SI-data_transferrals_cost" ;
         spin:body          [ a                   sp:Select ;
                              sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
-                             sp:where            ( [ sp:object     [ sp:varName  "gboutTIME166247486947325_instance"^^xsd:string ] ;
+                             sp:where            ( [ sp:object     [ sp:varName  "gboutTIME23031353646270_instance"^^xsd:string ] ;
                                                      sp:predicate  price:hasValue ;
-                                                     sp:subject    :gboutTIME166247486947325
-                                                   ] [ sp:object     [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                     sp:subject    :gboutTIME23031353646270
+                                                   ] [ sp:object     [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                        sp:predicate  gr:hasValue ;
-                                                       sp:subject    [ sp:varName  "gboutTIME166247486947325_instance"^^xsd:string ]
-                                                     ] [ sp:object     [ sp:varName  "price10TIME166247486898575_instance"^^xsd:string ] ;
+                                                       sp:subject    [ sp:varName  "gboutTIME23031353646270_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "price10TIME23031353161760_instance"^^xsd:string ] ;
                                                          sp:predicate  price:hasValue ;
-                                                         sp:subject    :price10TIME166247486898575
-                                                       ] [ sp:object     [ sp:varName  "price10TIME166247486898575_value"^^xsd:string ] ;
+                                                         sp:subject    :price10TIME23031353161760
+                                                       ] [ sp:object     [ sp:varName  "price10TIME23031353161760_value"^^xsd:string ] ;
                                                            sp:predicate  gr:hasValue ;
-                                                           sp:subject    [ sp:varName  "price10TIME166247486898575_instance"^^xsd:string ]
-                                                         ] [ sp:object     [ sp:varName  "price40TIME166247486911404_instance"^^xsd:string ] ;
+                                                           sp:subject    [ sp:varName  "price10TIME23031353161760_instance"^^xsd:string ]
+                                                         ] [ sp:object     [ sp:varName  "price40TIME23031353266531_instance"^^xsd:string ] ;
                                                              sp:predicate  price:hasValue ;
-                                                             sp:subject    :price40TIME166247486911404
-                                                           ] [ sp:object     [ sp:varName  "price40TIME166247486911404_value"^^xsd:string ] ;
+                                                             sp:subject    :price40TIME23031353266531
+                                                           ] [ sp:object     [ sp:varName  "price40TIME23031353266531_value"^^xsd:string ] ;
                                                                sp:predicate  gr:hasValue ;
-                                                               sp:subject    [ sp:varName  "price40TIME166247486911404_instance"^^xsd:string ]
-                                                             ] [ sp:object     [ sp:varName  "price100TIME166247486922095_instance"^^xsd:string ] ;
+                                                               sp:subject    [ sp:varName  "price40TIME23031353266531_instance"^^xsd:string ]
+                                                             ] [ sp:object     [ sp:varName  "price100TIME23031353377288_instance"^^xsd:string ] ;
                                                                  sp:predicate  price:hasValue ;
-                                                                 sp:subject    :price100TIME166247486922095
-                                                               ] [ sp:object     [ sp:varName  "price100TIME166247486922095_value"^^xsd:string ] ;
+                                                                 sp:subject    :price100TIME23031353377288
+                                                               ] [ sp:object     [ sp:varName  "price100TIME23031353377288_value"^^xsd:string ] ;
                                                                    sp:predicate  gr:hasValue ;
-                                                                   sp:subject    [ sp:varName  "price100TIME166247486922095_instance"^^xsd:string ]
-                                                                 ] [ sp:object     [ sp:varName  "price350TIME166247486933213_instance"^^xsd:string ] ;
+                                                                   sp:subject    [ sp:varName  "price100TIME23031353377288_instance"^^xsd:string ]
+                                                                 ] [ sp:object     [ sp:varName  "price350TIME23031353542783_instance"^^xsd:string ] ;
                                                                      sp:predicate  price:hasValue ;
-                                                                     sp:subject    :price350TIME166247486933213
-                                                                   ] [ sp:object     [ sp:varName  "price350TIME166247486933213_value"^^xsd:string ] ;
+                                                                     sp:subject    :price350TIME23031353542783
+                                                                   ] [ sp:object     [ sp:varName  "price350TIME23031353542783_value"^^xsd:string ] ;
                                                                        sp:predicate  gr:hasValue ;
-                                                                       sp:subject    [ sp:varName  "price350TIME166247486933213_instance"^^xsd:string ]
+                                                                       sp:subject    [ sp:varName  "price350TIME23031353542783_instance"^^xsd:string ]
                                                                      ] [ a              sp:Bind ;
                                                                          sp:expression  [ a        sp:if ;
                                                                                           sp:arg1  [ a        sp:le ;
-                                                                                                     sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                     sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                      sp:arg2  1
                                                                                                    ] ;
                                                                                           sp:arg2  [ a        sp:mul ;
@@ -144,11 +147,11 @@
                                                                            sp:expression  [ a        sp:if ;
                                                                                             sp:arg1  [ a        sp:and ;
                                                                                                        sp:arg1  [ a        sp:gt ;
-                                                                                                                  sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                  sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                   sp:arg2  1
                                                                                                                 ] ;
                                                                                                        sp:arg2  [ a        sp:le ;
-                                                                                                                  sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                  sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                   sp:arg2  [ a        sp:mul ;
                                                                                                                              sp:arg1  10 ;
                                                                                                                              sp:arg2  1024
@@ -162,13 +165,13 @@
                                                                                                                 ] ;
                                                                                                        sp:arg2  [ a        sp:mul ;
                                                                                                                   sp:arg1  [ a        sp:add ;
-                                                                                                                             sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                             sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                              sp:arg2  [ a        sp:mul ;
                                                                                                                                         sp:arg1  -1 ;
                                                                                                                                         sp:arg2  1
                                                                                                                                       ]
                                                                                                                            ] ;
-                                                                                                                  sp:arg2  [ sp:varName  "price10TIME166247486898575_value"^^xsd:string ]
+                                                                                                                  sp:arg2  [ sp:varName  "price10TIME23031353161760_value"^^xsd:string ]
                                                                                                                 ]
                                                                                                      ] ;
                                                                                             sp:arg3  0
@@ -178,14 +181,14 @@
                                                                              sp:expression  [ a        sp:if ;
                                                                                               sp:arg1  [ a        sp:and ;
                                                                                                          sp:arg1  [ a        sp:gt ;
-                                                                                                                    sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                    sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                     sp:arg2  [ a        sp:mul ;
                                                                                                                                sp:arg1  10 ;
                                                                                                                                sp:arg2  1024
                                                                                                                              ]
                                                                                                                   ] ;
                                                                                                          sp:arg2  [ a        sp:le ;
-                                                                                                                    sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                    sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                     sp:arg2  [ a        sp:mul ;
                                                                                                                                sp:arg1  40 ;
                                                                                                                                sp:arg2  1024
@@ -203,13 +206,13 @@
                                                                                                                                           sp:arg1  10 ;
                                                                                                                                           sp:arg2  1024
                                                                                                                                         ] ;
-                                                                                                                               sp:arg2  [ sp:varName  "price10TIME166247486898575_value"^^xsd:string ]
+                                                                                                                               sp:arg2  [ sp:varName  "price10TIME23031353161760_value"^^xsd:string ]
                                                                                                                              ]
                                                                                                                   ] ;
                                                                                                          sp:arg2  [ a        sp:mul ;
                                                                                                                     sp:arg1  [ a        sp:add ;
                                                                                                                                sp:arg1  [ a        sp:add ;
-                                                                                                                                          sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                                          sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                                           sp:arg2  [ a        sp:mul ;
                                                                                                                                                      sp:arg1  -1 ;
                                                                                                                                                      sp:arg2  [ a        sp:mul ;
@@ -223,7 +226,7 @@
                                                                                                                                           sp:arg2  1
                                                                                                                                         ]
                                                                                                                              ] ;
-                                                                                                                    sp:arg2  [ sp:varName  "price40TIME166247486911404_value"^^xsd:string ]
+                                                                                                                    sp:arg2  [ sp:varName  "price40TIME23031353266531_value"^^xsd:string ]
                                                                                                                   ]
                                                                                                        ] ;
                                                                                               sp:arg3  0
@@ -233,14 +236,14 @@
                                                                                sp:expression  [ a        sp:if ;
                                                                                                 sp:arg1  [ a        sp:and ;
                                                                                                            sp:arg1  [ a        sp:ge ;
-                                                                                                                      sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                      sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                       sp:arg2  [ a        sp:mul ;
                                                                                                                                  sp:arg1  40 ;
                                                                                                                                  sp:arg2  1024
                                                                                                                                ]
                                                                                                                     ] ;
                                                                                                            sp:arg2  [ a        sp:lt ;
-                                                                                                                      sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                      sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                       sp:arg2  [ a        sp:mul ;
                                                                                                                                  sp:arg1  100 ;
                                                                                                                                  sp:arg2  1024
@@ -259,7 +262,7 @@
                                                                                                                                                        sp:arg1  10 ;
                                                                                                                                                        sp:arg2  1024
                                                                                                                                                      ] ;
-                                                                                                                                            sp:arg2  [ sp:varName  "price10TIME166247486898575_value"^^xsd:string ]
+                                                                                                                                            sp:arg2  [ sp:varName  "price10TIME23031353161760_value"^^xsd:string ]
                                                                                                                                           ]
                                                                                                                                ] ;
                                                                                                                       sp:arg2  [ a        sp:mul ;
@@ -267,14 +270,14 @@
                                                                                                                                             sp:arg1  40 ;
                                                                                                                                             sp:arg2  1024
                                                                                                                                           ] ;
-                                                                                                                                 sp:arg2  [ sp:varName  "price40TIME166247486911404_value"^^xsd:string ]
+                                                                                                                                 sp:arg2  [ sp:varName  "price40TIME23031353266531_value"^^xsd:string ]
                                                                                                                                ]
                                                                                                                     ] ;
                                                                                                            sp:arg2  [ a        sp:mul ;
                                                                                                                       sp:arg1  [ a        sp:add ;
                                                                                                                                  sp:arg1  [ a        sp:add ;
                                                                                                                                             sp:arg1  [ a        sp:add ;
-                                                                                                                                                       sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                                                       sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                                                        sp:arg2  [ a        sp:mul ;
                                                                                                                                                                   sp:arg1  -1 ;
                                                                                                                                                                   sp:arg2  1
@@ -296,7 +299,7 @@
                                                                                                                                                      ]
                                                                                                                                           ]
                                                                                                                                ] ;
-                                                                                                                      sp:arg2  [ sp:varName  "price100TIME166247486922095_value"^^xsd:string ]
+                                                                                                                      sp:arg2  [ sp:varName  "price100TIME23031353377288_value"^^xsd:string ]
                                                                                                                     ]
                                                                                                          ] ;
                                                                                                 sp:arg3  0
@@ -306,14 +309,14 @@
                                                                                  sp:expression  [ a        sp:if ;
                                                                                                   sp:arg1  [ a        sp:and ;
                                                                                                              sp:arg1  [ a        sp:ge ;
-                                                                                                                        sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                        sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                         sp:arg2  [ a        sp:mul ;
                                                                                                                                    sp:arg1  100 ;
                                                                                                                                    sp:arg2  1024
                                                                                                                                  ]
                                                                                                                       ] ;
                                                                                                              sp:arg2  [ a        sp:lt ;
-                                                                                                                        sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                        sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                         sp:arg2  [ a        sp:mul ;
                                                                                                                                    sp:arg1  350 ;
                                                                                                                                    sp:arg2  1024
@@ -333,7 +336,7 @@
                                                                                                                                                                     sp:arg1  10 ;
                                                                                                                                                                     sp:arg2  1024
                                                                                                                                                                   ] ;
-                                                                                                                                                         sp:arg2  [ sp:varName  "price10TIME166247486898575_value"^^xsd:string ]
+                                                                                                                                                         sp:arg2  [ sp:varName  "price10TIME23031353161760_value"^^xsd:string ]
                                                                                                                                                        ]
                                                                                                                                             ] ;
                                                                                                                                    sp:arg2  [ a        sp:mul ;
@@ -341,7 +344,7 @@
                                                                                                                                                          sp:arg1  40 ;
                                                                                                                                                          sp:arg2  1024
                                                                                                                                                        ] ;
-                                                                                                                                              sp:arg2  [ sp:varName  "price40TIME166247486911404_value"^^xsd:string ]
+                                                                                                                                              sp:arg2  [ sp:varName  "price40TIME23031353266531_value"^^xsd:string ]
                                                                                                                                             ]
                                                                                                                                  ] ;
                                                                                                                         sp:arg2  [ a        sp:mul ;
@@ -349,7 +352,7 @@
                                                                                                                                               sp:arg1  100 ;
                                                                                                                                               sp:arg2  1024
                                                                                                                                             ] ;
-                                                                                                                                   sp:arg2  [ sp:varName  "price100TIME166247486922095_value"^^xsd:string ]
+                                                                                                                                   sp:arg2  [ sp:varName  "price100TIME23031353377288_value"^^xsd:string ]
                                                                                                                                  ]
                                                                                                                       ] ;
                                                                                                              sp:arg2  [ a        sp:mul ;
@@ -357,7 +360,7 @@
                                                                                                                                    sp:arg1  [ a        sp:add ;
                                                                                                                                               sp:arg1  [ a        sp:add ;
                                                                                                                                                          sp:arg1  [ a        sp:add ;
-                                                                                                                                                                    sp:arg1  [ sp:varName  "gboutTIME166247486947325_value"^^xsd:string ] ;
+                                                                                                                                                                    sp:arg1  [ sp:varName  "gboutTIME23031353646270_value"^^xsd:string ] ;
                                                                                                                                                                     sp:arg2  [ a        sp:mul ;
                                                                                                                                                                                sp:arg1  -1 ;
                                                                                                                                                                                sp:arg2  1
@@ -387,7 +390,7 @@
                                                                                                                                                        ]
                                                                                                                                             ]
                                                                                                                                  ] ;
-                                                                                                                        sp:arg2  [ sp:varName  "price350TIME166247486933213_value"^^xsd:string ]
+                                                                                                                        sp:arg2  [ sp:varName  "price350TIME23031353542783_value"^^xsd:string ]
                                                                                                                       ]
                                                                                                            ] ;
                                                                                                   sp:arg3  0
@@ -410,93 +413,85 @@
                                                                                    sp:variable    [ sp:varName  "result"^^xsd:string ]
                                                                                  ] )
                            ] ;
-        price:hasVariable  :price350TIME166247486933213 , :price100TIME166247486922095 , :price40TIME166247486911404 , :price10TIME166247486898575 , :gboutTIME166247486947325 .
+        price:hasVariable  :price350TIME23031353542783 , :price100TIME23031353377288 , :price40TIME23031353266531 , :price10TIME23031353161760 , :gboutTIME23031353646270 .
 
-:m3.xlarge-SI_Offering_TIME166247487442953
-        a                   core:ServiceOffering ;
-        rdfs:label          "m3.xlarge-SI_Offering" ;
-        core:includes       :m3.xlarge-SI-generalCurrentGen_TIME166247491165080 ;
-        price:hasPricePlan  :PricePlan-m3.xlarge-SI_TIME166247497318306 .
-
-:price100TIME166247486922095
+:CostPerHourTIME23031352885508
         a               price:Constant ;
-        rdfs:label      "price100TIME166247486922095" ;
-        price:hasValue  :QuantitativeValue_TIME166247891179534 .
+        rdfs:label      "CostPerHourTIME23031352885508" ;
+        price:hasValue  :QuantitativeValue_20 .
 
-:QualitativeValue_TIME166247496883830
-        a             cloud:Monitoring , gr:QualitativeValue ;
+:QualitativeValue_7  a  cloudtaxonomy:Monitoring , gr:QuantitativeValue ;
         rdfs:comment  "As métricas de monitoramento básico (com frequência de cinco minutos) para instâncias do Amazon EC2 são gratuitas, assim como todas as métricas para os volumes do Amazon EBS, Elastic Load Balancers e as instâncias do banco de dados do Amazon RDS." ;
         rdfs:label    "Basic" .
 
-:QuantitativeValue_TIME166247802562639
-        a                        gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "0.0575"^^xsd:double .
+:QuantitativeValue_3  a          cloudtaxonomy:CPUSpeed , gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "ECU" ;
+        gr:hasValue              "13.0"^^xsd:double .
 
-:QuantitativeValue_TIME166247890966145
-        a                        gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "0.12"^^xsd:double .
+:price40TIME23031353266531
+        a               price:Constant ;
+        rdfs:label      "price40TIME23031353266531" ;
+        price:hasValue  :QuantitativeValue_26 .
 
-:m3.xlarge-SI-generalCurrentGen_TIME166247491165080
-        a           core:Service ;
-        rdfs:label  "m3.xlarge-SI-generalCurrentGen" ;
-        gr:qualitativeProductOrServiceProperty
-                :QualitativeValue_TIME166247497036496 , :QualitativeValue_TIME166247496883830 , :QualitativeValue_TIME166247496771790 , :QualitativeValue_TIME166247496473301 ;
-        gr:quantitativeProductOrServiceProperty
-                :QuantitativeValue_TIME166247495803627 , :QuantitativeValue_TIME166247495437144 , :QuantitativeValue_TIME166247495984943 , :QuantitativeValue_TIME166247496247511 , :QuantitativeValue_TIME166247496123069 , :QuantitativeValue_TIME166247492938906 , :QuantitativeValue_TIME166247495644974 .
-
-:QuantitativeValue_TIME166247492938906
-        a            cloud:CPUCores , gr:QuantitativeValue ;
-        gr:hasValue  "4.0"^^xsd:double .
-
-:DataCostPC-PPm3.xlarge-OD_TIME166247802793134
-        a                       price:PriceComponent ;
-        rdfs:label              "DataCostPC-PPm3.xlarge-OD" ;
-        price:hasPriceFunction  :m3.xlarge-SI-data_transferrals_cost_TIME166247822846605 .
-
-:PricePlan-m3.xlarge-SI_TIME166247497318306
-        a                        price:PricePlan ;
-        rdfs:label               "PricePlan-m3.xlarge-SI" ;
-        price:hasPriceComponent  :DataCostPC-PPm3.xlarge-OD_TIME166247802793134 , :HourlyPC-PPm3.xlarge-SI_TIME166247497659558 .
-
-:QuantitativeValue_TIME166247891100422
-        a                        gr:QuantitativeValue ;
-        gr:hasUnitOfMeasurement  "USD" ;
-        gr:hasValue              "0.09"^^xsd:double .
-
-:gboutTIME166247486947325
+:gboutTIME23031353646270
         a             price:Usage ;
         rdfs:comment  "Total GB of data that you expect to send out from Amazon EC2 to the internet." ;
-        rdfs:label    "gboutTIME166247486947325" .
+        rdfs:label    "gboutTIME23031353646270" .
 
-:m3.xlarge-SI-hourly_cost_TIME166247517222961
+:m3.xlarge-SI-hourly_cost
         a                  spin:Function ;
         rdfs:label         "m3.xlarge-SI-hourly_cost" ;
         spin:body          [ a                   sp:Select ;
                              sp:resultVariables  ( [ sp:varName  "result"^^xsd:string ] ) ;
-                             sp:where            ( [ sp:object     [ sp:varName  "CostPerHourTIME166247486838706_instance"^^xsd:string ] ;
+                             sp:where            ( [ sp:object     [ sp:varName  "CostPerHourTIME23031352885508_instance"^^xsd:string ] ;
                                                      sp:predicate  price:hasValue ;
-                                                     sp:subject    :CostPerHourTIME166247486838706
-                                                   ] [ sp:object     [ sp:varName  "CostPerHourTIME166247486838706_value"^^xsd:string ] ;
+                                                     sp:subject    :CostPerHourTIME23031352885508
+                                                   ] [ sp:object     [ sp:varName  "CostPerHourTIME23031352885508_value"^^xsd:string ] ;
                                                        sp:predicate  gr:hasValue ;
-                                                       sp:subject    [ sp:varName  "CostPerHourTIME166247486838706_instance"^^xsd:string ]
-                                                     ] [ sp:object     [ sp:varName  "NumberOfHoursTIME166247485531001_instance"^^xsd:string ] ;
+                                                       sp:subject    [ sp:varName  "CostPerHourTIME23031352885508_instance"^^xsd:string ]
+                                                     ] [ sp:object     [ sp:varName  "NumberOfHoursTIME23031350930362_instance"^^xsd:string ] ;
                                                          sp:predicate  price:hasValue ;
-                                                         sp:subject    :NumberOfHoursTIME166247485531001
-                                                       ] [ sp:object     [ sp:varName  "NumberOfHoursTIME166247485531001_value"^^xsd:string ] ;
+                                                         sp:subject    :NumberOfHoursTIME23031350930362
+                                                       ] [ sp:object     [ sp:varName  "NumberOfHoursTIME23031350930362_value"^^xsd:string ] ;
                                                            sp:predicate  gr:hasValue ;
-                                                           sp:subject    [ sp:varName  "NumberOfHoursTIME166247485531001_instance"^^xsd:string ]
+                                                           sp:subject    [ sp:varName  "NumberOfHoursTIME23031350930362_instance"^^xsd:string ]
                                                          ] [ a              sp:Bind ;
                                                              sp:expression  [ a        sp:mul ;
-                                                                              sp:arg1  [ sp:varName  "CostPerHourTIME166247486838706_value"^^xsd:string ] ;
-                                                                              sp:arg2  [ sp:varName  "NumberOfHoursTIME166247485531001_value"^^xsd:string ]
+                                                                              sp:arg1  [ sp:varName  "CostPerHourTIME23031352885508_value"^^xsd:string ] ;
+                                                                              sp:arg2  [ sp:varName  "NumberOfHoursTIME23031350930362_value"^^xsd:string ]
                                                                             ] ;
                                                              sp:variable    [ sp:varName  "result"^^xsd:string ]
                                                            ] )
                            ] ;
-        price:hasVariable  :CostPerHourTIME166247486838706 , :NumberOfHoursTIME166247485531001 .
+        price:hasVariable  :CostPerHourTIME23031352885508 , :NumberOfHoursTIME23031350930362 .
 
-:QuantitativeValue_TIME166247496123069
-        a            cloud:DataINInternal , gr:QuantitativeValue ;
-        gr:hasValue  1.7976931348623157E308 .
+:QuantitativeValue_26
+        a                        gr:QuantitativeValue ;
+        gr:hasUnitOfMeasurement  "USD" ;
+        gr:hasValue              "0.09"^^xsd:double .
+
+:NumberOfHoursTIME23031350930362
+        a             price:Usage ;
+        rdfs:comment  "The number of hours that you'll be using the instance." ;
+        rdfs:label    "NumberOfHoursTIME23031350930362" .
+
+:HourlyPC-PPm3.xlarge-SI
+        a                       price:PriceComponent ;
+        rdfs:label              "HourlyPC-PPm3.xlarge-SI" ;
+        price:hasPriceFunction  :m3.xlarge-SI-hourly_cost .
+
+:QuantitativeValue_13
+        a                        cloudtaxonomy:DataOUTExternal , gr:QuantitativeValue ;
+        gr:hasMaxValue           "358400.0"^^xsd:double ;
+        gr:hasUnitOfMeasurement  "E34" .
+
+:PricePlan-m3.xlarge-SI
+        a                        price:PricePlan ;
+        rdfs:label               "PricePlan-m3.xlarge-SI" ;
+        price:hasPriceComponent  :DataCostPC-PPm3.xlarge-OD , :HourlyPC-PPm3.xlarge-SI .
+
+:m3.xlarge-SI_Offering
+        a                   core:ServiceOffering ;
+        rdfs:label          "m3.xlarge-SI Offering" ;
+        core:includes       :m3.xlarge-SI-generalCurrentGen ;
+        price:hasPricePlan  :PricePlan-m3.xlarge-SI .

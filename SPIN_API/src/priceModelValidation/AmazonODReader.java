@@ -2,11 +2,15 @@
 
 package priceModelValidation;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
+import com.hp.hpl.jena.rdf.model.Model;
 
 import usdl.servicemodel.LinkedUSDLModel;
 import usdl.servicemodel.LinkedUSDLModelFactory;
@@ -16,9 +20,6 @@ import usdl.servicemodel.PriceFunction;
 import usdl.servicemodel.PricePlan;
 import usdl.servicemodel.QuantitativeValue;
 import usdl.servicemodel.Usage;
-
-import com.hp.hpl.jena.rdf.model.Model;
-
 import exceptions.InvalidLinkedUSDLModelException;
 import exceptions.ReadModelException;
 
@@ -76,14 +77,14 @@ public class AmazonODReader {
 			jmodel.setBaseURI("http://PricingAPIAmazonODInstance.com");
 			Model instance = jmodel.WriteToModel();//after we've done our changes in the jmodels, we transform them into a new Semantic model
 			//write model to file
-			/*File outputFile = new File("your_directory/amazonRIInstance.ttl");
+			File outputFile = new File("./amazonODInstance.ttl");
 			if (!outputFile.exists()) {
 	        	outputFile.createNewFile();        	 
 	        }
 
 			FileOutputStream out = new FileOutputStream(outputFile);
 			instance.write(out, "Turtle");
-			out.close();*/
+			out.close();
 			
 			//after applying the changes to the jmodels and transforming them to a semantic web representation, we can calculate the prices of every offerings.
 			for(Offering off : myOfferings)

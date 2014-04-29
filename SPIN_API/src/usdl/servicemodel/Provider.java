@@ -2,6 +2,7 @@ package usdl.servicemodel;
 
 
 import usdl.constants.enums.GREnum;
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -45,7 +46,7 @@ public class Provider extends PriceVariable {
 		super();
 		// TODO Auto-generated constructor stub
 		if(source.getName() != null)
-			this.setName(source.getName());
+			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -75,21 +76,21 @@ public class Provider extends PriceVariable {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
+	@SuppressWarnings("null")
 	public void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		
 		// Initialize system functions and templates
 		Resource var = null;
 		
-		if(this.getNamespace() == null){ //no namespace defined for this resource, we need to define one
-			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-				this.setNamespace(baseURI);
-			else //use the default baseURI
-				this.setNamespace(PricingAPIProperties.defaultBaseURI);
-		}
+		if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+			this.setNamespace(baseURI);
+		else if(this.getNamespace() == null) //use the default baseURI
+			this.setNamespace(PricingAPIProperties.defaultBaseURI);
+
 		if(this.getLocalName() != null){
 			LinkedUSDLValidator validator = new LinkedUSDLValidator();
-			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.getNamespace() + this.getLocalName()));
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.getNamespace() + this.getLocalName()),Prefixes.USDL_PRICE.getName()+":"+this.resourceType);
 			var = model.createResource(this.getNamespace() + this.getLocalName());
 			
 			var.addProperty(RDFEnum.RDF_TYPE.getProperty(model), USDLPriceEnum.PROVIDER.getResource(model));
@@ -163,6 +164,7 @@ public class Provider extends PriceVariable {
 		return var;
 	}
 	
+	@SuppressWarnings("unused")
 	protected void validate() throws InvalidLinkedUSDLModelException{
 		boolean hasOneService = false;
 		

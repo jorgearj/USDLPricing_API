@@ -4,17 +4,17 @@ import usdl.constants.properties.PricingAPIProperties;
 
 public enum ResourceNameEnum {
 	
-	OFFERING("Service Offering"),
+	OFFERING("ServiceOffering"),
 	SERVICE("Service"),
-	PRICEPLAN("Price Plan"),
-	PRICECOMPONENT("Price Component"),
-	PRICEFUNCTION("Price Function"),
-	PRICESPEC("Price Specification"),
-	QUANTVALUE("Quantitative Value"),
-	QUALVALUE("Qualitative Value"),
-	CLOUDPROVIDER("Business Entity"),
-	USAGE("Usage Variable"),
-	PROVIDER("Provider Variable");
+	PRICEPLAN("PricePlan"),
+	PRICECOMPONENT("PriceComponent"),
+	PRICEFUNCTION("Function"),
+	PRICESPEC("PriceSpecification"),
+	QUANTVALUE("QuantitativeValue"),
+	QUALVALUE("QualitativeValue"),
+	CLOUDPROVIDER("BusinessEntity"),
+	USAGE("Usage"),
+	PROVIDER("Constant");
 	
 	private String name;
 	

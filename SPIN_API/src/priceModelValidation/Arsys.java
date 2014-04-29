@@ -165,10 +165,10 @@ public class Arsys {
 		//since there's another 4 possible OS system, means that the created server actually gives birth to 5 possible offerings instead of one:
 		
 		//s1 includes  CentOS
-		Service s2 = s1;//s2 includes Red Hat Enterprise Linux 6
+		Service s2 = new Service(s1);//s2 includes Red Hat Enterprise Linux 6
 		ArrayList<QuantitativeValue> s2QuantFeat = (ArrayList<QuantitativeValue>) s1QuantFeat.clone();//container for the Quantitative Features
 		ArrayList<QualitativeValue> s2QualFeat = (ArrayList<QualitativeValue>) s1QualFeat.clone();//container for the Qualitative Features
-		Service s3 = s1;//s3 includes Windows Server R2 2008 Web Ed.
+		Service s3 =new Service( s1);//s3 includes Windows Server R2 2008 Web Ed.
 		ArrayList<QuantitativeValue> s3QuantFeat = (ArrayList<QuantitativeValue>) s1QuantFeat.clone();//container for the Quantitative Features
 		ArrayList<QualitativeValue> s3QualFeat = (ArrayList<QualitativeValue>) s1QualFeat.clone();//container for the Qualitative Features
 		//every new service is the same as the s1 but with the difference that each possesses a different OS

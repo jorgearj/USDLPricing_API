@@ -5,6 +5,7 @@ import java.util.List;
 
 import usdl.constants.enums.FOAFEnum;
 import usdl.constants.enums.GREnum;
+import usdl.constants.enums.Prefixes;
 import usdl.constants.enums.RDFEnum;
 import usdl.constants.enums.RDFSEnum;
 import usdl.constants.enums.ResourceNameEnum;
@@ -26,7 +27,6 @@ public class CloudProvider {
 	private List<Service> providedServices;
 	private String localName = null;
 	private String namespace = null;
-	@SuppressWarnings("unused")
 	private final String resourceType = ResourceNameEnum.OFFERING.getResourceType();
 
 	
@@ -48,7 +48,7 @@ public class CloudProvider {
 		super();
 
 		if(source.getName() != null)
-			this.setName(source.getName());
+			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -171,20 +171,21 @@ public class CloudProvider {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
+	@SuppressWarnings("null")
 	protected void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException{
 		
 		Resource provider = null;
 		
-		if(this.namespace == null){ //no namespace defined for this resource, we need to define one
-			if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-				this.namespace = baseURI;
-			else //use the default baseURI
-				this.namespace = PricingAPIProperties.defaultBaseURI;
-		}
+
+		if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
+			this.namespace = baseURI;
+		else if(this.getNamespace() == null)  //use the default baseURI
+			this.namespace = PricingAPIProperties.defaultBaseURI;
+
 		
 		if(this.localName != null){
 			LinkedUSDLValidator validator = new LinkedUSDLValidator();
-			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName));
+			validator.checkDuplicateURI(model, ResourceFactory.createResource(this.namespace + this.localName),Prefixes.GR.getName()+":"+this.resourceType);
 			provider = model.createResource(this.namespace + this.localName);
 			if(this.name != null){
 				provider.addProperty(FOAFEnum.NAME.getProperty(model),model.createLiteral(this.name));
