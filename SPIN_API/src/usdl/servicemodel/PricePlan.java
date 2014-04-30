@@ -59,7 +59,7 @@ public class PricePlan {
 		priceComponents = new ArrayList<PriceComponent>();
 
 		if(source.getName() != null)
-			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
+			this.setName(source.getName() +"_" + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -156,7 +156,7 @@ public class PricePlan {
 	 * @return  A PriceSpec instance that contains the price value of the Price Plan.
 	 */
 	//TODO: review the calculation process
-	public Double calculatePrice(Model model)
+	public double calculatePrice(Model model)
 	{
 		//sum each of the price components price value
 		String finalprice = "";
@@ -172,7 +172,7 @@ public class PricePlan {
 					QueryExecution qexecc = ARQFactory.get().createQueryExecution(q, model);	
 					
 					ResultSet rsc = qexecc.execSelect();
-					//System.out.println(q.toString());
+//					System.out.println(q.toString());
 					function_price = rsc.nextSolution().getLiteral("result").getDouble();// final result is store in the ?result variable of the query
 				}
 			}

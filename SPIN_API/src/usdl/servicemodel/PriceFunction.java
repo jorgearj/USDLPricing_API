@@ -71,7 +71,7 @@ public class PriceFunction {
 		constraints = new ArrayList<Constraint>();
 
 		if(source.getName() != null)
-			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
+			this.setName(source.getName() +"_" + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -221,14 +221,14 @@ public class PriceFunction {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	@SuppressWarnings("null")
 	protected void writeToModel(Resource owner,Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
-		
+		SPINModuleRegistry.get().init();
 		Function func = null;
 		String oldURI = this.namespace;
-		if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-			this.namespace = baseURI;
+		if(baseURI != null ) // the baseURI argument is valid
+			if(!baseURI.equalsIgnoreCase(""))
+				this.namespace = baseURI;
 		else if(this.getNamespace() == null)  //use the default baseURI
 			this.namespace = PricingAPIProperties.defaultBaseURI;
 		
@@ -288,6 +288,7 @@ public class PriceFunction {
 	 */
 	protected static PriceFunction readFromModel(Resource resource,Model model)
 	{
+		SPINModuleRegistry.get().init();
 		PriceFunction pf = null;
 		if(resource.getLocalName() != null && resource.getNameSpace() != null){
 			pf = new PriceFunction(resource.getLocalName().replaceAll("_", " "), resource.getNameSpace());

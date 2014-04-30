@@ -49,7 +49,7 @@ public class QuantitativeValue extends Value {
 	public QuantitativeValue(QuantitativeValue source)  {//copy constructor
 
 		if(source.getName() != null)
-			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
+			this.setName(source.getName() + "_" +PricingAPIProperties.resourceCounter++);
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
 

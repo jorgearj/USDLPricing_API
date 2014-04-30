@@ -45,7 +45,7 @@ public class Usage extends PriceVariable {
 	public Usage(Usage source) {//copy constructor
 		super();
 		if(source.getName() != null)
-			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
+			this.setName(source.getName() +"_" + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());

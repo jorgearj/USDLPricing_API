@@ -46,7 +46,7 @@ public class Provider extends PriceVariable {
 		super();
 		// TODO Auto-generated constructor stub
 		if(source.getName() != null)
-			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
+			this.setName(source.getName() +"_" + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());

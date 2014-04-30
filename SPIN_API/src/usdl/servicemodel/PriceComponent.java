@@ -57,7 +57,7 @@ public class PriceComponent {
 		metrics = new ArrayList<QuantitativeValue>();
 
 		if(source.getName() != null)
-			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
+			this.setName(source.getName() +"_" + PricingAPIProperties.resourceCounter++);
 
 		if(source.getComment() != null)
 			this.setComment(source.getComment());
@@ -208,14 +208,15 @@ public class PriceComponent {
 	 * @param   model    Model to where the object is to be written on.
 	 * @throws InvalidLinkedUSDLModelException 
 	 */
-	@SuppressWarnings("null")
+
 	protected void writeToModel(Resource owner, Model model,String baseURI) throws InvalidLinkedUSDLModelException
 	{
 		Resource pc = null;
 		
 
-		if(baseURI != null || !baseURI.equalsIgnoreCase("")) // the baseURI argument is valid
-			this.namespace = baseURI;
+		if(baseURI != null ) // the baseURI argument is valid
+			if(!baseURI.equalsIgnoreCase(""))
+				this.namespace = baseURI;
 		else if(this.getNamespace() == null)  //use the default baseURI
 			this.namespace = PricingAPIProperties.defaultBaseURI;
 		

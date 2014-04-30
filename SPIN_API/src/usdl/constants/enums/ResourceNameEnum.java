@@ -27,6 +27,6 @@ public enum ResourceNameEnum {
 	}
 	
 	public String getResourceName() {
-		return name + " " + PricingAPIProperties.resourceCounter++;
+		return name + "_" + PricingAPIProperties.resourceCounter++;
 	}
 }

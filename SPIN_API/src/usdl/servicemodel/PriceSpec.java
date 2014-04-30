@@ -57,7 +57,7 @@ public class PriceSpec {
 	public PriceSpec(PriceSpec source)//copy constructor
 	{
 		if(source.getName() != null)
-			this.setName(source.getName() + PricingAPIProperties.resourceCounter++);
+			this.setName(source.getName() +"_" + PricingAPIProperties.resourceCounter++);
 
 		if(source.getCurrency() != null)
 			this.setCurrency(source.getCurrency());
