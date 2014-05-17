@@ -25,37 +25,34 @@ import exceptions.InvalidLinkedUSDLModelException;
 
 public class APINewModelExample {
 	public static void main(String[] args) throws IOException, InvalidLinkedUSDLModelException {
-
+		
+		//Offerings container
 		LinkedUSDLModel jmodel;
-
 		jmodel = LinkedUSDLModelFactory.createEmptyModel();
+		
 		Service serv1 = new Service();// create an empty service
 		serv1.setName("Service1");
-		serv1.setComment("This is the first imaginary service.");
+		serv1.setComment("This is an imaginary service.");
 		
 		//add data to the qualitative features
-		
 		QualitativeValue qualfeat1 = new QualitativeValue();
 		QualitativeValue qualfeat2 = new QualitativeValue();
 		QualitativeValue qualfeat3 = new QualitativeValue();
-		
-		ArrayList<QualitativeValue> qualfeat = new ArrayList<QualitativeValue>();
-		ArrayList<QuantitativeValue> quantfeat = new ArrayList<QuantitativeValue>();
-		
-		qualfeat1.addType(CLOUDEnum.PERFORMANCE.getConceptURI());
-		qualfeat1.setComment("Feature that specifies the performance of the service");
-		qualfeat1.setHasLabel("High");
-		qualfeat.add(qualfeat1);
+
+		qualfeat1.addType(CLOUDEnum.PERFORMANCE.getConceptURI());//feature type, CloudTaxonomy-> Performance
+		qualfeat1.setComment("Feature that specifies the performance of the service");//feature comment
+		qualfeat1.setHasLabel("High");//feature value
+		serv1.addQualFeature(qualfeat1);//add the feature to the service
 		
 		qualfeat2.addType(CLOUDEnum.LOCATION.getConceptURI());
 		qualfeat2.setComment("Feature that specifies the location of the  service");
 		qualfeat2.setHasLabel("Europe");
-		qualfeat.add(qualfeat2);
+		serv1.addQualFeature(qualfeat2);
 		
 		qualfeat3.addType(CLOUDEnum.WINDOWS.getConceptURI());
 		qualfeat3.setComment("Feature that specifies the OS of the  service");
-		qualfeat3.setHasLabel("Windows");
-		qualfeat.add(qualfeat3);
+		qualfeat3.setHasLabel("Windows Server 2012 R2");
+		serv1.addQualFeature(qualfeat3);
 		//////////////////////////////////////////////////////////
 		//add data to the quantitative features
 		
@@ -63,23 +60,24 @@ public class APINewModelExample {
 		QuantitativeValue quantfeat2 = new QuantitativeValue();
 		QuantitativeValue quantfeat3 = new QuantitativeValue();
 		
-		quantfeat1.addType(CLOUDEnum.AVAILABILITY.getConceptURI());
-		quantfeat1.setValue(99);
-		quantfeat1.setComment("Feature that specifies the availability of the service");
-		quantfeat.add(quantfeat1);
+		quantfeat1.addType(CLOUDEnum.AVAILABILITY.getConceptURI());//feature type
+		quantfeat1.setValue(99);//quantitative value
+		quantfeat1.setUnitOfMeasurement("P1");//unit of measurement - P1
+		quantfeat1.setComment("Feature that specifies the availability of the service");//feature comment
+		serv1.addQuantFeature(quantfeat1);//link the feature to the service
 		
 		quantfeat2.addType(CLOUDEnum.DISKSIZE.getConceptURI());
 		quantfeat2.setValue(400);
+		quantfeat1.setUnitOfMeasurement("E34");//unit of measurement - E34
 		quantfeat2.setComment("Feature that specifies the disk size of the service");
-		quantfeat.add(quantfeat2);
+		serv1.addQuantFeature(quantfeat2);
 		
 		quantfeat3.addType(CLOUDEnum.MEMORYSIZE.getConceptURI());
 		quantfeat3.setValue(6);
+		quantfeat1.setUnitOfMeasurement("E34");//unit of measurement - E34
 		quantfeat3.setComment("Feature that specifies the RAM size of the service");
-		quantfeat.add(quantfeat3);
+		serv1.addQuantFeature(quantfeat3);
 		////////////////////////////////////////////////////////////////////////////////
-		serv1.setQualfeatures(qualfeat);//add the qualitative features to the service
-		serv1.setQuantfeatures(quantfeat);//add the quantitative features to the service
 		
 		////////////////////////////////////////////////////////////////////////////////
 		Offering off1 = new Offering();
@@ -99,7 +97,7 @@ public class APINewModelExample {
 		pp1.addPriceComponent(pc1);//link the price component to the price plan
 		////////////////////////////////////////////////////////////////////////////////
 		PriceFunction pf1 = new PriceFunction();
-		pf1.setComment("Price Function to calculate the price of the PriceComponent1, which in turn will give us the price of the Price Plan. The price of the PricePlan corresponds to the fee that is charged to the customer in exchange for its usage. The price model adopted by the service1 is a fully bundled recurring pre-paid vm access model, where the user pays a fixed fee per month for a pre-defined (by the user) quantity of resources. ");
+		pf1.setComment("Price Function to calculate the price of the PriceComponent1");
 		pf1.setName("PriceFunction1");
 		pc1.setPriceFunction(pf1);
 		
@@ -108,24 +106,26 @@ public class APINewModelExample {
 		Provider provvar1 = new Provider();//constant variable of the function
 		provvar1.setComment("Constant variable of the function1. Specifies the monthly cost of the VM instance.");
 		provvar1.setName("serv1mcost");
-		QuantitativeValue monthly_cost = new QuantitativeValue();
+		QuantitativeValue monthly_cost = new QuantitativeValue();//variable's value
 		monthly_cost.setValue(160);//160euros per month for the instance specified above
+		monthly_cost.setUnitOfMeasurement("EUR");
 		provvar1.setValue(monthly_cost);
 		pf1.addProviderVariable(provvar1);//link the variable to the function1
 		
-		Usage usagevar1 = new Usage();
+		Usage usagevar1 = new Usage();//dynamic  variable of the function - User dependent
 		usagevar1.setComment("Usage variable of the function1. Represents the number of months the user will be renting this service");
 		usagevar1.setName("serv1nmonths");
 		pf1.addUsageVariable(usagevar1);//link the usage variable to the function1
 		
-		pf1.setStringFunction("serv1mcost * serv1nmonths");//Function that calculates the price of the service1. It's a basic mathematical expression where we multiply the number of months by the cost of usage per month.
+		String form = provvar1.getName()+" * "+ usagevar1.getName();
+		pf1.setStringFunction(form);//set the string mathematical expression 
 		
 		////////////////////////////////////////////////////////////////////////////////
 		ArrayList<Offering> offerings = new ArrayList<Offering>();
 		offerings.add(off1);
 		
 		jmodel.setOfferings(offerings);//add the created offering to the LinkedUSDLModel instance.
-		jmodel.setBaseURI("http://PricingAPIGenericModelExample.com");
+		jmodel.setBaseURI("http://PricingAPISimpleExample.com");
 		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
 
 		File outputFile = new File("./DebuggingFiles/generic_model.ttl");
@@ -136,12 +136,6 @@ public class APINewModelExample {
 		FileOutputStream out = new FileOutputStream(outputFile);
 		instance.write(out, "Turtle");
 		out.close();
-
-		//for (Offering off : jmodel.getOfferings())
-			//System.out.println("" + off.getName() + ", Price:"+ off.getPricePlan().calculatePrice(instance));
-
-		// jmodel.writeModelToFile("./serviceExamples/test.ttl",
-		// "baseURI/de_teste", "TTL");
 
 	}
 }
