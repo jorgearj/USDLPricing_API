@@ -41,20 +41,7 @@ public class AmazonOnDemand {
 		
 		AmazonOnDemandOffering(jmodel);
 		
-		
-//		
-//		for (Offering of : jmodel.getOfferings())
-//		{
-//			for(PriceComponent pc : of.getPricePlan().getPriceComponents())
-//			{
-//				if(pc.getPriceFunction() != null)
-//				{
-//					for(Usage var : pc.getPriceFunction().getUsageVariables())
-//						System.out.println("UsageVar:   NAME:   "+var.getName() + "   LOCALNAME:   "+var.getLocalName());
-//				}
-//			}
-//		}
-//		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandOfferings.com");
+		jmodel.setBaseURI("http://PricingAPIAmazonOnDemandOfferings.com");
 		Model instance = jmodel.WriteToModel();//transform the java models to a semantic representation
 		
 		File outputFile = new File("./DebuggingFiles/amazonOD.ttl");
@@ -73,17 +60,13 @@ public class AmazonOnDemand {
 		//first, create the services 
 		Service s1 = new Service();
 
-
 		s1.setName("m3.medium-OD");
 
-		ArrayList<QuantitativeValue> s1QuantFeat = new ArrayList<QuantitativeValue>();//container for the Quantitative Features
-		ArrayList<QualitativeValue> s1QualFeat = new ArrayList<QualitativeValue>();//container for the Qualitative Features
-		
-		//64 bits	1	3	3,75	1 x 4 SSD*6	ñ	Moderada
+		//64 bits	1	3	3,75	1 x 4 SSD*6	‚Äì	Moderada
 		QualitativeValue Arch = new QualitativeValue();
 		Arch.addType(CLOUDEnum.BIT64.getConceptURI());
 		Arch.setHasLabel("64Bits");
-		s1QualFeat.add(Arch);
+		s1.addQualFeature(Arch);
 		
 		QuantitativeValue CPUCores=null,CPUSpeed=null;
 		CPUCores =new QuantitativeValue();
@@ -95,15 +78,15 @@ public class AmazonOnDemand {
 		CPUSpeed.addType(CLOUDEnum.CPUSPEED.getConceptURI());
 		CPUSpeed.setValue(3);
 		CPUSpeed.setUnitOfMeasurement("ECU");//EC2 Compute Unit
-		s1QuantFeat.add(CPUCores);
-		s1QuantFeat.add(CPUSpeed);
+		s1.addQuantFeature(CPUCores);
+		s1.addQuantFeature(CPUSpeed);
 		
 		// /MEMORYSIZE
 		QuantitativeValue MemorySize =  new QuantitativeValue();
 		MemorySize.addType(CLOUDEnum.MEMORYSIZE.getConceptURI());
 		MemorySize.setValue(3.75);
 		MemorySize.setUnitOfMeasurement("E34");//GB
-		s1QuantFeat.add(MemorySize);
+		s1.addQuantFeature(MemorySize);
 		
 		
 		//DiskSize, StorageType
@@ -116,33 +99,34 @@ public class AmazonOnDemand {
 
 		StorageType.addType(CLOUDEnum.STORAGETYPE.getConceptURI());
 		StorageType.setHasLabel("SSD");
-		s1QuantFeat.add(DiskSize);
-		s1QualFeat.add(StorageType);
+		s1.addQuantFeature(DiskSize);
+		s1.addQualFeature(StorageType);
 		
 		//MONITORING
 		QualitativeValue monitoring = new QualitativeValue();
 		monitoring.addType(CLOUDEnum.MONITORING.getConceptURI());
 		monitoring.setHasLabel("Basic");
-		monitoring.setComment("As mÈtricas de monitoramento b·sico (com frequÍncia de cinco minutos) para inst‚ncias do Amazon EC2 s„o gratuitas, assim como todas as mÈtricas para os volumes do Amazon EBS, Elastic Load Balancers e as inst‚ncias do banco de dados do Amazon RDS.");
-		s1QualFeat.add(monitoring);
+		monitoring.setComment("As m√©tricas de monitoramento b√°sico (com frequ√™ncia de cinco minutos) para inst√¢ncias do Amazon EC2 s√£o gratuitas, assim como todas as m√©tricas para os volumes do Amazon EBS, Elastic Load Balancers e as inst√¢ncias do banco de dados do Amazon RDS.");
+		s1.addQualFeature(monitoring);
 		
 		//Performance
 		QualitativeValue performance = new QualitativeValue();
 		performance.addType(CLOUDEnum.PERFORMANCE.getConceptURI());
 		performance.setHasLabel("Moderate");
+		s1.addQualFeature(performance);
 		
 		//OS
 		QualitativeValue os = new QualitativeValue();
 		os.addType(CLOUDEnum.UNIX.getConceptURI());
 		os.setHasLabel("Linux");
-		s1QualFeat.add(os);
+		s1.addQualFeature(os);
 		
 		
 		//Location
 		QualitativeValue Location = new QualitativeValue();
 		Location.addType(CLOUDEnum.LOCATION.getConceptURI());
 		Location.setHasLabel("East USA - North Virginia");
-		
+		s1.addQualFeature(Location);
 		//DATA, in order to simplify the modeling of the offering, we'll only consider traffic from the internet into the EC2 instance and from the EC2 instance to the internet
 
 		QuantitativeValue DATAINEXTERNAL = new QuantitativeValue();
@@ -152,21 +136,19 @@ public class AmazonOnDemand {
 		
 		DATAINEXTERNAL.addType(CLOUDEnum.DATAINEXTERNAL.getConceptURI());
 		DATAINEXTERNAL.setValue(Double.MAX_VALUE);//unlimited
-		s1QuantFeat.add(DATAINEXTERNAL);
+		s1.addQuantFeature(DATAINEXTERNAL);
 		
 		DATAININTERNAL.addType(CLOUDEnum.DATAININTERNAL.getConceptURI());
 		DATAININTERNAL.setValue(Double.MAX_VALUE);//unlimited
-		s1QuantFeat.add(DATAININTERNAL);
+		s1.addQuantFeature(DATAININTERNAL);
 		
 		DATAOUTEXTERNAL.addType(CLOUDEnum.DATAOUTEXTERNAL.getConceptURI());
 		DATAOUTEXTERNAL.setMaxValue(350*1024);//let's assume a maximum of 350TB since in their website there isn't any detailed info about their pricing for transferrals of 350TB++
 		DATAOUTEXTERNAL.setUnitOfMeasurement("E34");
 		
-		s1QuantFeat.add(DATAOUTEXTERNAL);
+		s1.addQuantFeature(DATAOUTEXTERNAL);
 		
-		s1.setQuantfeatures(s1QuantFeat);
-		s1.setQualfeatures(s1QualFeat);
-		//now we create an offering and its priceplan for the created service.
+		//now we create an offering and the priceplan for the created service.
 		
 		Offering of = new Offering();
 		of.addService(s1);
@@ -195,7 +177,7 @@ public class AmazonOnDemand {
 		CostPerHour.setName("CostPerHour" + "TIME"+System.nanoTime());
 		QuantitativeValue val = new QuantitativeValue();
 		CostPerHour.setValue(val);
-		val.setValue(0.113);
+		val.setValue(0.07);
 		val.setUnitOfMeasurement("USD");
 		
 		pf_hourly.setStringFunction(CostPerHour.getName() + "*" +NumberOfHours.getName() );
