@@ -5,8 +5,6 @@ package priceModelValidation;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -47,34 +45,23 @@ public class AmazonODReader {
 						if(pc.getPriceFunction() != null)//if it has a price function
 						{
 							PriceFunction pf = pc.getPriceFunction();
-							//System.out.println("Off: "+off.getName());
-							//System.out.println(pf.getSPARQLFunction());
-							
 							List<Usage> usageVars = pf.getUsageVariables();//fetch its usage variables
-							Collections.sort(usageVars, new Comparator<Usage>() {//sort them alphabetically, this can be included in the API
-							    public int compare(Usage s1, Usage s2) {
-							        return s1.getName().compareTo(s2.getName());
-							    }
-							});
-							
 							for(Usage var : usageVars)//for each usage var, set a value.
 							{
 								QuantitativeValue val = new QuantitativeValue();
 
 								Scanner scan = new Scanner(System.in);
-								System.out.println("Insert the value for the " + var.getName().replaceAll("TIME\\d+.*", "") +" variable.\nDetails: \n"+var.getComment());
+								System.out.println("Insert the value for the " + var.getName() +" variable.\nDetails: \n"+var.getComment());
 								double num = Double.parseDouble(scan.nextLine());
 								
-								val.setValue(num);//1month
+								val.setValue(num);
 								var.setValue(val);//add the new value to the usage variable 
 							}
 						}
 					}
 				}
-				else
-					System.out.println("Offering with a null price plan");
 			}
-			jmodel.setBaseURI("http://PricingAPIAmazonODInstance.com");
+			jmodel.setBaseURI("http://PricingAPIAmazonODInstance.com");//you define a new base URI for the model or keep the old one
 			Model instance = jmodel.WriteToModel();//after we've done our changes in the jmodels, we transform them into a new Semantic model
 			//write model to file
 			File outputFile = new File("./amazonODInstance.ttl");
