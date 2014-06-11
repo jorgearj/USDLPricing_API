@@ -6,6 +6,22 @@
  * The pricing method adopted by Amazon's Spot Instances is a VB bundled Spot Instance model
  * It also makes use of the json.simple library in order to extract the price on the instance directly from the JSON provided by Amazon EC2. This way, any time the price is updated accoding to the market needs, this program will be able to extract the new price
  * as long as the structure of the JSON document remains the same.
+ *  ----------------------------------------------------------------------------------------
+ *  This file is part of LinkedUSDLPricingAPI.
+ *
+ *  LinkedUSDLPricingAPI is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  LinkedUSDLPricingAPI is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with LinkedUSDLPricingAPI.  If not, see <http://www.gnu.org/licenses/>.
+ *  ---------------------------------------------------------------------------------------
  *
  */
 package priceModelValidation;
@@ -127,7 +143,7 @@ public class AmazonSpotInstaces {
 		ArrayList<QuantitativeValue> s1QuantFeat = new ArrayList<QuantitativeValue>();//container for the Quantitative Features
 		ArrayList<QualitativeValue> s1QualFeat = new ArrayList<QualitativeValue>();//container for the Qualitative Features
 		
-		//64 bits	1	3	3,75	1 x 4 SSD*6	–	Moderada
+		//64 bits	1	3	3,75	1 x 4 SSD*6	ï¿½	Moderada
 		QualitativeValue Arch = new QualitativeValue();
 		Arch.addType(CLOUDEnum.BIT64.getConceptURI());
 		Arch.setHasLabel("64Bits");
@@ -171,7 +187,7 @@ public class AmazonSpotInstaces {
 		QualitativeValue monitoring = new QualitativeValue();
 		monitoring.addType(CLOUDEnum.MONITORING.getConceptURI());
 		monitoring.setHasLabel("Basic");
-		monitoring.setComment("As métricas de monitoramento básico (com frequência de cinco minutos) para instâncias do Amazon EC2 são gratuitas, assim como todas as métricas para os volumes do Amazon EBS, Elastic Load Balancers e as instâncias do banco de dados do Amazon RDS.");
+		monitoring.setComment("As mï¿½tricas de monitoramento bï¿½sico (com frequï¿½ncia de cinco minutos) para instï¿½ncias do Amazon EC2 sï¿½o gratuitas, assim como todas as mï¿½tricas para os volumes do Amazon EBS, Elastic Load Balancers e as instï¿½ncias do banco de dados do Amazon RDS.");
 		s1QualFeat.add(monitoring);
 		
 		//Performance
