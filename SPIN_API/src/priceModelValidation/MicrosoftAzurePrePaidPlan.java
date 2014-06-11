@@ -12,6 +12,25 @@
  * that suits his needs the best.
  * 
  * For this example we chose to model the A1(Small) VM running  Linux on US East.
+ * 
+ * 
+ * 
+ *  ----------------------------------------------------------------------------------------
+ *  This file is part of LinkedUSDLPricingAPI.
+ *
+ *  LinkedUSDLPricingAPI is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  LinkedUSDLPricingAPI is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with LinkedUSDLPricingAPI.  If not, see <http://www.gnu.org/licenses/>.
+ *  ---------------------------------------------------------------------------------------
  */
 
 
@@ -445,9 +464,9 @@ public class MicrosoftAzurePrePaidPlan {
 		VMCost6mb.setValue(vall);
 		
 		//pf1.setStringFunction( "6*31*`24" + "*" +VMCost6m.getName());
-		//€350-€11,149 -> 22.5%
-		//€11,150 - €29,799 ->25.5%
-		//€29,800 and above -> 29.5%
+		//ï¿½350-ï¿½11,149 -> 22.5%
+		//ï¿½11,150 - ï¿½29,799 ->25.5%
+		//ï¿½29,800 and above -> 29.5%
 		pf6.setStringFunction("IF ( (6*31*24" + "*" +VMCost6mb.getName()+") + (("+NGBOut_z1c.getName() +"*"+gboutcost_z1c.getName() + "+" + NGBOut_z2c.getName() + "*" + gboutcost_z2c.getName() + ")*6) + ("+"6*(" + NGBbrc.getName()+  "*" +backupcostc.getName()+ "))) > 350  &&"+
 				"( (6*31*24" + "*" +VMCost6mb.getName()+") + (("+NGBOut_z1c.getName() +"*"+gboutcost_z1c.getName() + "+" + NGBOut_z2c.getName() + "*" + gboutcost_z2c.getName() + ")*6) + ("+"6*(" + NGBbrc.getName()+  "*" +backupcostc.getName()+ "))) < 11149  ;"+
 				"( (6*31*24" + "*" +VMCost6mb.getName()+") + (("+NGBOut_z1c.getName() +"*"+gboutcost_z1c.getName() + "+" + NGBOut_z2c.getName() + "*" + gboutcost_z2c.getName() + ")*6) + ("+"6*(" + NGBbrc.getName()+  "*" +backupcostc.getName()+ "))) * (1-0.225) "+ "~" +
