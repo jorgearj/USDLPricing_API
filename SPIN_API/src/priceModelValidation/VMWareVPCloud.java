@@ -8,6 +8,25 @@
  * Details about their offerings can be found at:
  * http://vcloud.vmware.com/about_services/pricing
  * http://www.vmware.com/files/pdf/vchs/VMware_vCloud_Hybrid_Service_Purchasing_and_Subscription.pdf
+ * 
+ * 
+ * 
+ *  ----------------------------------------------------------------------------------------
+ *  This file is part of LinkedUSDLPricingAPI.
+ *
+ *  LinkedUSDLPricingAPI is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  LinkedUSDLPricingAPI is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with LinkedUSDLPricingAPI.  If not, see <http://www.gnu.org/licenses/>.
+ *  ---------------------------------------------------------------------------------------
  */
 
 
