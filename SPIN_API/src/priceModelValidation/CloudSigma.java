@@ -17,6 +17,23 @@
  * 
  * This is a simple example that tries to model every subscription plan available. It asks the number of months that the user will be using the service and, depending on that value, it applies the corresponding discounts. Of course, this 
  * is a pratical example to test a more complex mathematical expression and should not be used as a valid example. The valid approach for CloudSigma is illustrated by the CloudSigmaSimples class, which models a 6Months subscription plan.
+ *
+ *  ----------------------------------------------------------------------------------------
+ *  This file is part of LinkedUSDLPricingAPI.
+ *
+ *  LinkedUSDLPricingAPI is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  LinkedUSDLPricingAPI is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with LinkedUSDLPricingAPI.  If not, see <http://www.gnu.org/licenses/>.
+ *  ---------------------------------------------------------------------------------------
  */
 package priceModelValidation;
 
@@ -127,7 +144,7 @@ public class CloudSigma {
 		//Encryption
 		QualitativeValue Encryption = new QualitativeValue();
 		Encryption.addType(CLOUDEnum.ENCRYPTION.getConceptURI());
-		Encryption.setHasLabel("256bit AES­XTS ");
+		Encryption.setHasLabel("256bit AESï¿½XTS ");
 		s1QualFeat.add(Encryption);
 		
 		//Location
