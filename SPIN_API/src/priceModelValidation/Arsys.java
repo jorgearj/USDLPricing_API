@@ -4,6 +4,23 @@
  * Uses the LinkedUSDL Pricing API to model Service Offerings provided by Arsys.
  * Info about their offerings can be seen at: http://www.arsys.net/servers/dedicated.html
  * The pricing method adopted by arsys is a fully bundled Recurring VM Access
+ * 
+ *  ----------------------------------------------------------------------------------------
+ *  This file is part of LinkedUSDLPricingAPI.
+ *
+ *  LinkedUSDLPricingAPI is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  LinkedUSDLPricingAPI is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with LinkedUSDLPricingAPI.  If not, see <http://www.gnu.org/licenses/>.
+ *  ---------------------------------------------------------------------------------------
  *
  */
 
@@ -123,7 +140,7 @@ public class Arsys {
 		QualitativeValue monitoring = new QualitativeValue();
 		monitoring.addType(CLOUDEnum.MONITORING.getConceptURI());
 		monitoring.setHasLabel("Basic");
-		monitoring.setComment(" servicio gratuito que monitoriza el estado (encendido/apagado) del servidor y los recursos CPU, RAM y transferencia. A través del panel recibirá avisos cuando se produzca una alarma y en el caso de encendido/apagado del servidor también recibirá notificación por mail. En el panel podrá ver el estado actual de cada uno de los recursos, un apartado de gráficas con la evolución temporal y un histórico de los eventos generados durante el último mes. Los umbrales de generación de alarmas no son editables y se han definido como: Warning Critical ");
+		monitoring.setComment(" servicio gratuito que monitoriza el estado (encendido/apagado) del servidor y los recursos CPU, RAM y transferencia. A travï¿½s del panel recibirï¿½ avisos cuando se produzca una alarma y en el caso de encendido/apagado del servidor tambiï¿½n recibirï¿½ notificaciï¿½n por mail. En el panel podrï¿½ ver el estado actual de cada uno de los recursos, un apartado de grï¿½ficas con la evoluciï¿½n temporal y un histï¿½rico de los eventos generados durante el ï¿½ltimo mes. Los umbrales de generaciï¿½n de alarmas no son editables y se han definido como: Warning Critical ");
 		s1QualFeat.add(monitoring);
 		//Programming languagues, PHP 5, Perl, Python
 		QualitativeValue Language = new QualitativeValue();
